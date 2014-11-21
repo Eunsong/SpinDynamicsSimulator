@@ -9,7 +9,10 @@ public class SpinSystem{
         this.sites = builder.sites;
         this.integrator = builder.integrator;
     }
-    
+
+    public void forward(){
+        integrator.forward(this);
+    }
 
     public static class Builder{
 
