@@ -7,5 +7,10 @@ public class FullSpinSite extends Site{
         this.spin = new Vector3D();
     }
 
+    public Vector3D getSpinVector(){
+         return this.spin;
+    }
+
+    
 
 }
