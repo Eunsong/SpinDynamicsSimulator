@@ -7,13 +7,17 @@ import mysd.vector.*;
 public class FullSpinSite extends Site{
 
     private Vector3D spin;
-    private Vector3D forceOld, force; // effectice field including damping term
+    private Vector3D forceOld, force; // effective field including damping term
     private List<Neighbor<FullSpinSite>> neighbors;
 
     public FullSpinSite(int baseType, Vector3D location){
         super(baseType, location);
         this.spin = new Vector3D();
         this.neighbors = new ArrayList<Neighbor<FullSpinSite>>();
+    }
+
+    public Vector3D getLocation(){
+        return super.location;
     }
 
     public Vector3D getSpinVector(){
