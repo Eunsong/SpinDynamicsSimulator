@@ -1,5 +1,7 @@
 package mysd.integrator;
 
+import mysd.*;
+
 public interface Integrator{
 
     /**

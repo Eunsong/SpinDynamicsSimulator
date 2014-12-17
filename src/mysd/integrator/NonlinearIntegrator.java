@@ -1,6 +1,9 @@
 package mysd.integrator;
 
 import java.util.List;
+import mysd.*;
+import mysd.vector.*;
+
 
 public class NonlinearIntegrator implements Integrator{
 
