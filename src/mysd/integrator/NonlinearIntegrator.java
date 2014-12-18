@@ -29,7 +29,7 @@ public class NonlinearIntegrator implements Integrator{
     }
 
     public double[][] getA(FullSpinSite si){
-        Vector3D heffOld = si.getForceOld();
+        Vector3D heffOld = si.getForcePrev();
         Vector3D heff = si.getForce();
         double[][] a = new double[3][3];
         a[0][0] = 1.0;
@@ -46,7 +46,7 @@ public class NonlinearIntegrator implements Integrator{
 
     public double[] getB(FullSpinSite si){
         Vector3D vi = si.getSpinVector();
-        Vector3D heffOld = si.getForceOld();
+        Vector3D heffOld = si.getForcePrev();
         Vector3D heff = si.getForce();
         double[] b = new double[3];
         b[0] = vi.getX() - dt/4.0*((heffOld.getZ() - 3.0*heff.getZ())*vi.getY() 
@@ -62,24 +62,24 @@ public class NonlinearIntegrator implements Integrator{
     
     public static double[][] getInverse(double[][]a){
         double[][] invA = new double[3][3];
-        double det = getDet(a);
-        invA[0][0] = (a[1][1]*a[2][2] - a[1][2]*a[2][1])*det;
-        invA[0][1] = (a[0][2]*a[2][1] - a[0][1]*a[2][2])*det;                   
-        invA[0][2] = (a[0][1]*a[1][2] - a[0][2]*a[1][1])*det;
-        invA[1][0] = (a[1][2]*a[2][0] - a[1][0]*a[2][2])*det;
-        invA[1][1] = (a[0][0]*a[2][2] - a[0][2]*a[2][0])*det;                   
-        invA[1][2] = (a[0][2]*a[1][0] - a[0][0]*a[1][2])*det;
-        invA[2][0] = (a[1][0]*a[2][1] - a[1][1]*a[2][0])*det;
-        invA[2][1] = (a[0][1]*a[2][0] - a[0][0]*a[2][1])*det;                   
-        invA[2][2] = (a[0][0]*a[1][1] - a[0][1]*a[1][0])*det;
+        double detInverse = 1.0/getDet(a);
+        invA[0][0] = (a[1][1]*a[2][2] - a[1][2]*a[2][1])*detInverse;
+        invA[0][1] = (a[0][2]*a[2][1] - a[0][1]*a[2][2])*detInverse;                   
+        invA[0][2] = (a[0][1]*a[1][2] - a[0][2]*a[1][1])*detInverse;
+        invA[1][0] = (a[1][2]*a[2][0] - a[1][0]*a[2][2])*detInverse;
+        invA[1][1] = (a[0][0]*a[2][2] - a[0][2]*a[2][0])*detInverse;                   
+        invA[1][2] = (a[0][2]*a[1][0] - a[0][0]*a[1][2])*detInverse;
+        invA[2][0] = (a[1][0]*a[2][1] - a[1][1]*a[2][0])*detInverse;
+        invA[2][1] = (a[0][1]*a[2][0] - a[0][0]*a[2][1])*detInverse;                   
+        invA[2][2] = (a[0][0]*a[1][1] - a[0][1]*a[1][0])*detInverse;
         return invA;
     }
     
 
     public static double getDet(double[][] a){
-        return a[0][2]*a[1][1]*a[2][0] - a[0][1]*a[1][2]*a[2][0] 
-               - a[0][2]*a[1][0]*a[2][1] + a[0][0]*a[1][2]*a[2][1] 
-               + a[0][1]*a[1][0]*a[2][2] - a[0][0]*a[1][1]*a[2][2];
+        return -a[0][2]*a[1][1]*a[2][0] + a[0][1]*a[1][2]*a[2][0] 
+               + a[0][2]*a[1][0]*a[2][1] - a[0][0]*a[1][2]*a[2][1] 
+               - a[0][1]*a[1][0]*a[2][2] + a[0][0]*a[1][1]*a[2][2];
     }
    
     public static double[] matrixProduct(double[][] a, double[] b){

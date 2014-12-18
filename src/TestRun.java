@@ -24,10 +24,10 @@ public class TestRun{
         for ( double[] array : mat ){
             Arrays.fill(array, 0.0);
         }
-        mat[0][0] = 1.0;
-        mat[1][1] = 1.0;
-        mat[2][2] = 1.0;
-        
+        mat[0][0] = -1.0;
+        mat[1][1] = -1.0;
+        mat[2][2] = -1.0;
+ 
         Hamiltonian h = new Hamiltonian(mat);
    
         FullSpinSite[][] sitesArray = new FullSpinSite[20][20];
@@ -70,18 +70,21 @@ public class TestRun{
             }
         }
 
-        NonlinearIntegrator integrator = new NonlinearIntegrator(0.01);
+        NonlinearIntegrator integrator = new NonlinearIntegrator(0.1);
         
         SpinSystem system = new SpinSystem.Builder().sites(sites).integrator(integrator).
-                                                     alpha(0.1).build();
+                                                     alpha(0.5).build();
 
-        for ( FullSpinSite si : system.getSites() ){
-            si.getLocation().print();
+        for ( FullSpinSite s : system.getSites() ){
+            s.updateSpinVector(new Vector3D(0.0, 0.0, 1.0));
         }
-
-        for ( int t = 0; t < 1000; t++){
-
-            //system.forward();
+        system.getSites().get(0).updateSpinVector(new Vector3D(1.0, 0.0, 0.0));
+        for ( int t = 0; t < 100; t++){
+            system.updateForce();
+            system.forward();
+            system.getSites().get(0).getSpinVector().print();
+            system.getSites().get(1).getSpinVector().print();
+                System.out.print("\n");
         }
 
 
