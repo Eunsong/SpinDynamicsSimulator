@@ -75,10 +75,10 @@ public class TestRun{
         SpinSystem system = new SpinSystem.Builder().sites(sites).integrator(integrator).
                                                      alpha(0.01).build();
 
-        for ( FullSpinSite s : system.getSites() ){
+        for ( FullSpinSite s : system ){
             s.updateSpinVector(new Vector3D(0.0, 0.0, 1.0));
         }
-        system.getSites().get(0).updateSpinVector(new Vector3D(1.0, 0.0, 0.0));
+        system.getSite(0).updateSpinVector(new Vector3D(1.0, 0.0, 0.0));
 
 
         BasicWriter writer = new BasicWriter(system, "test.dat");

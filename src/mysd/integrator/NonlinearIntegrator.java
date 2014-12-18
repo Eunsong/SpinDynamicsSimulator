@@ -18,8 +18,7 @@ public class NonlinearIntegrator implements Integrator{
     }
 
     public void forward(SpinSystem system){
-        List<FullSpinSite> sites = system.getSites();
-        for ( FullSpinSite s : sites ){
+        for ( FullSpinSite s : system ){
             forward(s);
         }
     }

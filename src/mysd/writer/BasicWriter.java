@@ -41,7 +41,7 @@ public class BasicWriter implements Writer{
         
         System.out.println(String.format("# time step : %6.3f", this.sys.getTime()));
         int index = 1;
-        for ( FullSpinSite s : sys.getSites() ){
+        for ( FullSpinSite s : sys ){
             Vector3D sV = s.getSpinVector();
             double sx = sV.getX();
             double sy = sV.getY();
@@ -74,7 +74,7 @@ public class BasicWriter implements Writer{
 
         ps.println(String.format("# time step : %6.3f", this.sys.getTime()));
         int index = 1;
-        for ( FullSpinSite s : sys.getSites() ){
+        for ( FullSpinSite s : sys ){
             Vector3D sV = s.getSpinVector();
             double sx = sV.getX();
             double sy = sV.getY();

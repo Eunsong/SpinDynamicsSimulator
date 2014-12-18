@@ -4,7 +4,7 @@ import java.util.List;
 import mysd.vector.*;
 import mysd.integrator.*;
 
-public class SpinSystem{
+public class SpinSystem implements Iterable<FullSpinSite>{
 
     private final List<FullSpinSite> sites; 
     private final Integrator integrator;
@@ -25,8 +25,11 @@ public class SpinSystem{
     public double getTime(){
         return getDt()*this.t;
     }
-    public List<FullSpinSite> getSites(){
-        return this.sites;
+    public Iterator<FullSpinSite> iterator(){
+        return this.sites.iterator();
+    }
+    public FullSpinSite getSite(int i){
+        return this.sites.get(i);
     }
     public double getDt(){
         return this.integrator.getDt();
