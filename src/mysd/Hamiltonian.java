@@ -1,14 +1,47 @@
 package mysd;
 
 import mysd.vector.*;
+import java.lang.RuntimeException;
 
 public class Hamiltonian{
 
+    private String type;
+    private int index;
     private final double[][] matrix;
     
     public Hamiltonian(double[][] matrix){
         this.matrix = matrix;
+        this.type = null;
+        this.index = -1;
     }
+
+    public void setType(String type){
+        if ( type == null){
+            this.type = type;
+        }
+        else{
+            throw new RuntimeException
+                      ("type of the Hamiltonian object cannot be reassigned!");
+        }
+    }
+
+    public void setIndex(int index){
+        if ( index == -1){
+            this.index = index;
+        }
+        else{
+            throw new RuntimeException
+                      ("index of the Hamiltonian object cannot be reassigned!");
+        }
+    }
+
+    public String getType(){
+        return this.type;
+    }
+    public int getIndex(){
+        return this.index;
+    }
+    
     public Vector3D getForce(FullSpinSite sj){
         Vector3D spin = sj.getSpinVector();
         return product(spin);

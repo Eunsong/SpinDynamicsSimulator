@@ -13,6 +13,10 @@ public class NonlinearIntegrator implements Integrator{
         this.dt = dt;
     }
 
+    public double getDt(){
+        return this.dt;
+    }
+
     public void forward(SpinSystem system){
         List<FullSpinSite> sites = system.getSites();
         for ( FullSpinSite s : sites ){

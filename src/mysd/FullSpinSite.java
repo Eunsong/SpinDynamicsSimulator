@@ -10,16 +10,29 @@ public class FullSpinSite extends Site{
     private Vector3D forcePrev, force; // effective field including damping term
     private List<Neighbor<FullSpinSite>> neighbors;
 
-    public FullSpinSite(int baseType, Vector3D location){
-        super(baseType, location);
+
+    public FullSpinSite(int index, int baseType, Vector3D location){
+        super(index, baseType, location);
         this.spin = new Vector3D();
         this.neighbors = new ArrayList<Neighbor<FullSpinSite>>();
         this.force = new Vector3D();
         this.forcePrev = new Vector3D();
     }
 
-    public Vector3D getLocation(){
-        return super.location;
+    public FullSpinSite(int index, Vector3D location){
+        super(index, location);
+        this.spin = new Vector3D();
+        this.neighbors = new ArrayList<Neighbor<FullSpinSite>>();
+        this.force = new Vector3D();
+        this.forcePrev = new Vector3D();
+    }
+
+    public FullSpinSite(Vector3D location){
+        super(location);
+        this.spin = new Vector3D();
+        this.neighbors = new ArrayList<Neighbor<FullSpinSite>>();
+        this.force = new Vector3D();
+        this.forcePrev = new Vector3D();
     }
 
     public Vector3D getSpinVector(){

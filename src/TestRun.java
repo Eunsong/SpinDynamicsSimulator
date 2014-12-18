@@ -1,9 +1,11 @@
 import java.util.*;
+import java.io.PrintStream;
 
 import mysd.*;
 import mysd.lattice.*;
 import mysd.vector.*;
 import mysd.integrator.*;
+import mysd.writer.BasicWriter;
 
 public class TestRun{
 
@@ -18,8 +20,7 @@ public class TestRun{
         Vector3D az = new Vector3D(0.0, 0.0, 1.0);
         UnitCell unitCell = new UnitCell(ax, ay, az, basis);
 
-
-
+    
         double[][] mat = new double[3][3];
         for ( double[] array : mat ){
             Arrays.fill(array, 0.0);
@@ -37,7 +38,7 @@ public class TestRun{
 
                 Vector3D location = Vector3D.times( ax, i);
                 location.add( Vector3D.times(ay, j) );
-                FullSpinSite site = new FullSpinSite(0, location);
+                FullSpinSite site = new FullSpinSite(location);
                 sitesArray[i][j] = site;
                 
             }
@@ -61,7 +62,6 @@ public class TestRun{
         }
 
 
-
         List<FullSpinSite> sites = new ArrayList<FullSpinSite>(400);
 
         for ( int i = 0; i < 20; i++){
@@ -73,18 +73,22 @@ public class TestRun{
         NonlinearIntegrator integrator = new NonlinearIntegrator(0.1);
         
         SpinSystem system = new SpinSystem.Builder().sites(sites).integrator(integrator).
-                                                     alpha(0.5).build();
+                                                     alpha(0.01).build();
 
         for ( FullSpinSite s : system.getSites() ){
             s.updateSpinVector(new Vector3D(0.0, 0.0, 1.0));
         }
         system.getSites().get(0).updateSpinVector(new Vector3D(1.0, 0.0, 0.0));
+
+
+        BasicWriter writer = new BasicWriter(system, "test.dat");
+
         for ( int t = 0; t < 100; t++){
+            if (t%10 == 0){
+                writer.writeToFile();
+            }
             system.updateForce();
             system.forward();
-            system.getSites().get(0).getSpinVector().print();
-            system.getSites().get(1).getSpinVector().print();
-                System.out.print("\n");
         }
 
 

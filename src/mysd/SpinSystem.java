@@ -9,19 +9,27 @@ public class SpinSystem{
     private final List<FullSpinSite> sites; 
     private final Integrator integrator;
     private final double alpha;
+    private int t; // current time step(simulation time, not wall time)
     
     protected SpinSystem(Builder builder){
         this.sites = builder.sites;
         this.integrator = builder.integrator;
         this.alpha = builder.alpha;
+        this.t = 0;
     }
 
     public void forward(){
         integrator.forward(this);
+        this.t++;
     }
-
+    public double getTime(){
+        return getDt()*this.t;
+    }
     public List<FullSpinSite> getSites(){
         return this.sites;
+    }
+    public double getDt(){
+        return this.integrator.getDt();
     }
 
     public void updateForce(){
