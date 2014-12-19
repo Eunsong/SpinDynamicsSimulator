@@ -1,8 +1,9 @@
 package mysd;
 
+import java.util.Iterator;
 import java.util.List;
 import mysd.vector.*;
-import mysd.integrator.*;
+import mysd.integrator.Integrator;
 
 public class SpinSystem implements Iterable<FullSpinSite>{
 
@@ -30,6 +31,9 @@ public class SpinSystem implements Iterable<FullSpinSite>{
     }
     public FullSpinSite getSite(int i){
         return this.sites.get(i);
+    }
+    public int size(){
+        return this.sites.size();
     }
     public double getDt(){
         return this.integrator.getDt();

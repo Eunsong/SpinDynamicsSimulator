@@ -38,4 +38,8 @@ public abstract class Site{
         return this.location;
     }
 
+    public abstract Vector3D getSpinVector();
+
+    public abstract void updateSpinVector(double[] s);
+
 }
