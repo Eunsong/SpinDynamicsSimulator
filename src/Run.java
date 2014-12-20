@@ -31,7 +31,7 @@ public class Run{
         SpinSystem system = new SpinSystem.Builder().sites(sites).
                                 integrator(integrator).alpha(param.alpha).build();
         if ( cnf != null ){
-            SpinBuilder.overloadSpins(system, cnf, true);
+            SpinBuilder.overloadSpins(system, cnf, false);
         }
         mysd.writer.Writer writer = new BasicWriter(system, outTraj);
         for ( int t = 0; t < param.ntstep; t++){

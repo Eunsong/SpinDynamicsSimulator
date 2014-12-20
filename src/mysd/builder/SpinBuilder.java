@@ -39,7 +39,9 @@ public class SpinBuilder{
                     double sz = Double.parseDouble(tokens[3]); 
                     FullSpinSite s = system.getSite(index);
                     assert index == s.getIndex();
-                    s.updateSpinVector(new Vector3D(sx, sy, sz));
+                    Vector3D v = new Vector3D(sx, sy, sz);
+                    if ( normalize ) v.normalize();
+                    s.updateSpinVector(v);
                 }
             }
         }
