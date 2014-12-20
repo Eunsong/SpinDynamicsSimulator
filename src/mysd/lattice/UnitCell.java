@@ -14,5 +14,18 @@ public class UnitCell{
         this.az = az;
         this.basis = basis;
     }
+    public int size(){
+        return this.basis.size();
+    }
+
+    public Vector3D getAx(){
+        return this.ax;
+    }
+    public Vector3D getAy(){
+        return this.ay;
+    }
+    public Vector3D getAz(){
+        return this.az;
+    }
 
 }

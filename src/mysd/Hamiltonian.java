@@ -15,8 +15,14 @@ public class Hamiltonian{
         this.index = -1;
     }
 
+    public Hamiltonian(String type, double[][] matrix){
+        this.matrix = matrix;
+        this.type = type;
+        this.index = -1;
+    }
+
     public void setType(String type){
-        if ( type == null){
+        if ( this.type == null){
             this.type = type;
         }
         else{
