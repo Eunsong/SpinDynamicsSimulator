@@ -1,0 +1,10 @@
+# Spin Dynamics Simulation run parameters 
+
+title    = Cubic_Ferro_Magnet
+dt       = 0.1                          #time step size
+ntstep   = 100                          #number of time steps
+alpha    = 0.1                          #Gilbert damping constant
+
+nstout   = 1                            #save outputs every nstout steps
+nstbuff  = 100                          #output buffer size
+
