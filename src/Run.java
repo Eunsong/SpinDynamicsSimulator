@@ -35,13 +35,13 @@ public class Run{
         }
         mysd.writer.Writer writer = new BasicWriter(system, outTraj);
         for ( int t = 0; t < param.ntstep; t++){
-            if ( t%param.nstout == 0 ){
+            if ( param.nstout != 0 && t%param.nstout == 0 ){
                 writer.writeToFile();
             }
             system.updateForce();
             system.forward();
         }
-        
-
+        writer.writeToFile();
+        writer.close();
     }
 }
