@@ -432,7 +432,7 @@ public class Builder{
     }   
  
 
-    private static String removeComment(String s){
+    public static String removeComment(String s){
         if (!s.contains("#")){
             return s;
         }

@@ -40,19 +40,12 @@ public class BasicWriter implements Writer{
     public void writeToScreen(){
         
         System.out.println(String.format("# time step : %6.3f", this.sys.getTime()));
-        int index = 1;
         for ( Site s : sys ){
             Vector3D sV = s.getSpinVector();
             double sx = sV.getX();
             double sy = sV.getY();
             double sz = sV.getZ();
-            if (s.getIndex() == -1){
-                System.out.println(String.format(format, index++, sx, sy, sz));
-            }
-            else{
-                System.out.println(String.format(format, s.getIndex(), sx, sy, sz)); 
-                index++;
-            }
+            System.out.println(String.format(format, s.getIndex(), sx, sy, sz)); 
         }
         System.out.println("\n");
     }
@@ -73,19 +66,12 @@ public class BasicWriter implements Writer{
     public void writeToFile(PrintStream ps){
 
         ps.println(String.format("# time step : %6.3f", this.sys.getTime()));
-        int index = 1;
         for ( Site s : sys ){
             Vector3D sV = s.getSpinVector();
             double sx = sV.getX();
             double sy = sV.getY();
             double sz = sV.getZ();
-            if (s.getIndex() == -1){
-                ps.println(String.format(format, index++, sx, sy, sz));
-            }
-            else{
-                ps.println(String.format(format, s.getIndex(), sx, sy, sz)); 
-                index++;
-            }
+            ps.println(String.format(format, s.getIndex(), sx, sy, sz)); 
         }
         ps.println("\n");
     }
