@@ -6,9 +6,9 @@ import mysd.vector.*;
 
 public class FullSpinSite extends Site{
 
-    private Vector3D spin;
-    private Vector3D forcePrev, force; // effective field including damping term
-    private List<Neighbor<FullSpinSite>> neighbors;
+    protected Vector3D spin;
+    protected Vector3D forcePrev, force; // effective field including damping term
+    protected List<Neighbor<FullSpinSite>> neighbors;
 
 
     public FullSpinSite(int index, int baseType, Vector3D location){
