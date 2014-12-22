@@ -5,7 +5,7 @@ import mysd.*;
 import mysd.vector.*;
 
 
-public class NonlinearIntegrator implements Integrator{
+public class NonlinearIntegrator implements Integrator<FullSpinSite>{
 
     private final double dt;
 
@@ -17,7 +17,7 @@ public class NonlinearIntegrator implements Integrator{
         return this.dt;
     }
 
-    public void forward(SpinSystem system){
+    public void forward(SpinSystem<FullSpinSite> system){
         for ( FullSpinSite s : system ){
             forward(s);
         }

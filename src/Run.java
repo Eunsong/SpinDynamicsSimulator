@@ -28,12 +28,12 @@ public class Run{
         RunParameter param = Builder.importRunParam(sdp);
 
         NonlinearIntegrator integrator = new NonlinearIntegrator(param.dt);
-        SpinSystem system = new SpinSystem.Builder().sites(sites).
+        FullSpinSystem system = new FullSpinSystem.Builder().sites(sites).
                                 integrator(integrator).alpha(param.alpha).build();
         if ( cnf != null ){
             SpinBuilder.overloadSpins(system, cnf, false);
         }
-        mysd.writer.Writer writer = new BasicWriter(system, outTraj);
+        mysd.writer.Writer writer = new BasicWriter<FullSpinSite>(system, outTraj);
         for ( int t = 0; t < param.ntstep; t++){
             if ( param.nstout != 0 && t%param.nstout == 0 ){
                 writer.writeToFile();

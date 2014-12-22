@@ -5,10 +5,10 @@ import java.util.*;
 import mysd.*;
 import mysd.vector.*;
 
-public class BasicWriter implements Writer{
+public class BasicWriter<T extends FullSpinSite> implements Writer{
 
     private PrintStream ps;
-    private final SpinSystem sys;
+    private final SpinSystem<T> sys;
     private final double dt;
 
     /** 
@@ -20,10 +20,10 @@ public class BasicWriter implements Writer{
     /**
      * default constructor
      *
-     * @param sys a SpinSystem object where data will be extracted from
+     * @param sys a SpinSystem<T> object where data will be extracted from
      * @param outFileName a String object for the name of the output file
      */
-    public BasicWriter(SpinSystem sys, String outFileName){
+    public BasicWriter(SpinSystem<T> sys, String outFileName){
         this.ps = null;
         try{
             this.ps = new PrintStream(outFileName);
@@ -40,7 +40,7 @@ public class BasicWriter implements Writer{
     public void writeToScreen(){
         
         System.out.println(String.format("# time step : %6.3f", this.sys.getTime()));
-        for ( Site s : sys ){
+        for ( T s : sys ){
             Vector3D sV = s.getSpinVector();
             double sx = sV.getX();
             double sy = sV.getY();
@@ -66,7 +66,7 @@ public class BasicWriter implements Writer{
     public void writeToFile(PrintStream ps){
 
         ps.println(String.format("# time step : %6.3f", this.sys.getTime()));
-        for ( Site s : sys ){
+        for ( T s : sys ){
             Vector3D sV = s.getSpinVector();
             double sx = sV.getX();
             double sy = sV.getY();

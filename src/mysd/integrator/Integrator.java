@@ -2,7 +2,7 @@ package mysd.integrator;
 
 import mysd.*;
 
-public interface Integrator{
+public interface Integrator<T extends Site>{
 
     /**
      * returns time step size for this integrator object
@@ -12,7 +12,7 @@ public interface Integrator{
     /**
      * @param system SpinSystem instance containing Site objects
      */ 
-    public void forward(SpinSystem system);
+    public void forward(SpinSystem<T> system);
 
 
 }
