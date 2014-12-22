@@ -4,17 +4,14 @@ import java.util.List;
 import java.util.ArrayList;
 import mysd.vector.*;
 
-public class FullSpinSite extends Site{
+public class FullSpinSite extends Site<FullSpinSite>{
 
     protected Vector3D spin;
     protected Vector3D forcePrev, force; // effective field including damping term
-    protected List<Neighbor<FullSpinSite>> neighbors;
-
 
     public FullSpinSite(int index, int baseType, Vector3D location){
         super(index, baseType, location);
         this.spin = new Vector3D();
-        this.neighbors = new ArrayList<Neighbor<FullSpinSite>>();
         this.force = new Vector3D();
         this.forcePrev = new Vector3D();
     }
@@ -22,7 +19,6 @@ public class FullSpinSite extends Site{
     public FullSpinSite(int index, Vector3D location){
         super(index, location);
         this.spin = new Vector3D();
-        this.neighbors = new ArrayList<Neighbor<FullSpinSite>>();
         this.force = new Vector3D();
         this.forcePrev = new Vector3D();
     }
@@ -30,7 +26,6 @@ public class FullSpinSite extends Site{
     public FullSpinSite(Vector3D location){
         super(location);
         this.spin = new Vector3D();
-        this.neighbors = new ArrayList<Neighbor<FullSpinSite>>();
         this.force = new Vector3D();
         this.forcePrev = new Vector3D();
     }
@@ -68,10 +63,10 @@ public class FullSpinSite extends Site{
     }
 
     public void addNeighbor(Neighbor<FullSpinSite> neighbor){
-        this.neighbors.add(neighbor);
+        super.neighbors.add(neighbor);
     }
     public List<Neighbor<FullSpinSite>> getNeighbors(){
-        return this.neighbors;
+        return super.neighbors;
     }
 
 }

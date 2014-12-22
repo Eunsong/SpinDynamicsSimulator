@@ -4,30 +4,25 @@ import java.util.List;
 import java.util.ArrayList;
 import mysd.vector.*;
 
-public class SigmaSpinSite extends FullSpinSite{
+public class SigmaSpinSite extends Site<SigmaSpinSite>{
 
     private Vector3D sigma;
-    private List<Neighbor<SigmaSpinSite>> neighbors;
     private final Vector3D xi, yi, zi; // local coordinates expressed in lab coordinates
     private boolean groundStateUpdated = false; /* true if ground state 
                                                    spin(super.spin) is updated */
 
     public SigmaSpinSite(int index, int baseType, Vector3D location){
         super(index, baseType, location);
-        super.spin = null;
-        super.neighbors = null;
         this.xi = new Vector3D();
         this.yi = new Vector3D();
         this.zi = new Vector3D();
-        this.neighbors = new ArrayList<Neighbor<SigmaSpinSite>>();
         this.sigma = new Vector3D();
     }
-    @Override
+
     public void updateSpinVector(Vector3D s){
         if (!groundStateUpdated) updateLocalCoordinates(s);
         else this.sigma.copySet(s);
     }
-    @Override
     public void updateSpinVector(double[] s){
         if (!groundStateUpdated) updateLocalCoordinates(new Vector3D(s[0],s[1],s[2]));
         else this.sigma.copySet(s[0], s[1], s[2]);
@@ -53,7 +48,6 @@ public class SigmaSpinSite extends FullSpinSite{
     }
     
 
-    @Override
     public Vector3D getSpinVector(){
         return this.sigma;
     }
@@ -61,16 +55,24 @@ public class SigmaSpinSite extends FullSpinSite{
     public Vector3D getGroundStateSpinVector(){
         return this.zi;
     }
-    @Override
     public void updateForce(){
 
     }
-    
+    public void updateForce(Vector3D force){
+
+    }
+    public Vector3D getForce(){
+        return null;
+    }
+    public Vector3D getForcePrev(){
+        return null;
+    }    
+
     public void addNeighbor(Neighbor<SigmaSpinSite> neighbor){
-        this.neighbors.add(neighbor);
+        super.neighbors.add(neighbor);
     }
     public List<Neighbor<SigmaSpinSite>> getNeighbors(){
-        return this.neighbors;
+        return super.neighbors;
     }
 
 
