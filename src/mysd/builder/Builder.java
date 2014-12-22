@@ -48,7 +48,7 @@ public class Builder{
         }
 
         RunParameter.Builder builder = new RunParameter.Builder();
-        String[] fields = {"title", "dt", "ntstep", "alpha", "nstout", "nstbuff"};
+        String[] fields = {"title", "runtype", "dt", "ntstep", "alpha", "nstout", "nstbuff"};
         for ( String field : fields ){
             if ( !buffer.containsKey(field) ){
                 System.err.println("Error: missing essential field: " + field +
@@ -57,12 +57,13 @@ public class Builder{
             }
         }
         double dt = Double.parseDouble(buffer.get("dt"));
+        String runtype = buffer.get("runtype");
         int ntstep = Integer.parseInt(buffer.get("ntstep"));
         double alpha = Double.parseDouble(buffer.get("alpha"));
         int nstout = Integer.parseInt(buffer.get("nstout"));
         int nstbuff = Integer.parseInt(buffer.get("nstbuff"));
-        builder.title( buffer.get("title")).dt(dt).ntstep(ntstep).alpha(alpha)
-               .nstout(nstout).nstbuff(nstbuff);
+        builder.title( buffer.get("title")).runtype(runtype).dt(dt).ntstep(ntstep)
+               .alpha(alpha).nstout(nstout).nstbuff(nstbuff);
         return builder.build();
     }
 
@@ -73,7 +74,7 @@ public class Builder{
         List<LatticeSite> basis = getBasis(inputs);
         HashMap<Integer, Vector3D> spins = getSpins(inputs);
         Vector3D[] a = getLatticeVectors(inputs);
-        HashMap<String, Hamiltonian> hamiltonians = getHamiltonians(inputs);
+        HashMap<String, Hamiltonian<FullSpinSite>> hamiltonians = getHamiltonians(inputs);
         List<Bond> bonds = getBonds(inputs);
         int[] unitcellSize = getNumberOfUnitCells(inputs);    
         int nx = unitcellSize[0];
@@ -120,7 +121,7 @@ public class Builder{
                                 int j_nb = (j + yoff + ny)%ny;
                                 int k_nb = (k + zoff + nz)%nz;
                                 String type = bond.type;
-                                Hamiltonian h = hamiltonians.get(type);
+                                Hamiltonian<FullSpinSite> h = hamiltonians.get(type);
                                 if ( h == null ){
                                     System.err.println("Error! undefined "+
                                                        "Hamiltonian type : "+ type);
@@ -248,9 +249,10 @@ public class Builder{
     }
 
 
-    private static HashMap<String, Hamiltonian> getHamiltonians
+    private static HashMap<String, Hamiltonian<FullSpinSite>> getHamiltonians
                                                 (HashMap<String, List<String>> inputs){
-        HashMap<String, Hamiltonian> hamiltonians = new HashMap<String, Hamiltonian>();
+        HashMap<String, Hamiltonian<FullSpinSite>> hamiltonians = 
+                                        new HashMap<String, Hamiltonian<FullSpinSite>>();
 
         try {
             for ( String line : inputs.get("hamiltonian") ){
@@ -266,7 +268,7 @@ public class Builder{
                             mat[i][j] = Double.parseDouble(tokens[j*3+i+1]);
                         }
                     }
-                    Hamiltonian h = new Hamiltonian(mat);
+                    Hamiltonian<FullSpinSite> h = new Hamiltonian<FullSpinSite>(mat);
                     h.setType(type);
                     hamiltonians.put(type, h);
                 }

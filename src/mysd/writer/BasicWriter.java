@@ -5,7 +5,7 @@ import java.util.*;
 import mysd.*;
 import mysd.vector.*;
 
-public class BasicWriter<T extends FullSpinSite> implements Writer{
+public class BasicWriter<T extends Site<?>> implements Writer{
 
     private PrintStream ps;
     private final SpinSystem<T> sys;
@@ -74,6 +74,10 @@ public class BasicWriter<T extends FullSpinSite> implements Writer{
             ps.println(String.format(format, s.getIndex(), sx, sy, sz)); 
         }
         ps.println("\n");
+    }
+
+    public void writeMessageToFile(String msg){
+        ps.println(msg);
     }
 
     /**

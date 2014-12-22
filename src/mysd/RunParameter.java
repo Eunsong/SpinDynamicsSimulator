@@ -1,17 +1,25 @@
 package mysd;
 
+import java.lang.RuntimeException;
+
 public class RunParameter{
 
     public final String title;
+    public final SimulationType runtype;
     public final double dt;
     public final int ntstep;
     public final double alpha;
     public final int nstout;
     public final int nstbuff;
 
+    public enum SimulationType{
+        LINEAR, NONLINEAR
+    }
+
     private RunParameter(Builder builder){
          
           this.title = builder.title;
+          this.runtype = builder.runtype;
           this.dt = builder.dt;
           this.ntstep = builder.ntstep;
           this.alpha = builder.alpha;
@@ -21,6 +29,7 @@ public class RunParameter{
 
     public static class Builder{
         private String title;
+        private SimulationType runtype;
         private double dt;
         private int ntstep;
         private double alpha;
@@ -29,6 +38,19 @@ public class RunParameter{
 
         public Builder title(String title){
             this.title = title;
+            return this;
+        }
+        public Builder runtype(String runtype){
+            if ( runtype.toLowerCase().equals("linear") ){
+                this.runtype = SimulationType.LINEAR;
+            }
+            else if ( runtype.toLowerCase().equals("nonlinear") ){
+                this.runtype = SimulationType.NONLINEAR;
+            }
+            else {
+                throw new RuntimeException("unknown runtype given. "+
+                                           "Should be either linear or nonlinear");
+            }
             return this;
         }
         public Builder dt(double dt){

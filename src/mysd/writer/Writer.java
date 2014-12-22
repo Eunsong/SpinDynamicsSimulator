@@ -18,9 +18,15 @@ public interface Writer{
     public void writeToFile(PrintStream ps);
 
     /**
-     * writes current spin configurations to a default file.
+     * writes current spin configurations to the default file.
      */
     public void writeToFile();
+
+
+    /**
+     * writes specified String message to the defulat file.
+     */
+    public void writeMessageToFile(String msg);
 
     /**
      * closes necessary fields (e.g. PrintStream)

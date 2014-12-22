@@ -13,12 +13,12 @@ public class SpinBuilder{
     /**
      * overloads spinVector components of each site in system from confFile.
      * 
-     * @param system SpinSystem object containing to be updated sites
+     * @param sites List object containing to be updated sites
      * @param confFile File object containing spin configurations(*.cnf file)
      * @param normalize boolean variable, true if each spinVector object needs to be 
      *                  normalized, false otherwise. 
      */ 
-    public static <T extends Site> void overloadSpins(SpinSystem<T> system, File confFile, boolean normalize){
+    public static <T extends Site> void overloadSpins(List<T> sites, File confFile, boolean normalize){
 
         if ( !confFile.exists() || !confFile.canRead() ){
             System.err.println("Error: Cannot access cnf file");
@@ -37,7 +37,7 @@ public class SpinBuilder{
                     double sx = Double.parseDouble(tokens[1]);
                     double sy = Double.parseDouble(tokens[2]);
                     double sz = Double.parseDouble(tokens[3]); 
-                    T s = system.getSite(index);
+                    T s = sites.get(index);
                     assert index == s.getIndex();
                     Vector3D v = new Vector3D(sx, sy, sz);
                     if ( normalize ) v.normalize();

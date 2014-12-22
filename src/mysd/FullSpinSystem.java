@@ -8,7 +8,7 @@ import mysd.integrator.Integrator;
 public class FullSpinSystem implements SpinSystem<FullSpinSite>{
 
     private final List<FullSpinSite> sites; 
-    private final Integrator integrator;
+    private final Integrator<FullSpinSite> integrator;
     private final double alpha;
     private int t; // current time step(simulation time, not wall time)
     
@@ -38,6 +38,9 @@ public class FullSpinSystem implements SpinSystem<FullSpinSite>{
     public double getDt(){
         return this.integrator.getDt();
     }
+    public double getAlpha(){
+        return this.alpha;
+    }
 
     public void updateForce(){
         for ( FullSpinSite si : this.sites ){
@@ -45,7 +48,7 @@ public class FullSpinSystem implements SpinSystem<FullSpinSite>{
             si.updateForce(); // prepare to load new force 
             for ( Neighbor<FullSpinSite> nj : si.getNeighbors() ){
                 FullSpinSite sj = nj.getSite(); 
-                Hamiltonian hamiltonian = nj.getHamiltonian();
+                Hamiltonian<FullSpinSite> hamiltonian = nj.getHamiltonian();
                 Vector3D bareForce = hamiltonian.getForce(sj);
                 Vector3D dampingTerm = Vector3D.cross(vi, bareForce).times(alpha);
                 si.addForce(bareForce);
@@ -57,14 +60,14 @@ public class FullSpinSystem implements SpinSystem<FullSpinSite>{
     public static class Builder{
 
         private List<FullSpinSite> sites;
-        private Integrator integrator;
+        private Integrator<FullSpinSite> integrator;
         private double alpha;
 
         public Builder sites(List<FullSpinSite> sites){
             this.sites = sites;
             return this;
         }
-        public Builder integrator(Integrator integrator){
+        public Builder integrator(Integrator<FullSpinSite> integrator){
             this.integrator = integrator;
             return this;
         }

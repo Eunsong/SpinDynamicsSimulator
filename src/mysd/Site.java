@@ -49,6 +49,8 @@ public abstract class Site<T extends Site>{
 
     public abstract void updateSpinVector(double[] s);
 
+    public abstract void addForce(Vector3D force);
+
     public abstract Vector3D getForcePrev();
 
     public abstract Vector3D getForce();

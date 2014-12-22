@@ -3,11 +3,11 @@ package mysd;
 import mysd.vector.*;
 import java.lang.RuntimeException;
 
-public class Hamiltonian{
+public class Hamiltonian<T extends Site<?>>{
 
-    private String type;
-    private int index;
-    private final double[][] matrix;
+    protected String type;
+    protected int index;
+    protected final double[][] matrix;
     
     public Hamiltonian(double[][] matrix){
         this.matrix = matrix;
@@ -48,11 +48,16 @@ public class Hamiltonian{
         return this.index;
     }
     
-    public Vector3D getForce(FullSpinSite sj){
+    public Vector3D getForce(Site<T> sj){
         Vector3D spin = sj.getSpinVector();
         return product(spin);
     }
-    public double getEnergy(FullSpinSite si, FullSpinSite sj){
+    public Vector3D getForce(Site<T> si, Site<T> sj){
+        throw new UnsupportedOperationException("getForce(Site<T>, Site<T>) method "+
+                  "is not supported in default Hamiltonian class.");
+    }
+
+    public double getEnergy(Site<T> si, Site<T> sj){
         Vector3D spini = si.getSpinVector();
         Vector3D spinj = sj.getSpinVector();
         return Vector3D.dot(product(spini), spinj); 
