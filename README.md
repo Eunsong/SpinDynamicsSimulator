@@ -22,5 +22,6 @@ Example of topology file(.top), run parameter file(.sdp), and spin configuration
 
 
 
-### Current version
-Current version only supports non-linear simulation. 
+### Linear vs Nonlinear 
+
+Ths code supports both linear and non-linear simulation. Just specify either linear of nonlinear in the sdp file. Typically, nonlinear simulation can be used to find ground state spin configurations with the aid of large damping constant alpha, and linear simulation can be used to obtain clean spin fluctuations in the vicinity of ground state. 
