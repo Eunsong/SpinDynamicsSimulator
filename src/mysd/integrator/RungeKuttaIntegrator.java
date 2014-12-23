@@ -41,7 +41,7 @@ public class RungeKuttaIntegrator implements Integrator<SigmaSpinSite>{
         //update force using new spins
         for ( Neighbor<SigmaSpinSite> nj : si.getNeighbors() ){
             SigmaSpinSite sj = nj.getSite();
-            Hamiltonian<SigmaSpinSite> hamiltonian = nj.getHamiltonian();
+            Interaction<SigmaSpinSite> hamiltonian = nj.getHamiltonian();
             Vector3D force = hamiltonian.getForce(si, sj);
             si.addForce(force); 
         }
@@ -59,7 +59,7 @@ public class RungeKuttaIntegrator implements Integrator<SigmaSpinSite>{
         //update force using new spins
         for ( Neighbor<SigmaSpinSite> nj : si.getNeighbors() ){
             SigmaSpinSite sj = nj.getSite();
-            Hamiltonian<SigmaSpinSite> hamiltonian = nj.getHamiltonian();
+            Interaction<SigmaSpinSite> hamiltonian = nj.getHamiltonian();
             Vector3D force = hamiltonian.getForce(si, sj);
             si.addForce(force); 
         }
@@ -77,7 +77,7 @@ public class RungeKuttaIntegrator implements Integrator<SigmaSpinSite>{
         //update force using new spins
         for ( Neighbor<SigmaSpinSite> nj : si.getNeighbors() ){
             SigmaSpinSite sj = nj.getSite();
-            Hamiltonian<SigmaSpinSite> hamiltonian = nj.getHamiltonian();
+            Interaction<SigmaSpinSite> hamiltonian = nj.getHamiltonian();
             Vector3D force = hamiltonian.getForce(si, sj);
             si.addForce(force); 
         }

@@ -3,61 +3,27 @@ package mysd;
 import mysd.vector.*;
 import java.lang.RuntimeException;
 
-public class Hamiltonian<T extends Site<?>>{
+public class Hamiltonian extends Interaction<FullSpinSite>{
 
-    protected String type;
-    protected int index;
-    protected final double[][] matrix;
-    
     public Hamiltonian(double[][] matrix){
-        this.matrix = matrix;
-        this.type = null;
-        this.index = -1;
+        super(null, matrix);
     }
 
     public Hamiltonian(String type, double[][] matrix){
-        this.matrix = matrix;
-        this.type = type;
-        this.index = -1;
+        super(type, matrix);
     }
 
-    public void setType(String type){
-        if ( this.type == null){
-            this.type = type;
-        }
-        else{
-            throw new RuntimeException
-                      ("type of the Hamiltonian object cannot be reassigned!");
-        }
-    }
-
-    public void setIndex(int index){
-        if ( index == -1){
-            this.index = index;
-        }
-        else{
-            throw new RuntimeException
-                      ("index of the Hamiltonian object cannot be reassigned!");
-        }
-    }
-
-    public String getType(){
-        return this.type;
-    }
-    public int getIndex(){
-        return this.index;
-    }
     
-    public Vector3D getForce(Site<T> sj){
+    public Vector3D getForce(FullSpinSite sj){
         Vector3D spin = sj.getSpinVector();
         return product(spin);
     }
-    public Vector3D getForce(Site<T> si, Site<T> sj){
+    public Vector3D getForce(FullSpinSite si, FullSpinSite sj){
         throw new UnsupportedOperationException("getForce(Site<T>, Site<T>) method "+
                   "is not supported in default Hamiltonian class.");
     }
 
-    public double getEnergy(Site<T> si, Site<T> sj){
+    public double getEnergy(FullSpinSite si, FullSpinSite sj){
         Vector3D spini = si.getSpinVector();
         Vector3D spinj = sj.getSpinVector();
         return Vector3D.dot(product(spini), spinj); 

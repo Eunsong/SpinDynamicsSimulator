@@ -2,20 +2,27 @@ package mysd;
 
 import mysd.vector.*;
 
-public class SigmaHamiltonian extends Hamiltonian<SigmaSpinSite>{
+public class SigmaHamiltonian extends Interaction<SigmaSpinSite>{
 
     private Vector3D xi, yi, zi, xj, yj, zj;
     private double xai, xbi, xci, yai, ybi, yci, zai, zbi, zci,
                    xaj, xbj, xcj, yaj, ybj, ycj, zaj, zbj, zcj;
+    private final double[][] matrix;
 
-    public SigmaHamiltonian(Hamiltonian<?> h){
+    public SigmaHamiltonian(Interaction<?> h){
         super(h.type, h.matrix);
+        this.matrix = super.matrix;
     }
     public SigmaHamiltonian(String type, double[][] matrix){
         super(type, matrix);
+        this.matrix = super.matrix;
     }
 
-    @Override
+    public Vector3D getForce(SigmaSpinSite sj){
+        throw new UnsupportedOperationException("getForce(Site<T>) method is not"+
+                                                "supported in SigmaHamiltonian.");
+    }
+
     public Vector3D getForce(SigmaSpinSite si, SigmaSpinSite sj){
 
         xi = si.getLocalX();

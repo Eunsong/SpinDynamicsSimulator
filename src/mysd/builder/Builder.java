@@ -74,7 +74,7 @@ public class Builder{
         List<LatticeSite> basis = getBasis(inputs);
         HashMap<Integer, Vector3D> spins = getSpins(inputs);
         Vector3D[] a = getLatticeVectors(inputs);
-        HashMap<String, Hamiltonian<FullSpinSite>> hamiltonians = getHamiltonians(inputs);
+        HashMap<String, Hamiltonian> hamiltonians = getHamiltonians(inputs);
         List<Bond> bonds = getBonds(inputs);
         int[] unitcellSize = getNumberOfUnitCells(inputs);    
         int nx = unitcellSize[0];
@@ -121,7 +121,7 @@ public class Builder{
                                 int j_nb = (j + yoff + ny)%ny;
                                 int k_nb = (k + zoff + nz)%nz;
                                 String type = bond.type;
-                                Hamiltonian<FullSpinSite> h = hamiltonians.get(type);
+                                Hamiltonian h = hamiltonians.get(type);
                                 if ( h == null ){
                                     System.err.println("Error! undefined "+
                                                        "Hamiltonian type : "+ type);
@@ -249,10 +249,10 @@ public class Builder{
     }
 
 
-    private static HashMap<String, Hamiltonian<FullSpinSite>> getHamiltonians
+    private static HashMap<String, Hamiltonian> getHamiltonians
                                                 (HashMap<String, List<String>> inputs){
-        HashMap<String, Hamiltonian<FullSpinSite>> hamiltonians = 
-                                        new HashMap<String, Hamiltonian<FullSpinSite>>();
+        HashMap<String, Hamiltonian> hamiltonians = 
+                                        new HashMap<String, Hamiltonian>();
 
         try {
             for ( String line : inputs.get("hamiltonian") ){
@@ -268,7 +268,7 @@ public class Builder{
                             mat[i][j] = Double.parseDouble(tokens[j*3+i+1]);
                         }
                     }
-                    Hamiltonian<FullSpinSite> h = new Hamiltonian<FullSpinSite>(mat);
+                    Hamiltonian h = new Hamiltonian(mat);
                     h.setType(type);
                     hamiltonians.put(type, h);
                 }

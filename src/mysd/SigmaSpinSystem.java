@@ -50,7 +50,7 @@ public class SigmaSpinSystem implements SpinSystem<SigmaSpinSite>{
             si.updateForce();
             for ( Neighbor<SigmaSpinSite> nj : si.getNeighbors() ){
                 SigmaSpinSite sj = nj.getSite();
-                Hamiltonian<SigmaSpinSite> hamiltonian = nj.getHamiltonian();
+                Interaction<SigmaSpinSite> hamiltonian = nj.getHamiltonian();
                 Vector3D bareForce = hamiltonian.getForce(si, sj);
                 si.addForce(bareForce);
             }
@@ -64,7 +64,7 @@ public class SigmaSpinSystem implements SpinSystem<SigmaSpinSite>{
         private Integrator<SigmaSpinSite> integrator;
         private double alpha;
 
-        public <T extends Site> Builder sites(List<T> sites){
+        public <T extends Site<?>> Builder sites(List<T> sites){
             this.sites = new ArrayList<SigmaSpinSite>();
             for ( T s : sites ){
                 this.sites.add(new SigmaSpinSite(s));
@@ -74,10 +74,10 @@ public class SigmaSpinSystem implements SpinSystem<SigmaSpinSite>{
                 int index_i = s.getIndex();
                 SigmaSpinSite si = this.sites.get(index_i);
                 assert index_i == si.getIndex();
-                //for ( Neighbor<T> nj : s.getNeighbors() ){
                 for ( int i = 0; i < s.getNeighbors().size(); i++){
+                    // s is guaranteed to have Neighbor<T> objects. Type safety is ensured
                     @SuppressWarnings("unchecked")
-                    Neighbor nj = (Neighbor)s.getNeighbors().get(i);
+                    Neighbor<T> nj = (Neighbor<T>)s.getNeighbors().get(i);
                     int index_j = nj.getSite().getIndex();
                     SigmaSpinSite sj = this.sites.get(index_j);
                     SigmaHamiltonian h = new SigmaHamiltonian(nj.getHamiltonian());
