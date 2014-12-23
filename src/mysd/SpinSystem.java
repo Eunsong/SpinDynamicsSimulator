@@ -20,6 +20,7 @@ public interface SpinSystem<T extends Site> extends Iterable<T>{
 
     public void updateForce();
 
+    public void perturbSite(int index, double amount);
 
-
+    public double getEnergy();
 }

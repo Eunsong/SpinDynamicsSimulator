@@ -11,6 +11,11 @@ public interface Writer{
     public void writeToScreen();
 
     /**
+     * writes specified String message to stdout.
+     */
+    public void writeMessageToScreen(String msg);
+
+    /**
      * writes current spin configurations to the specified file.
      *
      * @param ps a PrintStream object where output will be recorded 

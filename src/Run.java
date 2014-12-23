@@ -29,6 +29,7 @@ public class Run{
         }
         RunParameter param = Builder.importRunParam(sdp);
         SimulationManager manager = new SimulationManager();
+        manager.addParam(param);
 
         if ( param.runtype == RunParameter.SimulationType.NONLINEAR ){
             Integrator<FullSpinSite> integrator = new NonlinearIntegrator(param.dt);
@@ -47,12 +48,14 @@ public class Run{
             manager.addSystem(system);
             manager.addWriter(writer);
         }
+
+        manager.perturbSite();
         for ( int t = 0; t < param.ntstep; t++){
+            manager.writeEnergyToScreen();
             if ( param.nstout != 0 && t%param.nstout == 0 ){
                 manager.writeToFile();
             }
             manager.updateForce();
-            if ( t == 0 ) manager.getSystem().getSite(0).addForce(new Vector3D(100.0, 0.0, 0.0));
             manager.forward();
         }
         manager.writeToFile();

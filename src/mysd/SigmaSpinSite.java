@@ -31,18 +31,6 @@ public class SigmaSpinSite extends Site<SigmaSpinSite>{
         this.zi.copySet(zi);
         Vector3D trialAxis = getRandomVector();
         this.xi.copySet( Vector3D.cross( zi, trialAxis));
- if ( this.xi.normsq() == 0.0 ) {
-    System.out.println(this.xi.normsq());
-    this.xi.print();
-    trialAxis.print();
-    this.zi.print();
-    zi.print();
-    System.exit(0);
- }
-/*        while (this.xi.normsq() == 0.0 ){
-            trialAxis = getRandomVector();
-            this.xi.copySet( Vector3D.cross( zi, trialAxis));
-        }*/
         this.yi.copySet( Vector3D.cross(this.zi, this.xi));
         // ensure normalization
         this.zi.normalize();

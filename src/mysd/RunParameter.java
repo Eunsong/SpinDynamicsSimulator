@@ -11,6 +11,9 @@ public class RunParameter{
     public final double alpha;
     public final int nstout;
     public final int nstbuff;
+    public final boolean perturb_site;
+    public final int perturbing_site_index;
+    public final double perturbation_size;
 
     public enum SimulationType{
         LINEAR, NONLINEAR
@@ -18,13 +21,16 @@ public class RunParameter{
 
     private RunParameter(Builder builder){
          
-          this.title = builder.title;
-          this.runtype = builder.runtype;
-          this.dt = builder.dt;
-          this.ntstep = builder.ntstep;
-          this.alpha = builder.alpha;
-          this.nstout = builder.nstout;
-          this.nstbuff = builder.nstbuff;
+        this.title = builder.title;
+        this.runtype = builder.runtype;
+        this.dt = builder.dt;
+        this.ntstep = builder.ntstep;
+        this.alpha = builder.alpha;
+        this.nstout = builder.nstout;
+        this.nstbuff = builder.nstbuff;
+        this.perturb_site = builder.perturb_site;
+        this.perturbing_site_index = builder.perturbing_site_index;
+        this.perturbation_size = builder.perturbation_size;
     }
 
     public static class Builder{
@@ -35,6 +41,10 @@ public class RunParameter{
         private double alpha;
         private int nstout;
         private int nstbuff;
+        private boolean perturb_site;
+        private int perturbing_site_index;
+        private double perturbation_size;
+
 
         public Builder title(String title){
             this.title = title;
@@ -73,9 +83,23 @@ public class RunParameter{
             this.nstbuff = nstbuff;
             return this;
         }
+        public Builder perturb_site(boolean perturb_site){
+            this.perturb_site = perturb_site;
+            return this;
+        }    
+        public Builder perturbing_site_index(int perturbing_site_index){
+            this.perturbing_site_index = perturbing_site_index;
+            return this;
+        }    
+        public Builder perturbation_size(double size){
+            this.perturbation_size = size;
+            return this;
+        }    
         public RunParameter build(){
             return new RunParameter(this);
         }
+
+    
     }
 
 

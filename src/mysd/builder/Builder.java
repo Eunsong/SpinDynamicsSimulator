@@ -48,7 +48,8 @@ public class Builder{
         }
 
         RunParameter.Builder builder = new RunParameter.Builder();
-        String[] fields = {"title", "runtype", "dt", "ntstep", "alpha", "nstout", "nstbuff"};
+        String[] fields = {"title", "runtype", "dt", "ntstep", "alpha", "nstout", "nstbuff",
+                           "perturb_site"};
         for ( String field : fields ){
             if ( !buffer.containsKey(field) ){
                 System.err.println("Error: missing essential field: " + field +
@@ -62,8 +63,26 @@ public class Builder{
         double alpha = Double.parseDouble(buffer.get("alpha"));
         int nstout = Integer.parseInt(buffer.get("nstout"));
         int nstbuff = Integer.parseInt(buffer.get("nstbuff"));
+        boolean pt_site = new Boolean(buffer.get("perturb_site"));
+        int pt_site_index = -1;
+        double pt_size = 0.0;
+        if ( pt_site ){
+            String[] pt_fields = {"perturbing_site_index", "perturbation_size"};
+            for ( String field : pt_fields ){
+                if ( !buffer.containsKey(field) ){
+                    System.err.println("Error: perturbation option is turned on, "+
+                                       "but no " + field + " is defined in sdp file");
+                    System.exit(99);
+                }
+            }
+            pt_site_index = Integer.parseInt
+                                   (buffer.get("perturbing_site_index"));
+            pt_size = Double.parseDouble
+                                   (buffer.get("perturbation_size"));
+        }
         builder.title( buffer.get("title")).runtype(runtype).dt(dt).ntstep(ntstep)
-               .alpha(alpha).nstout(nstout).nstbuff(nstbuff);
+               .alpha(alpha).nstout(nstout).nstbuff(nstbuff).perturb_site(pt_site)
+               .perturbing_site_index(pt_site_index).perturbation_size(pt_size);
         return builder.build();
     }
 
@@ -265,7 +284,7 @@ public class Builder{
                     double[][] mat = new double[3][3];
                     for ( int i = 0; i < 3; i++){
                         for ( int j = 0; j < 3; j++){
-                            mat[i][j] = Double.parseDouble(tokens[j*3+i+1]);
+                            mat[i][j] = Double.parseDouble(tokens[i*3+j+1]);
                         }
                     }
                     Hamiltonian h = new Hamiltonian(mat);

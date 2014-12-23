@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import mysd.vector.*;
 import mysd.integrator.Integrator;
-
+import java.lang.UnsupportedOperationException;
 
 public class SigmaSpinSystem implements SpinSystem<SigmaSpinSite>{
 
@@ -44,6 +44,11 @@ public class SigmaSpinSystem implements SpinSystem<SigmaSpinSite>{
         return this.alpha;
     }
 
+    public void perturbSite(int index, double amount){
+        SigmaSpinSite si = this.sites.get(index);
+        double[] sigma0 = {amount, 0.0, 0.0};
+        si.updateSpinVector(sigma0);
+    }
 
     public void updateForce(){
         for ( SigmaSpinSite si : this.sites ){
@@ -57,6 +62,12 @@ public class SigmaSpinSystem implements SpinSystem<SigmaSpinSite>{
         }
     }
 
+    public double getEnergy(){
+        // energy computation is meaning-less for linearized simulation 
+        throw new UnsupportedOperationException
+                  ("Energy cannot be computed for linearized simulation. "+
+                   "This method is not supposed to be invoked.");
+    }
 
     public static class Builder{
 
