@@ -3,6 +3,7 @@ package mysd;
 import java.util.List;
 import java.util.ArrayList;
 import mysd.vector.*;
+import java.util.Random;
 
 public class SigmaSpinSite extends Site<SigmaSpinSite>{
 
@@ -28,12 +29,20 @@ public class SigmaSpinSite extends Site<SigmaSpinSite>{
     }
     private void updateLocalCoordinates(Vector3D zi){
         this.zi.copySet(zi);
-        Vector3D trialAxis = new Vector3D(1.0, 0.0, 0.0);
+        Vector3D trialAxis = getRandomVector();
         this.xi.copySet( Vector3D.cross( zi, trialAxis));
-        if (xi.normsq() == 0.0 ){
-            trialAxis = new Vector3D(0.0, 1.0, 0.0);
+ if ( this.xi.normsq() == 0.0 ) {
+    System.out.println(this.xi.normsq());
+    this.xi.print();
+    trialAxis.print();
+    this.zi.print();
+    zi.print();
+    System.exit(0);
+ }
+/*        while (this.xi.normsq() == 0.0 ){
+            trialAxis = getRandomVector();
             this.xi.copySet( Vector3D.cross( zi, trialAxis));
-        }
+        }*/
         this.yi.copySet( Vector3D.cross(this.zi, this.xi));
         // ensure normalization
         this.zi.normalize();
@@ -44,6 +53,16 @@ public class SigmaSpinSite extends Site<SigmaSpinSite>{
         assert ( Vector3D.cross(this.xi, this.yi).normsq() == 0.0 && 
                  Vector3D.cross(this.xi, this.zi).normsq() == 0.0 &&
                  Vector3D.cross(this.yi, this.zi).normsq() == 0.0);
+    }
+
+    private Vector3D getRandomVector(){
+        Random rand = new Random();
+        double x = 2.0*rand.nextDouble() - 1.0;
+        double y = 2.0*rand.nextDouble() - 1.0;
+        double z = 2.0*rand.nextDouble() - 1.0;
+        Vector3D v = new Vector3D(x, y, z);
+        v.normalize();
+        return v;
     }
 
     public Vector3D getLocalX(){

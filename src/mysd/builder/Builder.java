@@ -89,7 +89,7 @@ public class Builder{
             for ( int j = 0; j < ny; j++){
                 for ( int k = 0; k < nz; k++){
                     for ( int l = 0; l < m; l++){ 
-                        int index = i*nx*ny*m + j*nx*m + k*m + l;
+                        int index = i*ny*nz*m + j*nz*m + k*m + l;
                         Vector3D location = new Vector3D(basis.get(l).getBasePosition());
                         location.add( Vector3D.times( a[0], i ) );
                         location.add( Vector3D.times( a[1], j ) );
@@ -331,8 +331,8 @@ public class Builder{
                     // empty line
                 }
                 else if ( line.trim().matches(
-                          "\\d+\\s+\\d+\\.?\\d*\\s+\\d+\\.?\\d*\\s+\\d+\\.?\\d*\\s+"+
-                          "\\d+\\.?\\d*\\s+\\d+\\.?\\d*\\s+\\d+\\.?\\d*")){
+                          "\\d+\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+"+
+                          "-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*")){
                     int index = Integer.parseInt(tokens[0]);
                     double sx = Double.parseDouble(tokens[4]);
                     double sy = Double.parseDouble(tokens[5]);
