@@ -18,7 +18,7 @@ public class SpinBuilder{
      * @param normalize boolean variable, true if each spinVector object needs to be 
      *                  normalized, false otherwise. 
      */ 
-    public static <T extends Site> void overloadSpins(List<T> sites, File confFile, boolean normalize){
+    public static <T extends Site<?>> void overloadSpins(List<T> sites, File confFile, boolean normalize){
 
         if ( !confFile.exists() || !confFile.canRead() ){
             System.err.println("Error: Cannot access cnf file");

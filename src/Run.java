@@ -8,6 +8,7 @@ import mysd.integrator.*;
 import mysd.writer.*;
 import mysd.builder.Builder;
 import mysd.builder.SpinBuilder;
+import mysd.RunParameter.SimulationType;
 
 public class Run{
     public static void main(String[] args){
@@ -31,22 +32,28 @@ public class Run{
         SimulationManager manager = new SimulationManager();
         manager.addParam(param);
 
-        if ( param.runtype == RunParameter.SimulationType.NONLINEAR ){
-            Integrator<FullSpinSite> integrator = new NonlinearIntegrator(param.dt);
-            FullSpinSystem system = new FullSpinSystem.Builder().sites(sites).
-                                        integrator(integrator).alpha(param.alpha).build();
+        switch ( param.runtype ){
+    
+            case NONLINEAR:{
+                Integrator<FullSpinSite> integrator = new NonlinearIntegrator(param.dt);
+                FullSpinSystem system = new FullSpinSystem.Builder().sites(sites).
+                                            integrator(integrator).alpha(param.alpha).build();
 
-            mysd.writer.Writer writer = new BasicWriter<FullSpinSite>(system, outTraj);
-            manager.addSystem(system);
-            manager.addWriter(writer);
-        }
-        else if ( param.runtype == RunParameter.SimulationType.LINEAR ){
-            Integrator<SigmaSpinSite> integrator = new RungeKuttaIntegrator(param.dt);
-            SigmaSpinSystem system = new SigmaSpinSystem.Builder().sites(sites).
-                                         integrator(integrator).alpha(param.alpha).build();
-            mysd.writer.Writer writer = new BasicWriter<SigmaSpinSite>(system, outTraj);
-            manager.addSystem(system);
-            manager.addWriter(writer);
+                mysd.writer.Writer writer = new BasicWriter<FullSpinSite>(system, outTraj);
+                manager.addSystem(system);
+                manager.addWriter(writer);
+            }
+                break;
+            
+            case LINEAR:{
+                Integrator<SigmaSpinSite> integrator = new RungeKuttaIntegrator(param.dt);
+                SigmaSpinSystem system = new SigmaSpinSystem.Builder().sites(sites).
+                                             integrator(integrator).alpha(param.alpha).build();
+                mysd.writer.Writer writer = new BasicWriter<SigmaSpinSite>(system, outTraj);
+                manager.addSystem(system);
+                manager.addWriter(writer);
+            }
+                break;
         }
 
         manager.perturbSite();

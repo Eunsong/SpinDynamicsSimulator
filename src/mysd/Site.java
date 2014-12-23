@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import mysd.vector.*;
 
-public abstract class Site<T extends Site>{
+public abstract class Site<T extends Site<?>>{
 
     private final int index;
     private final int baseType; 
