@@ -364,7 +364,7 @@ public class Builder{
                     // empty line
                 }
                 else if ( line.trim().matches(
-                          "\\d+\\s+\\d+\\.?\\d*\\s+\\d+\\.?\\d*\\s+\\d+\\.?\\d*.*")){
+                          "\\d+\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*.*")){
                     int index = Integer.parseInt(tokens[0]);
                     double x = Double.parseDouble(tokens[1]);
                     double y = Double.parseDouble(tokens[2]);
