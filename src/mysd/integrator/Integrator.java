@@ -2,7 +2,7 @@ package mysd.integrator;
 
 import mysd.*;
 
-public interface Integrator<T extends Site>{
+public interface Integrator<T extends Site<?>>{
 
     /**
      * returns time step size for this integrator object
