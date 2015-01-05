@@ -26,6 +26,9 @@ public class FullSpinSystem implements SpinSystem<FullSpinSite>{
     public double getTime(){
         return getDt()*this.t;
     }
+    public int getCurrentTimeStep(){
+        return this.t;
+    }
     public Iterator<FullSpinSite> iterator(){
         return this.sites.iterator();
     }

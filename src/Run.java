@@ -58,7 +58,8 @@ public class Run{
 
         manager.perturbSite();
         for ( int t = 0; t < param.ntstep; t++){
-            manager.writeEnergyToScreen();
+            manager.reportProgress();
+//            manager.writeEnergyToScreen();
             if ( param.nstout != 0 && t%param.nstout == 0 ){
                 manager.writeToFile();
             }

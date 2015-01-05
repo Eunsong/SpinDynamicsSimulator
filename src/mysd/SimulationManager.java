@@ -51,6 +51,16 @@ public class SimulationManager{
     public void writeMessageToFile(String msg){
         this.writer.writeMessageToFile(msg);
     }
+
+    public void reportProgress(){
+        int ntstep = this.param.ntstep;
+        int currentStep = this.system.getCurrentTimeStep();
+        double progress = (100.0*currentStep)/ntstep;
+        String msg = String.format("\r%6.2f%% completed...", progress);
+        this.writer.writeMessageToScreen(msg);
+    }
+
+
     public void close(){
         this.writer.close();
     } 

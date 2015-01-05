@@ -52,7 +52,7 @@ public class BasicWriter<T extends Site<?>> implements Writer{
 
 
     public void writeMessageToScreen(String msg){
-        System.out.println(msg);
+        System.out.print(msg);
     }
 
     /**

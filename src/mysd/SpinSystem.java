@@ -16,6 +16,8 @@ public interface SpinSystem<T extends Site<?>> extends Iterable<T>{
 
     public double getDt();
 
+    public int getCurrentTimeStep();
+
     public double getAlpha();
 
     public void updateForce();
