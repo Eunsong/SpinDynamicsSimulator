@@ -94,7 +94,7 @@ public class SigmaSpinSystem implements SpinSystem<SigmaSpinSite>{
                     Neighbor<T> nj = (Neighbor<T>)s.getNeighbors().get(i);
                     int index_j = nj.getSite().getIndex();
                     SigmaSpinSite sj = this.sites.get(index_j);
-                    SigmaHamiltonian h = new SigmaHamiltonian(nj.getHamiltonian());
+                    SigmaHamiltonian h = new CachedSigmaHamiltonian(nj.getHamiltonian());
                     assert index_j == sj.getIndex();
                     si.addNeighbor(new Neighbor<SigmaSpinSite>(sj, h)); 
                 }

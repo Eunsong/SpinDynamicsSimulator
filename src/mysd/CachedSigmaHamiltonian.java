@@ -17,8 +17,8 @@ public class CachedSigmaHamiltonian extends SigmaHamiltonian{
 
     /**
      * this method overrides getForce method in SigmaHamiltonian class
-     * note that since CachedSigmaHamiltonian class is using cached coefficients
-     * instead of computing them every time the method is invoked.
+     * CachedSigmaHamiltonian class uses cached coefficients
+     * instead of computing them each time the method is invoked.
      */
     @Override
     public Vector3D getForce(SigmaSpinSite si, SigmaSpinSite sj){
@@ -30,35 +30,11 @@ public class CachedSigmaHamiltonian extends SigmaHamiltonian{
         }
         Coefficients coeffs = subMap.get(sj);
         if ( coeffs == null ){
-            super.xi = si.getLocalX();
-            super.yi = si.getLocalY();
-            super.zi = si.getLocalZ();
-            super.xj = sj.getLocalX();
-            super.yj = sj.getLocalY();
-            super.zj = sj.getLocalZ();
-            super.xai = xi.getX();
-            super.xbi = xi.getY();
-            super.xci = xi.getZ();
-            super.yai = yi.getX();
-            super.ybi = yi.getY();
-            super.yci = yi.getZ();
-            super.zai = zi.getX();
-            super.zbi = zi.getY();
-            super.zci = zi.getZ();
-            super.xaj = xj.getX();
-            super.xbj = xj.getY();
-            super.xcj = xj.getZ();
-            super.yaj = yj.getX();
-            super.ybj = yj.getY();
-            super.ycj = yj.getZ();
-            super.zaj = zj.getX();
-            super.zbj = zj.getY();
-            super.zcj = zj.getZ();
-
-            coeffs.sigmaXiCoeff = super.getSigmaXiCoeff();
-            coeffs.sigmaXjCoeff = super.getSigmaXjCoeff();
-            coeffs.sigmaYiCoeff = super.getSigmaYiCoeff();
-            coeffs.sigmaYjCoeff = super.getSigmaYjCoeff();
+            coeffs = new Coefficients();
+            coeffs.sigmaXiCoeff = super.getSigmaXiCoeff(si, sj);
+            coeffs.sigmaXjCoeff = super.getSigmaXjCoeff(si, sj);
+            coeffs.sigmaYiCoeff = super.getSigmaYiCoeff(si, sj);
+            coeffs.sigmaYjCoeff = super.getSigmaYjCoeff(si, sj);
             cachedCoefficients.get(si).put(sj, coeffs);
         }
 

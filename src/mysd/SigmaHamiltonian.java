@@ -4,9 +4,6 @@ import mysd.vector.*;
 
 public class SigmaHamiltonian extends Interaction<SigmaSpinSite>{
 
-    protected Vector3D xi, yi, zi, xj, yj, zj;
-    protected double xai, xbi, xci, yai, ybi, yci, zai, zbi, zci,
-                   xaj, xbj, xcj, yaj, ybj, ycj, zaj, zbj, zcj;
     private final double[][] matrix;
 
     public SigmaHamiltonian(Interaction<?> h){
@@ -25,38 +22,13 @@ public class SigmaHamiltonian extends Interaction<SigmaSpinSite>{
 
     public Vector3D getForce(SigmaSpinSite si, SigmaSpinSite sj){
 
-        xi = si.getLocalX();
-        yi = si.getLocalY();
-        zi = si.getLocalZ();
-        xj = sj.getLocalX();
-        yj = sj.getLocalY();
-        zj = sj.getLocalZ();
-        xai = xi.getX();
-        xbi = xi.getY();
-        xci = xi.getZ();
-        yai = yi.getX();
-        ybi = yi.getY();
-        yci = yi.getZ();
-        zai = zi.getX();
-        zbi = zi.getY();
-        zci = zi.getZ();
-        xaj = xj.getX();
-        xbj = xj.getY();
-        xcj = xj.getZ();
-        yaj = yj.getX();
-        ybj = yj.getY();
-        ycj = yj.getZ();
-        zaj = zj.getX();
-        zbj = zj.getY();
-        zcj = zj.getZ();
-
         Vector3D sigmai = si.getSpinVector();
         Vector3D sigmaj = sj.getSpinVector();
 
-        Vector3D F_sxi = (getSigmaXiCoeff()).times(sigmai.getX());
-        Vector3D F_sxj = (getSigmaXjCoeff()).times(sigmaj.getX());
-        Vector3D F_syi = (getSigmaYiCoeff()).times(sigmai.getY());
-        Vector3D F_syj = (getSigmaYjCoeff()).times(sigmaj.getY());
+        Vector3D F_sxi = (getSigmaXiCoeff(si, sj)).times(sigmai.getX());
+        Vector3D F_sxj = (getSigmaXjCoeff(si, sj)).times(sigmaj.getX());
+        Vector3D F_syi = (getSigmaYiCoeff(si, sj)).times(sigmai.getY());
+        Vector3D F_syj = (getSigmaYjCoeff(si, sj)).times(sigmaj.getY());
         Vector3D F_tot = F_sxi.add(F_sxj).add(F_syi).add(F_syj);
     
         return F_tot; 
@@ -68,7 +40,32 @@ public class SigmaHamiltonian extends Interaction<SigmaSpinSite>{
     }
 
 
-    protected Vector3D getSigmaXiCoeff(){
+    protected Vector3D getSigmaXiCoeff(SigmaSpinSite si, SigmaSpinSite sj){
+
+        Vector3D xi = si.getLocalX();
+        Vector3D yi = si.getLocalY();
+        Vector3D zi = si.getLocalZ();
+        Vector3D xj = sj.getLocalX();
+        Vector3D yj = sj.getLocalY();
+        Vector3D zj = sj.getLocalZ();
+        double xai = xi.getX();
+        double xbi = xi.getY();
+        double xci = xi.getZ();
+        double yai = yi.getX();
+        double ybi = yi.getY();
+        double yci = yi.getZ();
+        double zai = zi.getX();
+        double zbi = zi.getY();
+        double zci = zi.getZ();
+        double xaj = xj.getX();
+        double xbj = xj.getY();
+        double xcj = xj.getZ();
+        double yaj = yj.getX();
+        double ybj = yj.getY();
+        double ycj = yj.getZ();
+        double zaj = zj.getX();
+        double zbj = zj.getY();
+        double zcj = zj.getZ();
 
         double Fx = (((matrix[1][0]*zaj + matrix[1][1]*zbj + matrix[1][2]*zcj)*xai - (matrix[0][0]*zaj + matrix[0][1]*zbj + matrix[0][2]*zcj)*xbi)*(-(ybi*zai) + yai*zbi) + ((-(matrix[2][0]*zaj) - matrix[2][1]*zbj - matrix[2][2]*zcj)*xai + (matrix[0][0]*zaj + matrix[0][1]*zbj + matrix[0][2]*zcj)*xci)*(yci*zai - yai*zci) + ((matrix[2][0]*zaj + matrix[2][1]*zbj + matrix[2][2]*zcj)*xbi - (matrix[1][0]*zaj + matrix[1][1]*zbj + matrix[1][2]*zcj)*xci)*(-(yci*zbi) + ybi*zci))/(xci*(-(ybi*zai) + yai*zbi) + xbi*(yci*zai - yai*zci) + xai*(-(yci*zbi) + ybi*zci));
         
@@ -78,7 +75,32 @@ public class SigmaHamiltonian extends Interaction<SigmaSpinSite>{
         return new Vector3D(Fx, Fy, Fz);
     }
 
-    protected Vector3D getSigmaXjCoeff(){
+    protected Vector3D getSigmaXjCoeff(SigmaSpinSite si, SigmaSpinSite sj){
+
+        Vector3D xi = si.getLocalX();
+        Vector3D yi = si.getLocalY();
+        Vector3D zi = si.getLocalZ();
+        Vector3D xj = sj.getLocalX();
+        Vector3D yj = sj.getLocalY();
+        Vector3D zj = sj.getLocalZ();
+        double xai = xi.getX();
+        double xbi = xi.getY();
+        double xci = xi.getZ();
+        double yai = yi.getX();
+        double ybi = yi.getY();
+        double yci = yi.getZ();
+        double zai = zi.getX();
+        double zbi = zi.getY();
+        double zci = zi.getZ();
+        double xaj = xj.getX();
+        double xbj = xj.getY();
+        double xcj = xj.getZ();
+        double yaj = yj.getX();
+        double ybj = yj.getY();
+        double ycj = yj.getZ();
+        double zaj = zj.getX();
+        double zbj = zj.getY();
+        double zcj = zj.getZ();
 
         double Fx = ((-(zbi*(matrix[0][0]*xaj + matrix[0][1]*xbj + matrix[0][2]*xcj)) + zai*(matrix[1][0]*xaj + matrix[1][1]*xbj + matrix[1][2]*xcj))*(-(ybi*zai) + yai*zbi) + (zci*(matrix[0][0]*xaj + matrix[0][1]*xbj + matrix[0][2]*xcj) - zai*(matrix[2][0]*xaj + matrix[2][1]*xbj + matrix[2][2]*xcj))*(yci*zai - yai*zci) + (-(zci*(matrix[1][0]*xaj + matrix[1][1]*xbj + matrix[1][2]*xcj)) + zbi*(matrix[2][0]*xaj + matrix[2][1]*xbj + matrix[2][2]*xcj))*(-(yci*zbi) + ybi*zci))/(xci*(-(ybi*zai) + yai*zbi) + xbi*(yci*zai - yai*zci) + xai*(-(yci*zbi) + ybi*zci));
         
@@ -89,7 +111,32 @@ public class SigmaHamiltonian extends Interaction<SigmaSpinSite>{
     }
 
 
-    protected Vector3D getSigmaYiCoeff(){
+    protected Vector3D getSigmaYiCoeff(SigmaSpinSite si, SigmaSpinSite sj){
+
+        Vector3D xi = si.getLocalX();
+        Vector3D yi = si.getLocalY();
+        Vector3D zi = si.getLocalZ();
+        Vector3D xj = sj.getLocalX();
+        Vector3D yj = sj.getLocalY();
+        Vector3D zj = sj.getLocalZ();
+        double xai = xi.getX();
+        double xbi = xi.getY();
+        double xci = xi.getZ();
+        double yai = yi.getX();
+        double ybi = yi.getY();
+        double yci = yi.getZ();
+        double zai = zi.getX();
+        double zbi = zi.getY();
+        double zci = zi.getZ();
+        double xaj = xj.getX();
+        double xbj = xj.getY();
+        double xcj = xj.getZ();
+        double yaj = yj.getX();
+        double ybj = yj.getY();
+        double ycj = yj.getZ();
+        double zaj = zj.getX();
+        double zbj = zj.getY();
+        double zcj = zj.getZ();
 
         double Fx = (((matrix[1][0]*zaj + matrix[1][1]*zbj + matrix[1][2]*zcj)*yai - (matrix[0][0]*zaj + matrix[0][1]*zbj + matrix[0][2]*zcj)*ybi)*(-(ybi*zai) + yai*zbi) + ((matrix[2][0]*zaj + matrix[2][1]*zbj + matrix[2][2]*zcj)*yai - (matrix[0][0]*zaj + matrix[0][1]*zbj + matrix[0][2]*zcj)*yci)*(-(yci*zai) + yai*zci) + ((matrix[2][0]*zaj + matrix[2][1]*zbj + matrix[2][2]*zcj)*ybi - (matrix[1][0]*zaj + matrix[1][1]*zbj + matrix[1][2]*zcj)*yci)*(-(yci*zbi) + ybi*zci))/(xci*(-(ybi*zai) + yai*zbi) + xbi*(yci*zai - yai*zci) + xai*(-(yci*zbi) + ybi*zci));
         
@@ -100,7 +147,32 @@ public class SigmaHamiltonian extends Interaction<SigmaSpinSite>{
 
     }
 
-    protected Vector3D getSigmaYjCoeff(){
+    protected Vector3D getSigmaYjCoeff(SigmaSpinSite si, SigmaSpinSite sj){
+
+        Vector3D xi = si.getLocalX();
+        Vector3D yi = si.getLocalY();
+        Vector3D zi = si.getLocalZ();
+        Vector3D xj = sj.getLocalX();
+        Vector3D yj = sj.getLocalY();
+        Vector3D zj = sj.getLocalZ();
+        double xai = xi.getX();
+        double xbi = xi.getY();
+        double xci = xi.getZ();
+        double yai = yi.getX();
+        double ybi = yi.getY();
+        double yci = yi.getZ();
+        double zai = zi.getX();
+        double zbi = zi.getY();
+        double zci = zi.getZ();
+        double xaj = xj.getX();
+        double xbj = xj.getY();
+        double xcj = xj.getZ();
+        double yaj = yj.getX();
+        double ybj = yj.getY();
+        double ycj = yj.getZ();
+        double zaj = zj.getX();
+        double zbj = zj.getY();
+        double zcj = zj.getZ();
 
     double Fx = ((-(zbi*(matrix[0][0]*yaj + matrix[0][1]*ybj + matrix[0][2]*ycj)) + zai*(matrix[1][0]*yaj + matrix[1][1]*ybj + matrix[1][2]*ycj))*(-(ybi*zai) + yai*zbi) + (zci*(matrix[0][0]*yaj + matrix[0][1]*ybj + matrix[0][2]*ycj) - zai*(matrix[2][0]*yaj + matrix[2][1]*ybj + matrix[2][2]*ycj))*(yci*zai - yai*zci) + (-(zci*(matrix[1][0]*yaj + matrix[1][1]*ybj + matrix[1][2]*ycj)) + zbi*(matrix[2][0]*yaj + matrix[2][1]*ybj + matrix[2][2]*ycj))*(-(yci*zbi) + ybi*zci))/(xci*(-(ybi*zai) + yai*zbi) + xbi*(yci*zai - yai*zci) + xai*(-(yci*zbi) + ybi*zci));
     
