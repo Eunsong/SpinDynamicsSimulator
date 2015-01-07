@@ -1,5 +1,6 @@
 package mysd;
 
+import java.util.concurrent.CyclicBarrier;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
@@ -13,12 +14,18 @@ public class SigmaSpinSystem implements SpinSystem<SigmaSpinSite>{
     private final Integrator<SigmaSpinSite> integrator;
     private final double alpha;
     private int t; // current time step(simulation time)
+    private final CyclicBarrier barrier;
 
     public SigmaSpinSystem(Builder builder){
         this.sites = builder.sites;
         this.integrator = builder.integrator;
         this.alpha = builder.alpha;
         this.t = 0;
+        this.barrier = builder.barrier;
+    }
+
+    public void run(){
+
     }
 
     public void forward(){
@@ -77,6 +84,7 @@ public class SigmaSpinSystem implements SpinSystem<SigmaSpinSite>{
         private List<SigmaSpinSite> sites;
         private Integrator<SigmaSpinSite> integrator;
         private double alpha;
+        private CyclicBarrier barrier;
 
         public <T extends Site<?>> Builder sites(List<T> sites){
             this.sites = new ArrayList<SigmaSpinSite>();
@@ -107,6 +115,10 @@ public class SigmaSpinSystem implements SpinSystem<SigmaSpinSite>{
         }
         public Builder alpha(double alpha){
             this.alpha = alpha;
+            return this;
+        }
+        public Builder barrier(CyclicBarrier barrier){
+            this.barrier = barrier;
             return this;
         }
         public SigmaSpinSystem build(){

@@ -1,7 +1,9 @@
 package mysd;
 
+import java.util.concurrent.CyclicBarrier;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import mysd.vector.*;
 import mysd.integrator.Integrator;
 
@@ -11,12 +13,39 @@ public class FullSpinSystem implements SpinSystem<FullSpinSite>{
     private final Integrator<FullSpinSite> integrator;
     private final double alpha;
     private int t; // current time step(simulation time, not wall time)
-    
+    private final CyclicBarrier barrier;  
+ 
     protected FullSpinSystem(Builder builder){
         this.sites = builder.sites;
         this.integrator = builder.integrator;
         this.alpha = builder.alpha;
         this.t = 0;
+        this.barrier = builder.barrier;
+    }
+
+    /**
+     * subsystem constructor for concurrent algorithms.
+     * @param fullSystem original FullSpinSystem instance containing 
+     *                   full system information 
+     * @param start index(inclusive) of the first site in fullSystem to be 
+     *              included in this subsystem
+     * @param last index(exclusive) of the last site in fullSystem to be
+     *              included in this subsystem 
+     */ 
+    protected FullSpinSystem(FullSpinSystem fullSystem, int start, int last){
+        this.sites = new ArrayList<FullSpinSite>();
+        for ( int i = start; i < last; i++){
+            this.sites.add( fullSystem.getSite(i) );
+        }
+        this.integrator = fullSystem.integrator;
+        this.alpha = fullSystem.alpha;
+        this.t = 0;
+        this.barrier = fullSystem.barrier;
+    }
+
+    public void run(){
+        
+
     }
 
     public void forward(){
@@ -102,6 +131,7 @@ public class FullSpinSystem implements SpinSystem<FullSpinSite>{
         private List<FullSpinSite> sites;
         private Integrator<FullSpinSite> integrator;
         private double alpha;
+        private CyclicBarrier barrier;
 
         public Builder sites(List<FullSpinSite> sites){
             this.sites = sites;
@@ -115,7 +145,10 @@ public class FullSpinSystem implements SpinSystem<FullSpinSite>{
             this.alpha = alpha;
             return this;
         }
-
+        public Builder barrier(CyclicBarrier barrier){
+            this.barrier = barrier;
+            return this;
+        }
         public FullSpinSystem build(){
             return new FullSpinSystem(this);
         }

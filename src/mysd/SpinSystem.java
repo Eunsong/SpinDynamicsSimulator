@@ -2,7 +2,7 @@ package mysd;
 
 import java.util.*;
 
-public interface SpinSystem<T extends Site<?>> extends Iterable<T>{
+public interface SpinSystem<T extends Site<?>> extends Iterable<T>, Runnable{
 
     public void forward();
 
