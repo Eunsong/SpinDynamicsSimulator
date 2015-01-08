@@ -26,7 +26,6 @@ public class ConcurrentSimulationManager{
     }
 
     public void setThreads(){
-//        threads.add(new Thread(this));
         int subsize = this.system.size()/this.nthreads;
         int cnt = 0;
         for ( int n = 0; n < this.nthreads; n++){
@@ -89,31 +88,33 @@ public class ConcurrentSimulationManager{
     }
 
     public void run(){
-        runControl();
         for ( Thread t : this.threads ){
             t.start();
         }
+        runControl();
     }
 
 
     private void runControl(){
-        for ( int t = 0; t < param.ntstep; t++){
-            try{
+        try{
+            for ( int t = 0; t < param.ntstep; t++){
                 if ( t%10 == 0) reportProgress();
                 if ( param.nstout != 0 && t%param.nstout == 0 ) writeToFile();
                 barrier.await();
                 this.system.pushTimeStep();
+                if ( t == param.ntstep - 1 ){
+                    for ( SpinSystem<?> subSystem : subSystems){
+                        subSystem.setStop();
+                    }
+                }
                 barrier.await();
             }
-            catch(InterruptedException e){
-                e.printStackTrace();
-            }
-            catch(BrokenBarrierException e){
-                e.printStackTrace();
-            }
         }
-        for ( SpinSystem<?> subSystem : subSystems){
-            subSystem.setStop();
+        catch(InterruptedException e){
+            e.printStackTrace();
+        }
+        catch(BrokenBarrierException e){
+            e.printStackTrace();
         }
     }
 
