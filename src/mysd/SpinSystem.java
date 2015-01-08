@@ -1,8 +1,9 @@
 package mysd;
 
 import java.util.*;
+import java.util.concurrent.CyclicBarrier;
 
-public interface SpinSystem<T extends Site<?>> extends Iterable<T>{
+public interface SpinSystem<T extends Site<?>> extends Iterable<T>, Runnable{
 
     public void forward();
 
@@ -13,6 +14,12 @@ public interface SpinSystem<T extends Site<?>> extends Iterable<T>{
     public T getSite(int i);
 
     public int size();
+
+    public SpinSystem<T> makePartialSystem(CyclicBarrier barrier, int start, int end);
+    
+    public void pushTimeStep();
+
+    public void setStop();
 
     public double getDt();
 

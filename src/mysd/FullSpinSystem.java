@@ -1,7 +1,10 @@
 package mysd;
 
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.BrokenBarrierException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import mysd.vector.*;
 import mysd.integrator.Integrator;
 
@@ -11,12 +14,59 @@ public class FullSpinSystem implements SpinSystem<FullSpinSite>{
     private final Integrator<FullSpinSite> integrator;
     private final double alpha;
     private int t; // current time step(simulation time, not wall time)
-    
+    private final CyclicBarrier barrier;  
+    private boolean stop = false;
+ 
     protected FullSpinSystem(Builder builder){
         this.sites = builder.sites;
         this.integrator = builder.integrator;
         this.alpha = builder.alpha;
         this.t = 0;
+        this.barrier = builder.barrier;
+    }
+
+    /**
+     * subsystem creator for concurrent simulations.
+     * @param barrier CyclibBarrier instance to be used to synchronize concurrent
+     *                algorithms. The other subsystems must have the same barrier
+     * @param start index(inclusive) of the first site in this object to be 
+     *              included in this subsystem
+     * @param last index(exclusive) of the last site in this object to be
+     *              included in this subsystem 
+     */ 
+    public FullSpinSystem makePartialSystem(CyclicBarrier barrier, int start, int last){
+        List<FullSpinSite> subsites = new ArrayList<FullSpinSite>();
+        for ( int i = start; i < last; i++){
+            subsites.add( this.getSite(i) );
+        }
+        return new Builder().sites(subsites).integrator(this.integrator).alpha(this.alpha)
+                            .barrier(barrier).build();
+    }
+
+    public void run(){
+        while ( !this.stop ){
+            try{
+                this.barrier.await();
+                updateForce();
+                forward();
+                this.barrier.await();
+            }
+            catch (InterruptedException e){
+                Thread.currentThread().interrupt();
+                return;
+            }
+            catch (BrokenBarrierException e){
+                e.printStackTrace();
+            }
+        }        
+    }
+
+    public void setStop(){
+        this.stop = true;
+    }
+
+    public void pushTimeStep(){
+        this.t++;
     }
 
     public void forward(){
@@ -102,6 +152,7 @@ public class FullSpinSystem implements SpinSystem<FullSpinSite>{
         private List<FullSpinSite> sites;
         private Integrator<FullSpinSite> integrator;
         private double alpha;
+        private CyclicBarrier barrier;
 
         public Builder sites(List<FullSpinSite> sites){
             this.sites = sites;
@@ -115,7 +166,10 @@ public class FullSpinSystem implements SpinSystem<FullSpinSite>{
             this.alpha = alpha;
             return this;
         }
-
+        public Builder barrier(CyclicBarrier barrier){
+            this.barrier = barrier;
+            return this;
+        }
         public FullSpinSystem build(){
             return new FullSpinSystem(this);
         }
