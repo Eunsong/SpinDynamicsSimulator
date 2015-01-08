@@ -20,6 +20,9 @@ public class MultiThreadedRun{
         String sdpFile = messages.get("s");
         String outTraj = messages.get("o");
         String cnfFile = messages.get("c");
+        if ( messages.get("nt") != null){
+            nthreads = Integer.parseInt(messages.get("nt"));
+        }
 
         File top = new File(topFile);
         File sdp = new File(sdpFile);

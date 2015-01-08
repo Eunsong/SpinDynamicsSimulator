@@ -13,7 +13,9 @@ public class ArgumentParser{
         HashMap<String, String> messages = new HashMap<String, String>();
         for ( int i = 0; i < args.length - 1; i++){
             if (args[i].substring(0,1).equals("-")) {
-                messages.put( args[i].substring(1,2), args[i+1] ); 
+                String key = args[i].substring(1);
+                String value = args[i+1];
+                messages.put( key, value ); 
             }
         }
         return messages;   
