@@ -5,7 +5,7 @@ title                   = Cubic_Ferro_Magnet
 runtype                 = nonlinear  #linear of nonlinear.
 
 dt                      = 0.02  #time step size
-ntstep                  = 100  #number of time steps
+ntstep                  = 10000  #number of time steps
 alpha                   = 0.2  #Gilbert damping constant
 
 nstout                  = 0    #save outputs every nstout steps(0 to write only the final config)
