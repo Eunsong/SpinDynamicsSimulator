@@ -45,13 +45,15 @@ public class ConcurrentSimulationManager{
                 threads.add(t);
             }
         }
-        // add runcontroller thread
-        Runnable controller = new Runnable(){  
-            public void run() {
-                runControl();
+        // add controller thread
+        Thread controllerThread = new Thread( 
+            new Runnable(){
+                @Override
+                public void run() {
+                    runControl();
+                }
             }
-        };
-        Thread controllerThread = new Thread(controller);
+        );
         threads.add(controllerThread); 
     }
 
