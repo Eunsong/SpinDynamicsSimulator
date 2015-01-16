@@ -72,7 +72,7 @@ public class Run{
             manager.updateForce();
             manager.forward();
         }
-        manager.writeToFile();
+        if ( param.nstout == 0 ) manager.writeToFile();
         manager.close();
     }
 }
