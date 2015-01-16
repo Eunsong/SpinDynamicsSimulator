@@ -35,21 +35,27 @@ public class Run{
         switch ( param.runtype ){
     
             case NONLINEAR:{
-                Integrator<FullSpinSite> integrator = new NonlinearIntegrator(param.dt);
-                FullSpinSystem system = new FullSpinSystem.Builder().sites(sites).
-                                            integrator(integrator).alpha(param.alpha).build();
+                Integrator<FullSpinSite> integrator = 
+                    new NonlinearIntegrator(param.dt);
+                FullSpinSystem system = 
+                    new FullSpinSystem.Builder().sites(sites).
+                        integrator(integrator).alpha(param.alpha).build();
 
-                mysd.writer.Writer writer = new BasicWriter<FullSpinSite>(system, outTraj);
+                mysd.writer.Writer writer = 
+                    new BasicWriter<FullSpinSite>(system, outTraj);
                 manager.addSystem(system);
                 manager.addWriter(writer);
             }
                 break;
             
             case LINEAR:{
-                Integrator<SigmaSpinSite> integrator = new RungeKuttaIntegrator(param.dt);
-                SigmaSpinSystem system = new SigmaSpinSystem.Builder().sites(sites).
-                                             integrator(integrator).alpha(param.alpha).build();
-                mysd.writer.Writer writer = new BasicWriter<SigmaSpinSite>(system, outTraj);
+                Integrator<SigmaSpinSite> integrator = 
+                    new RungeKuttaIntegrator(param.dt);
+                SigmaSpinSystem system = 
+                    new SigmaSpinSystem.Builder().sites(sites).
+                        integrator(integrator).alpha(param.alpha).build();
+                mysd.writer.Writer writer = 
+                    new BasicWriter<SigmaSpinSite>(system, outTraj);
                 manager.addSystem(system);
                 manager.addWriter(writer);
             }
