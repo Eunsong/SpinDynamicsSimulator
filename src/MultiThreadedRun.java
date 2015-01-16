@@ -62,7 +62,5 @@ public class MultiThreadedRun{
         manager.setThreads();
         manager.perturbSite();
         manager.run();
-        manager.writeToFile();
-        manager.close();
     }
 }

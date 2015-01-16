@@ -118,6 +118,7 @@ public class ConcurrentSimulationManager{
                 }
                 barrier.await();
             }
+            close();
         }
         catch(InterruptedException e){
             e.printStackTrace();
