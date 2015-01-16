@@ -118,6 +118,7 @@ public class ConcurrentSimulationManager{
                 }
                 barrier.await();
             }
+            if ( param.nstout == 0 ) writeToFile();
             close();
         }
         catch(InterruptedException e){
