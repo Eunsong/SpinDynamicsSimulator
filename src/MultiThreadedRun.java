@@ -18,7 +18,9 @@ public class MultiThreadedRun{
         HashMap<String, String> messages = ArgumentParser.parse(args);
         String topFile = messages.get("t");
         String sdpFile = messages.get("s");
-        String outTraj = messages.get("o");
+        String outFile = messages.get("o");
+        String outTraj = outFile + ".trj";
+        String outInfo = outFile + ".info";
         String cnfFile = messages.get("c");
         if ( messages.get("nt") != null){
             nthreads = Integer.parseInt(messages.get("nt"));
@@ -66,6 +68,7 @@ public class MultiThreadedRun{
             }
                 break;
         }
+        manager.writeSystemInfo(outInfo);
         manager.setThreads();
         manager.perturbSite();
         manager.run();

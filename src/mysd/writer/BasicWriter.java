@@ -39,7 +39,7 @@ public class BasicWriter<T extends Site<?>> implements Writer{
 
     public void writeToScreen(){
         
-        System.out.println(String.format("# time step : %6.3f", this.sys.getTime()));
+        System.out.println(String.format("# time = %14.4f", this.sys.getTime()));
         for ( T s : sys ){
             Vector3D sV = s.getSpinVector();
             double sx = sV.getX();
@@ -69,7 +69,7 @@ public class BasicWriter<T extends Site<?>> implements Writer{
      */
     public void writeToFile(PrintStream ps){
 
-        ps.println(String.format("# time step : %6.3f", this.sys.getTime()));
+        ps.println(String.format("# time = %14.4f", this.sys.getTime()));
         for ( T s : sys ){
             Vector3D sV = s.getSpinVector();
             double sx = sV.getX();
