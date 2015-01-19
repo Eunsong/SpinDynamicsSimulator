@@ -29,7 +29,11 @@ public class SigmaSpinSite extends Site<SigmaSpinSite>{
     }
     private void updateLocalCoordinates(Vector3D zi){
         this.zi.copySet(zi);
-        Vector3D trialAxis = getRandomVector();
+        Vector3D trialAxis = new Vector3D( 1.0, 0.0, 0.0);
+        if ( Vector3D.cross( zi, trialAxis).normsq() == 0.0 ){
+            trialAxis = new Vector3D(0.0, 1.0, 0.0);
+            trialAxis.normalize();
+        }
         this.xi.copySet( Vector3D.cross( zi, trialAxis));
         this.yi.copySet( Vector3D.cross(this.zi, this.xi));
         // ensure normalization
