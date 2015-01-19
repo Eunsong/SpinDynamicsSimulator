@@ -17,7 +17,9 @@ public class Run{
         HashMap<String, String> messages = ArgumentParser.parse(args);
         String topFile = messages.get("t");
         String sdpFile = messages.get("s");
-        String outTraj = messages.get("o");
+        String outFile = messages.get("o");
+        String outTraj = outFile + ".trj";
+        String outInfo = outFile + ".info";
         String cnfFile = messages.get("c");
 
         File top = new File(topFile);
@@ -62,10 +64,10 @@ public class Run{
                 break;
         }
 
+        manager.writeSystemInfo(outInfo);
         manager.perturbSite();
         for ( int t = 0; t < param.ntstep; t++){
             manager.reportProgress();
-//            manager.writeEnergyToScreen();
             if ( param.nstout != 0 && t%param.nstout == 0 ){
                 manager.writeToFile();
             }

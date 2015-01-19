@@ -128,8 +128,9 @@ public class ComputeSpinWave{
     }
 
 
-    public static double[][][] kFourierTransform(int nk, double kx, double ky, double kz, int nt, 
-                                  String pathToTrjFile, List<FullSpinSite> sites, Topology top){
+    public static double[][][] kFourierTransform(int nk, double kx, double ky, 
+                                      double kz, int nt, String pathToTrjFile, 
+                                       List<FullSpinSite> sites, Topology top){
 
         int m = top.getBasis().size();
         double[][][] spinkt = new double[m][nk+1][nt+1];
@@ -160,10 +161,12 @@ public class ComputeSpinWave{
                         for ( int ik = 0; ik < nk + 1; ik++){
                             double coeff = ((double)ik)/nk;
                             Vector3D k = new Vector3D();
-                            k.add( Vector3D.times(bx, coeff*kx) ).add( Vector3D.times(by, coeff*ky) ).
+                            k.add( Vector3D.times(bx, coeff*kx) ).
+                              add( Vector3D.times(by, coeff*ky) ).
                               add( Vector3D.times(bz, coeff*kz));
                             Vector3D r = sites.get(index).getLocation();
-                            spinkt[baseType][ik][t] += spin.getX()*Math.cos( Vector3D.dot( k, r ) );
+                            spinkt[baseType][ik][t] += 
+                                spin.getX()*Math.cos( Vector3D.dot( k, r ) );
                         } 
                     }
                 }
@@ -238,7 +241,6 @@ public class ComputeSpinWave{
                         FullSpinSite site = new FullSpinSite(index, baseType, new Vector3D(x, y, z));
                         sites.add(site); 
                     } 
-
                     if ( sc.hasNext() && !sc.nextLine().trim().equals("") ){
                         System.err.println("top file and info file do not match!");
                         System.exit(99);
