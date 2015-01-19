@@ -1,7 +1,7 @@
 package mysd.writer;
 
 import java.util.*;
-import java.io.PrintStream;
+import java.io.PrintWriter;
 
 public interface Writer{
 
@@ -18,9 +18,9 @@ public interface Writer{
     /**
      * writes current spin configurations to the specified file.
      *
-     * @param ps a PrintStream object where output will be recorded 
+     * @param pw a PrintWriter object where output will be recorded 
      */
-    public void writeToFile(PrintStream ps);
+    public void writeToFile(PrintWriter pw);
 
     /**
      * writes current spin configurations to the default file.

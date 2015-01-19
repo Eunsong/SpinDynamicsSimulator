@@ -7,14 +7,14 @@ import mysd.vector.*;
 
 public class BasicWriter<T extends Site<?>> implements Writer{
 
-    private PrintStream ps;
-    private final SpinSystem<T> sys;
-    private final double dt;
+    protected PrintWriter pw;
+    protected final SpinSystem<T> sys;
+    protected final double dt;
 
     /** 
      * print format in the order of index, Sx, Sy, Sz
      */
-    private final String format = "%8d %10.5f %10.5f %10.5f";
+    private final String format = "%8d %10.5f %10.5f %10.5f\n";
 
 
     /**
@@ -24,9 +24,11 @@ public class BasicWriter<T extends Site<?>> implements Writer{
      * @param outFileName a String object for the name of the output file
      */
     public BasicWriter(SpinSystem<T> sys, String outFileName){
-        this.ps = null;
+        this.pw = null;
+        File file = null; 
         try{
-            this.ps = new PrintStream(outFileName);
+            file = new File(outFileName);
+            this.pw = new PrintWriter(file);
         }
         catch(IOException ex){
             System.out.println("Cannot create output file " + outFileName +"!");
@@ -38,16 +40,7 @@ public class BasicWriter<T extends Site<?>> implements Writer{
 
 
     public void writeToScreen(){
-        
-        System.out.println(String.format("# time = %14.4f", this.sys.getTime()));
-        for ( T s : sys ){
-            Vector3D sV = s.getSpinVector();
-            double sx = sV.getX();
-            double sy = sV.getY();
-            double sz = sV.getZ();
-            System.out.println(String.format(format, s.getIndex(), sx, sy, sz)); 
-        }
-        System.out.println("\n");
+        System.out.print( getStringRep() );    
     }
 
 
@@ -58,39 +51,46 @@ public class BasicWriter<T extends Site<?>> implements Writer{
     /**
      * writes current spin configurations to the specified file.
      *
-     * @param ps a PrintStream object where output will be recorded
+     * @param pw a PrintWriter object where output will be recorded
      */
     public void writeToFile(){
-        writeToFile(this.ps);
+        writeToFile(this.pw);
     }
 
     /**
      * writes current spin configurations to the specified file.
      */
-    public void writeToFile(PrintStream ps){
+    public void writeToFile(PrintWriter pw){
 
-        ps.println(String.format("# time = %14.4f", this.sys.getTime()));
+        pw.print( getStringRep() );
+    }
+
+    public String getStringRep(){
+
+        StringBuffer buff = new StringBuffer();
+        buff.append(String.format("# time = %14.4f\n", this.sys.getTime()));
         for ( T s : sys ){
             Vector3D sV = s.getSpinVector();
             double sx = sV.getX();
             double sy = sV.getY();
             double sz = sV.getZ();
-            ps.println(String.format(format, s.getIndex(), sx, sy, sz)); 
+            buff.append(String.format(format, s.getIndex(), sx, sy, sz)); 
         }
-        ps.println("\n");
+        buff.append("\n");
+        return buff.toString();
     }
 
     public void writeMessageToFile(String msg){
-        ps.println(msg);
+        pw.print(msg);
     }
 
     /**
-     * closes necessary fields (e.g. PrintStream)
+     * closes necessary fields (e.g. PrintWriter)
      * This method must be called at the end of the code where 
      * the Writer object is used. 
      */
     public void close(){
-        this.ps.close();
+        this.pw.close();
     }    
 
 }
