@@ -14,8 +14,8 @@ public class ComputeSpinWave{
         String kzRaw = messages.get("kz");
         String input = messages.get("i"); // file name without file extension
                                           // need both input.trj and input.info
-        String info = input + ".info";
-        String trj = input = ".trj";
+        String infoPath = input + ".info";
+        String trjPath = input + ".trj";
         String outFile = messages.get("o");
         String nkRaw = messages.get("nk");
         String dwRaw = messages.get("dw");
@@ -25,9 +25,9 @@ public class ComputeSpinWave{
             nthreads = Integer.parseInt(messages.get("nt"));
         }
         Topology top = new Topology(topFile);
-        List<FullSpinSite> sites = buildSites(top, info);
+        List<FullSpinSite> sites = buildSites(top, infoPath);
 
-        HashMap<String, String> runParams = getRunParams(info);
+        HashMap<String, String> runParams = getRunParams(infoPath);
         int ntstep = Integer.parseInt(runParams.get("ntstep"));
         int nstout = Integer.parseInt(runParams.get("nstout"));
         double dt = Double.parseDouble(runParams.get("dt"));
@@ -39,19 +39,51 @@ public class ComputeSpinWave{
         int nt = (int)(ntstep/nstout);
         int numSites = top.getNumSites();
         int nk = Integer.parseInt(nkRaw);
-        int m = top.getBasis().size();
         double kx = Double.parseDouble(kxRaw);
         double ky = Double.parseDouble(kyRaw);
         double kz = Double.parseDouble(kzRaw);
-        Vector3D[] b = getReciprocalLatticeVectors(top);
-        double[][][] spinkt = new double[m][nk+1][nt+1];
-        for ( double[][] each_k : spinkt ) {
-            for ( double[] each_t : each_k) Arrays.fill(each_t, 0.0);
-        }
-        kFourierTransform(spinkt, nk, kx, ky, kz, nt, trj, sites, b); 
-System.out.println(spinkt[0][0][0]);
+        double[][][] spinkt = kFourierTransform(nk, kx, ky, kz, nt, trjPath, sites, top); 
+        int nw = Integer.parseInt(nwRaw);
+        double dw = Double.parseDouble(dwRaw);
+
+        double[][][] spinkw = wFourierTransform(spinkt, nw, dw, nt, dt, nstout);
+        writeToFile(spinkw, outFile, dw);
+
+
     }
 
+
+    public static void writeToFile(double[][][] spinkw, String outputFilePath, double dw){
+
+        PrintStream ps = null;
+        try{    
+            ps = new PrintStream(outputFilePath);   
+         
+            int m = spinkw.length;
+            int nk = spinkw[0].length - 1; 
+            int nw = spinkw[0][0].length - 1;
+            for ( int ik = 0; ik < nk + 1; ik++){
+                for ( int iw = 0; iw < nw + 1; iw++){
+                    double k = (double)ik/nk;
+                    double w = iw*dw;
+                    double value = 0.0;
+                    for ( int im = 0; im < m; im++){
+                        value += Math.abs(spinkw[im][ik][iw]);
+                    } 
+                    String line = String.format("%8.4f  %8.4f  %5.3e", k, w, value);
+                    ps.println(line);            
+                }
+                ps.print("\n");            
+            }
+        }
+        catch ( IOException ex){
+            System.err.println("Error! cannot write to file " + outputFilePath);
+            System.exit(99);
+        }
+        finally{
+            ps.close();
+        }
+    }
 
     public static Vector3D[] getReciprocalLatticeVectors(Topology top){
 
@@ -62,51 +94,89 @@ System.out.println(spinkt[0][0][0]);
         Vector3D axay = Vector3D.cross( ax, ay);
         Vector3D ayaz = Vector3D.cross( ay, az);
         Vector3D azax = Vector3D.cross( az, ax);
-        Vector3D bx = ayaz.times( 2.0*Math.PI/Vector3D.dot( ax, ayaz ) );
-        Vector3D by = azax.times( 2.0*Math.PI/Vector3D.dot( ay, azax ) );
-        Vector3D bz = axay.times( 2.0*Math.PI/Vector3D.dot( az, axay ) );
+        Vector3D bx = Vector3D.times( ayaz,  2.0*Math.PI/Vector3D.dot( ax, ayaz ) );
+        Vector3D by = Vector3D.times( azax,  2.0*Math.PI/Vector3D.dot( ay, azax ) );
+        Vector3D bz = Vector3D.times( axay,  2.0*Math.PI/Vector3D.dot( az, axay ) );
         Vector3D[] recLatticeVectors = {bx, by, bz};
         return recLatticeVectors;
     }
 
-    public static void kFourierTransform(double[][][] spinkt, int nk, double kx, double ky, double kz, int nt, 
-                                  String pathToTrjFile, List<FullSpinSite> sites, Vector3D[] b){
 
+    public static double[][][] wFourierTransform(double[][][] spinkt, 
+                    int nw, double dw, int nt, double dt, int nstout){
+
+        int m = spinkt.length;
+        int nk = spinkt[0].length;
+
+        double[][][] spinkw = new double[m][nk+1][nw+1];
+        for ( double[][] each_k : spinkw ) {
+            for ( double[] each_w : each_k) Arrays.fill(each_w, 0.0);
+        }
+
+        for ( int im = 0; im < m; im++){
+            for ( int ik = 0; ik < nk; ik++){
+                for ( int iw = 0; iw < nw; iw++){
+                    double w = dw*iw;
+                    for ( int it = 0; it < nt; it++){
+                        double t = dt*it*nstout;
+                        spinkw[im][ik][iw] += spinkt[im][ik][it]*Math.cos( w*t ); 
+                    }
+                }        
+            }
+        }
+        return spinkw;
+    }
+
+
+    public static double[][][] kFourierTransform(int nk, double kx, double ky, double kz, int nt, 
+                                  String pathToTrjFile, List<FullSpinSite> sites, Topology top){
+
+        int m = top.getBasis().size();
+        double[][][] spinkt = new double[m][nk+1][nt+1];
+        for ( double[][] each_k : spinkt ) {
+            for ( double[] each_t : each_k) Arrays.fill(each_t, 0.0);
+        }
+        Vector3D[] b = getReciprocalLatticeVectors(top);
         Vector3D bx = b[0];
         Vector3D by = b[1];
         Vector3D bz = b[2];
+        Scanner sc = null;
         try{
             File trjfile = new File(pathToTrjFile);
-            Scanner sc = new Scanner(trjfile);       
+            sc = new Scanner(trjfile);       
             int t = -1;
             Vector3D spin = new Vector3D();
             while ( sc.hasNext() ){
                 String line = sc.nextLine().trim();
                 if ( !line.equals("") ){
                     String[] tokens = line.split("\\s+"); 
-                    if ( tokens[0] == "#" ) t++;
+                    if ( tokens[0].equals("#") ) t++;
                     else{
                         int index = Integer.parseInt(tokens[0]);
-                        int m = sites.get(index).getBaseType();
+                        int baseType = sites.get(index).getBaseType();
                         double sx = Double.parseDouble(tokens[1]);
                         double sy = Double.parseDouble(tokens[2]);
                         spin.copy(sx, sy, 0.0); 
-                        for ( int l = 0; l < nk + 1; l++){
-                            double coeff = (double)l/nk;
+                        for ( int ik = 0; ik < nk + 1; ik++){
+                            double coeff = ((double)ik)/nk;
                             Vector3D k = new Vector3D();
-                            k.add( bx.times(coeff*kx) ).add( by.times(coeff*ky) ).
-                              add( bz.times(coeff*kz));
+                            k.add( Vector3D.times(bx, coeff*kx) ).add( Vector3D.times(by, coeff*ky) ).
+                              add( Vector3D.times(bz, coeff*kz));
                             Vector3D r = sites.get(index).getLocation();
-                            spinkt[m][l][t] += spin.getX()*Math.cos( Vector3D.dot( k, r ) );
+                            spinkt[baseType][ik][t] += spin.getX()*Math.cos( Vector3D.dot( k, r ) );
                         } 
                     }
                 }
-            } 
+            }
+            assert t == nt + 1; 
         }
         catch (IOException ex){
 
         }
-
+        finally{
+            sc.close();
+        }
+        return spinkt;
     }
 
 
@@ -115,9 +185,8 @@ System.out.println(spinkt[0][0][0]);
         HashMap<String, String> runParams = new HashMap<String, String>();
         
         Scanner sc = null;
-        File file = null;
         try{
-            file = new File(infoFilePath);
+            File file = new File(infoFilePath);
             sc = new Scanner(file);
             while ( sc.hasNext() ){
                 String line = sc.nextLine().trim();
@@ -132,10 +201,10 @@ System.out.println(spinkt[0][0][0]);
                 }
             }
         }
-//        catch ( ArrayIndexOutOfBoundsException ex){
-//            System.err.println("Error! invalid info file!");
-//            System.exit(99);
-//        }
+        catch ( ArrayIndexOutOfBoundsException ex){
+            System.err.println("Error! invalid info file!");
+            System.exit(99);
+        }
         catch ( IOException ex){
             System.err.println("Error! cannot read info file");
             System.exit(99);
@@ -152,9 +221,8 @@ System.out.println(spinkt[0][0][0]);
         List<FullSpinSite> sites = new ArrayList<FullSpinSite>();
         int numSites = top.getNumSites();
         Scanner sc = null;
-        File file = null;
         try{
-            file = new File(infoFilePath);
+            File file = new File(infoFilePath);
             sc = new Scanner(file);
             while ( sc.hasNext() ){
                 String line = sc.nextLine().trim();

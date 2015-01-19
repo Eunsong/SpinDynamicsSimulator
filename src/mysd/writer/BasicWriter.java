@@ -14,7 +14,7 @@ public class BasicWriter<T extends Site<?>> implements Writer{
     /** 
      * print format in the order of index, Sx, Sy, Sz
      */
-    private final String format = "%5d %8.5f %8.5f %8.5f";
+    private final String format = "%8d %10.5f %10.5f %10.5f";
 
 
     /**
