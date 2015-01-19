@@ -2,8 +2,11 @@ package mysd.writer;
 
 import mysd.*;
 import java.io.PrintWriter;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
 
 public class BufferedBasicWriter<T extends Site<?>> extends BasicWriter<T>{
 
@@ -20,10 +23,8 @@ public class BufferedBasicWriter<T extends Site<?>> extends BasicWriter<T>{
     public BufferedBasicWriter(SpinSystem<T> sys, String outFileName, int nstbuff){
         super(sys, outFileName);
         pw.close();
-        FileOutputStream outstream = null;
         try {
-            outstream = new FileOutputStream(outFileName);
-            pw = new PrintWriter(outstream, false);
+            pw = new PrintWriter(new BufferedWriter(new FileWriter(outFileName)));
         }
         catch ( IOException ex){
             System.err.println("Error! cannot open output file " + outFileName);

@@ -1,0 +1,32 @@
+
+[ basis ]
+#number      x       y      z       (optional)Sx    Sy      Sz
+     0     0.0     0.0    0.0                0.0   0.0     1.0 
+
+
+[ lattice_vector ]
+#ax
+1.0     0.0     0.0
+#ay
+0.0     1.0     0.0
+#az
+0.0     0.0     1.0
+
+
+
+[ unit_cells ]
+#nx     ny      nz
+50      50      1
+
+
+[ Hamiltonian ]
+#type       a11     a12     a13     a21     a22     a23     a31     a32     a33
+J1_FM      -1.0     0.0     0.0     0.0    -1.0     0.0     0.0     0.0    -1.0
+J1_AFM      1.0     0.0     0.0     0.0     1.0     0.0     0.0     0.0     1.0
+
+
+
+[ bonds ]
+#a           b       HamiltonianType
+ 0      <i+1>0       J1_FM
+ 0      <j+1>0       J1_FM
