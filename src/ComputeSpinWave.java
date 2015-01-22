@@ -10,6 +10,37 @@ import mysd.vector.*;
 public class ComputeSpinWave{
     public static void main(String[] args){
 
+        String help = 
+            "#####################################################################\n"+
+            "# ComputeSpinWave code computes spin-wave spectrum from trajectories#\n"+
+            "# of spins generated from mysd simulator. Check out the following   #\n"+
+            "# github repository for most recent version :                       #\n"+
+            "# https://github.com/Eunsong/SpinDynamicsSimulator.git              #\n"+ 
+            "#                                                                   #\n"+ 
+            "# The code requires following inputs to run :                       #\n"+ 
+            "#          1. -i   commond name of .info and .trj files             #\n"+
+            "#          2. -t   *.top  file                                      #\n"+
+            "#          3. -nk  number of desired k-space points(should be       #\n"+ 
+            "#                  divisible of number of unit cells along desired  #\n"+
+            "#                  direction.)                                      #\n"+
+            "#          4. -kx, -ky, -kz  desired k-space direction              #\n"+
+            "#          5. -nw  number of desired w-space points                 #\n"+
+            "#          6. -dw  size of w-space grid                             #\n"+
+            "#          7. -o   output file name                                 #\n"+
+            "#                                                                   #\n"+
+            "# Usage example : java ComputeSpinWave -i inputs -t topology.top    #\n"+
+            "#                -nk 50 -kx 1 -ky 0 -kz 0 -nw 100 -dw 0.05          #\n"+
+            "#                -o spinwaves_cubicFM.dat                           #\n"+
+            "#                                                                   #\n"+
+            "#####################################################################\n";
+
+        for ( String arg : args ){
+            if ( arg.equals("-h") || arg.equals("--help") ){
+                System.out.println(help);
+                System.exit(0);
+            }
+        }
+
         HashMap<String, String> messages = ArgumentParser.parse(args);
         String topFile = messages.get("t");
         String kxRaw = messages.get("kx");
