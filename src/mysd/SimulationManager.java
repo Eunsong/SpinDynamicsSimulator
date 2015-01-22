@@ -15,8 +15,8 @@ public class SimulationManager{
     protected SpinSystem<?> system;
     protected Writer writer;
     protected RunParameter param;
-    protected String infoFileName = "sim.info";
-    protected String confFileName = "conf.cnf";
+    protected String infoFileName = "unnamed.info";
+    protected String confFileName = "unnamed.cnf";
 
     public void setInfoFileName(String name){
         this.infoFileName = name;
