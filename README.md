@@ -15,7 +15,7 @@ or http://arxiv.org/pdf/1301.5958v1.pdf )
 A simulation can be run by typing the following line in a Linux system:
 
 
-    java MultiThreadedRun -nt [(optional)number of threads] -t [topology file] -s [run parameter file] -o [output file] -c [(optional)spin config file]
+    java Run -nt [(optional)number of threads] -t [topology file] -s [run parameter file] -o [output file] -c [(optional)spin config file]
 
 
 Number of threads need not be specified. Default vaule is the number of available processors in the system where the main program is executed.
