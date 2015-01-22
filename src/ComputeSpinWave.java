@@ -20,7 +20,7 @@ public class ComputeSpinWave{
             "# The code requires following inputs to run :                       #\n"+ 
             "#          1. -i   commond name of .info and .trj files             #\n"+
             "#          2. -t   *.top  file                                      #\n"+
-            "#          3. -nk  number of desired k-space points(should be       #\n"+ 
+            "#          3. -nk  number of desired k-space points(this must be    #\n"+ 
             "#                  divisible of number of unit cells along desired  #\n"+
             "#                  direction.)                                      #\n"+
             "#          4. -kx, -ky, -kz  desired k-space direction              #\n"+
