@@ -1,5 +1,8 @@
 import java.util.*;
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import mysd.*;
 import mysd.vector.*;
@@ -25,7 +28,9 @@ public class ComputeSpinWave{
             nthreads = Integer.parseInt(messages.get("nt"));
         }
         Topology top = new Topology(topFile);
+        System.out.print("buliding sites...");
         List<FullSpinSite> sites = buildSites(top, infoPath);
+        System.out.println("done!");
 
         HashMap<String, String> runParams = getRunParams(infoPath);
         int ntstep = Integer.parseInt(runParams.get("ntstep"));
@@ -33,7 +38,8 @@ public class ComputeSpinWave{
         double dt = Double.parseDouble(runParams.get("dt"));
 
         if ( nstout == 0 ){
-            System.err.println("nstout must be greater than 0 in order to compute spin-waves!");
+            System.err.println("nstout must be greater than 0 " +
+                               "in order to compute spin-waves!");
             System.exit(99);
         }
         int nt = (int)(ntstep/nstout);
@@ -42,11 +48,16 @@ public class ComputeSpinWave{
         double kx = Double.parseDouble(kxRaw);
         double ky = Double.parseDouble(kyRaw);
         double kz = Double.parseDouble(kzRaw);
-        double[][][] spinkt = kFourierTransform(nk, kx, ky, kz, nt, trjPath, sites, top); 
+        System.out.println("starting k-space fourier transform...");
+        double[][][] spinkt = kFourierTransform(nk, kx, ky, kz, nt, 
+                                                trjPath, sites, top, true); 
+        System.out.println("done!");
         int nw = Integer.parseInt(nwRaw);
         double dw = Double.parseDouble(dwRaw);
 
-        double[][][] spinkw = wFourierTransform(spinkt, nw, dw, nt, dt, nstout);
+        System.out.println("starting w-space fourier transform...");
+        double[][][] spinkw = wFourierTransform(spinkt, nw, dw, nt, dt, nstout, true);
+        System.out.println("done!");
         writeToFile(spinkw, outFile, dw);
 
 
@@ -57,8 +68,16 @@ public class ComputeSpinWave{
 
         PrintStream ps = null;
         try{    
-            ps = new PrintStream(outputFilePath);   
-         
+            ps = new PrintStream(outputFilePath); 
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+            String header = "# spin-wave spectrum computed from ComputeSpinWave.java code\n"+
+                            "# computed at : " + dateFormat.format(date) + "\n" +
+                            "# check out https://github.com/Eunsong/SpinDynamicsSimulator" +
+                            " for most recent updates";
+            ps.println(header); 
+            ps.println(String.format(
+                       "#%7s  %8s  %7s", "k", "omega", "S[k][w]"));
             int m = spinkw.length;
             int nk = spinkw[0].length - 1; 
             int nw = spinkw[0][0].length - 1;
@@ -70,7 +89,7 @@ public class ComputeSpinWave{
                     for ( int im = 0; im < m; im++){
                         value += Math.abs(spinkw[im][ik][iw]);
                     } 
-                    String line = String.format("%8.4f  %8.4f  %5.3e", k, w, value);
+                    String line = String.format("%8.4f  %8.4f  %7.3e", k, w, value);
                     ps.println(line);            
                 }
                 ps.print("\n");            
@@ -103,7 +122,8 @@ public class ComputeSpinWave{
 
 
     public static double[][][] wFourierTransform(double[][][] spinkt, 
-                    int nw, double dw, int nt, double dt, int nstout){
+                    int nw, double dw, int nt, double dt, int nstout, 
+                                              boolean reportProgress){
 
         int m = spinkt.length;
         int nk = spinkt[0].length;
@@ -116,6 +136,12 @@ public class ComputeSpinWave{
         for ( int im = 0; im < m; im++){
             for ( int ik = 0; ik < nk; ik++){
                 for ( int iw = 0; iw < nw; iw++){
+                    if ( reportProgress) {
+                        int step = im*nk*nw + ik*nw + iw;
+                        double progress = 100.0*step/(m*nk*nw);
+                        System.out.print(String.format(
+                            "\r%5.2f%% completed...", progress));
+                    }
                     double w = dw*iw;
                     for ( int it = 0; it < nt; it++){
                         double t = dt*it*nstout;
@@ -129,8 +155,9 @@ public class ComputeSpinWave{
 
 
     public static double[][][] kFourierTransform(int nk, double kx, double ky, 
-                                      double kz, int nt, String pathToTrjFile, 
-                                       List<FullSpinSite> sites, Topology top){
+                                       double kz, int nt, String pathToTrjFile, 
+                                       List<FullSpinSite> sites, Topology top,
+                                       boolean reportProgress){
 
         int m = top.getBasis().size();
         double[][][] spinkt = new double[m][nk+1][nt+1];
@@ -151,7 +178,14 @@ public class ComputeSpinWave{
                 String line = sc.nextLine().trim();
                 if ( !line.equals("") ){
                     String[] tokens = line.split("\\s+"); 
-                    if ( tokens[0].equals("#") ) t++;
+                    if ( tokens[0].equals("#") ) {
+                        t++;
+                        if ( reportProgress ){
+                            double progress = 100.0*t/(double)nt;
+                            System.out.print(String.format(
+                                "\r%5.2f%% completed...", progress));
+                        }
+                    }
                     else{
                         int index = Integer.parseInt(tokens[0]);
                         int baseType = sites.get(index).getBaseType();
@@ -238,7 +272,8 @@ public class ComputeSpinWave{
                         double x = Double.parseDouble(tokens[2]);
                         double y = Double.parseDouble(tokens[3]);
                         double z = Double.parseDouble(tokens[4]);
-                        FullSpinSite site = new FullSpinSite(index, baseType, new Vector3D(x, y, z));
+                        FullSpinSite site = new FullSpinSite(index, baseType, 
+                                                new Vector3D(x, y, z));
                         sites.add(site); 
                     } 
                     if ( sc.hasNext() && !sc.nextLine().trim().equals("") ){
