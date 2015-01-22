@@ -16,7 +16,7 @@
 
 [ unit_cells ]
 #nx     ny      nz
-50      50      1
+100      10      1
 
 
 [ Hamiltonian ]
