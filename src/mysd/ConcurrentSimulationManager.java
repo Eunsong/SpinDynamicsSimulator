@@ -55,7 +55,7 @@ public class ConcurrentSimulationManager extends SimulationManager{
         threads.add(controllerThread); 
     }
 
-
+    @Override
     public void run(){
         for ( Thread t : this.threads ){
             t.start();
@@ -77,7 +77,7 @@ public class ConcurrentSimulationManager extends SimulationManager{
                 }
                 barrier.await();
             }
-            if ( param.nstout == 0 ) writeToFile();
+            writeToFile(confFileName);
             close();
         }
         catch(InterruptedException e){
@@ -88,6 +88,7 @@ public class ConcurrentSimulationManager extends SimulationManager{
         }
     }
 
+    @Override 
     public void close(){
         this.writer.close();
     }

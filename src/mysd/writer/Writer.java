@@ -33,6 +33,16 @@ public interface Writer{
      */
     public void writeMessageToFile(String msg);
 
+
+    /**
+     * writes spin configurations to the specified 
+     * output file path single time
+     *
+     * @param filepath String object representing a desired file name of the output
+     */
+    public void writeToFile(String filepath);
+    
+
     /**
      * closes necessary fields (e.g. PrintStream)
      * This method must be called at the end of the code where

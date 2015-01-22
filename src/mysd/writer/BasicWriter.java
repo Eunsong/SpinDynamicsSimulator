@@ -65,6 +65,31 @@ public class BasicWriter<T extends Site<?>> implements Writer{
         pw.print( getStringRep() );
     }
 
+
+    /**
+     * writes spin configurations to the specified
+     * output file path single time
+     *
+     * @param filename String object representing a desired file name of the output
+     */
+    public void writeToFile(String filename){
+
+        File file = null;
+        PrintWriter tmpPW = null;
+        try{
+            file = new File(filename);
+            tmpPW = new PrintWriter(file);
+            writeToFile(tmpPW);
+        }
+        catch(IOException ex){
+            System.out.println("Cannot create output file " + filename +"!");
+            System.exit(1);
+        }
+        finally{
+            tmpPW.close();
+        }
+    }
+
     public String getStringRep(){
 
         StringBuffer buff = new StringBuffer();

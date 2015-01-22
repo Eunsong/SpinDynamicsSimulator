@@ -15,6 +15,16 @@ public class SimulationManager{
     protected SpinSystem<?> system;
     protected Writer writer;
     protected RunParameter param;
+    protected String infoFileName = "sim.info";
+    protected String confFileName = "conf.cnf";
+
+    public void setInfoFileName(String name){
+        this.infoFileName = name;
+    }
+
+    public void setConfFileName(String name){
+        this.confFileName = name;
+    }
 
     public void addSystem(SpinSystem<?> system){
         this.system = system;
@@ -91,8 +101,6 @@ public class SimulationManager{
         }
     }
 
-
-
     public void writeEnergyToScreen(){
         if ( param.runtype == RunParameter.SimulationType.NONLINEAR ){
             writer.writeMessageToScreen(String.valueOf(system.getEnergy()));
@@ -102,6 +110,11 @@ public class SimulationManager{
     public void writeToFile(){
         this.writer.writeToFile();
     }
+
+    public void writeToFile(String filename){
+        this.writer.writeToFile(filename);
+    }
+
     public void writeMessageToFile(String msg){
         this.writer.writeMessageToFile(msg);
     }
@@ -114,6 +127,18 @@ public class SimulationManager{
         this.writer.writeMessageToScreen(msg);
     }
 
+    public void run(){
+        for ( int t = 0; t < param.ntstep; t++){
+            reportProgress();
+            if ( param.nstout != 0 && t%param.nstout == 0 ){
+                writeToFile();
+            }
+            updateForce();
+            forward();
+        }
+        writeToFile(confFileName);
+        close();
+    }
 
     public void close(){
         this.writer.close();

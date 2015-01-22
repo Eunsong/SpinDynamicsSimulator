@@ -10,10 +10,8 @@ import mysd.builder.Builder;
 import mysd.builder.SpinBuilder;
 import mysd.RunParameter.SimulationType;
 
-public class MultiThreadedRun{
+public class BareRun{
     public static void main(String[] args){
-
-        int nthreads = Runtime.getRuntime().availableProcessors();
 
         HashMap<String, String> messages = ArgumentParser.parse(args);
         String topFile = messages.get("t");
@@ -21,26 +19,25 @@ public class MultiThreadedRun{
         String outFile = messages.get("o");
         String outTraj = outFile + ".trj";
         String outInfo = outFile + ".info";
+        String outConf = outFile + ".cnf";
         String cnfFile = messages.get("c");
-        if ( messages.get("nt") != null){
-            nthreads = Integer.parseInt(messages.get("nt"));
-        }
 
         File top = new File(topFile);
         File sdp = new File(sdpFile);
         File cnf = null;
-        List<FullSpinSite> sites = Builder.buildSites(top);
+        List<FullSpinSite> sites = Builder.buildSites(top);        
         if (cnfFile != null){
             cnf = new File(cnfFile);
             SpinBuilder.overloadSpins(sites, cnf, false);
         }
         RunParameter param = Builder.importRunParam(sdp);
-        ConcurrentSimulationManager manager = 
-            new ConcurrentSimulationManager(nthreads);
+        SimulationManager manager = new SimulationManager();
         manager.addParam(param);
+        manager.setConfFileName(outConf);
+        manager.setInfoFileName(outInfo);
 
         switch ( param.runtype ){
-
+    
             case NONLINEAR:{
                 Integrator<FullSpinSite> integrator = 
                     new NonlinearIntegrator(param.dt);
@@ -54,7 +51,7 @@ public class MultiThreadedRun{
                 manager.addWriter(writer);
             }
                 break;
-
+            
             case LINEAR:{
                 Integrator<SigmaSpinSite> integrator = 
                     new RungeKuttaIntegrator(param.dt);
@@ -68,9 +65,10 @@ public class MultiThreadedRun{
             }
                 break;
         }
+
         manager.writeSystemInfo(outInfo);
-        manager.setThreads();
         manager.perturbSite();
         manager.run();
+
     }
 }

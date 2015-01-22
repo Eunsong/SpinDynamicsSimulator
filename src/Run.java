@@ -13,29 +13,37 @@ import mysd.RunParameter.SimulationType;
 public class Run{
     public static void main(String[] args){
 
+        int nthreads = Runtime.getRuntime().availableProcessors();
 
         HashMap<String, String> messages = ArgumentParser.parse(args);
         String topFile = messages.get("t");
         String sdpFile = messages.get("s");
+        String cnfFile = messages.get("c");
         String outFile = messages.get("o");
         String outTraj = outFile + ".trj";
         String outInfo = outFile + ".info";
-        String cnfFile = messages.get("c");
+        String outConf = outFile + ".cnf";
+        if ( messages.get("nt") != null){
+            nthreads = Integer.parseInt(messages.get("nt"));
+        }
 
         File top = new File(topFile);
         File sdp = new File(sdpFile);
         File cnf = null;
-        List<FullSpinSite> sites = Builder.buildSites(top);        
+        List<FullSpinSite> sites = Builder.buildSites(top);
         if (cnfFile != null){
             cnf = new File(cnfFile);
             SpinBuilder.overloadSpins(sites, cnf, false);
         }
         RunParameter param = Builder.importRunParam(sdp);
-        SimulationManager manager = new SimulationManager();
+        ConcurrentSimulationManager manager = 
+            new ConcurrentSimulationManager(nthreads);
         manager.addParam(param);
+        manager.setConfFileName(outConf);
+        manager.setInfoFileName(outInfo);
 
         switch ( param.runtype ){
-    
+
             case NONLINEAR:{
                 Integrator<FullSpinSite> integrator = 
                     new NonlinearIntegrator(param.dt);
@@ -49,7 +57,7 @@ public class Run{
                 manager.addWriter(writer);
             }
                 break;
-            
+
             case LINEAR:{
                 Integrator<SigmaSpinSite> integrator = 
                     new RungeKuttaIntegrator(param.dt);
@@ -63,18 +71,9 @@ public class Run{
             }
                 break;
         }
-
         manager.writeSystemInfo(outInfo);
+        manager.setThreads();
         manager.perturbSite();
-        for ( int t = 0; t < param.ntstep; t++){
-            manager.reportProgress();
-            if ( param.nstout != 0 && t%param.nstout == 0 ){
-                manager.writeToFile();
-            }
-            manager.updateForce();
-            manager.forward();
-        }
-        if ( param.nstout == 0 ) manager.writeToFile();
-        manager.close();
+        manager.run();
     }
 }
