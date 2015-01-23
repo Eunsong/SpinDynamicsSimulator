@@ -48,8 +48,8 @@ public class FullSpinSystem implements SpinSystem<FullSpinSite>{
             try{
                 this.barrier.await();
                 updateForce();
-                this.barrier.await();
                 forward();
+                this.barrier.await();
             }
             catch (InterruptedException e){
                 Thread.currentThread().interrupt();

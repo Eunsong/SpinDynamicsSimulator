@@ -66,9 +66,9 @@ public class ConcurrentSimulationManager extends SimulationManager{
     private void runControl(){
         try{
             for ( int t = 0; t < param.ntstep; t++){
-                barrier.await();
                 if ( t%10 == 0) reportProgress();
                 if ( param.nstout != 0 && t%param.nstout == 0 ) writeToFile();
+                barrier.await();
                 this.system.pushTimeStep();
                 if ( t == param.ntstep - 1 ){
                     for ( SpinSystem<?> subSystem : subSystems){
