@@ -50,8 +50,8 @@ public class SigmaSpinSystem implements SpinSystem<SigmaSpinSite>{
             try{
                 this.barrier.await();
                 updateForce();
-                forward();
                 this.barrier.await();
+                forward();
             }
             catch (InterruptedException e){
                 Thread.currentThread().interrupt();
