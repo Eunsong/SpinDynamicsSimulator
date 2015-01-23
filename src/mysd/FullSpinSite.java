@@ -53,12 +53,6 @@ public class FullSpinSite extends Site<FullSpinSite>{
     public void addForce(Vector3D force){
         this.force.addSet(force);
     }
-
-    @Override
-    public void addReactionForce(Vector3D force){
-        this.force.subSet(force);
-    }
-
     public void updateForce(){
         this.forcePrev = this.force;
         this.force = new Vector3D();
