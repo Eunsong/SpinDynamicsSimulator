@@ -83,6 +83,12 @@ public class SigmaSpinSite extends Site<SigmaSpinSite>{
     public void addForce(Vector3D force){
         this.force.addSet(force);
     }
+
+    @Override
+    public void addReactionForce(Vector3D force){
+        this.force.subSet(force);
+    }    
+
     public Vector3D getForce(){
         return this.force;
     }

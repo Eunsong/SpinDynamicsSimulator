@@ -51,6 +51,10 @@ public abstract class Site<T extends Site<?>>{
 
     public abstract void addForce(Vector3D force);
 
+    public void addReactionForce(Vector3D force){
+        this.addForce(Vector3D.times(-1.0, force));
+    }
+
     public abstract Vector3D getForcePrev();
 
     public abstract Vector3D getForce();
