@@ -2,6 +2,7 @@ package mysd;
 
 import mysd.writer.*;
 import mysd.builder.SpinBuilder;
+import mysd.RunParameter.SimulationType;
 import java.io.PrintStream;
 import java.io.IOException;
 import java.util.concurrent.CyclicBarrier;
@@ -68,6 +69,7 @@ public class ConcurrentSimulationManager extends SimulationManager{
             for ( int t = 0; t < param.ntstep; t++){
                 if ( t%10 == 0) reportProgress();
                 if ( param.nstout != 0 && t%param.nstout == 0 ) writeToFile();
+                if ( param.nstenergy != 0 && t%param.nstenergy == 0 ) writeEnergyToFile();
                 barrier.await();
                 this.system.pushTimeStep();
                 if ( t == param.ntstep - 1 ){

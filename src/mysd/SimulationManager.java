@@ -13,7 +13,8 @@ import java.util.Date;
 public class SimulationManager{
 
     protected SpinSystem<?> system;
-    protected Writer writer;
+    protected Writer writer; // trajectory writer
+    protected Writer energyWriter; // energy writer
     protected RunParameter param;
     protected String infoFileName = "unnamed.info";
     protected String confFileName = "unnamed.cnf";
@@ -32,6 +33,10 @@ public class SimulationManager{
     public void addWriter(Writer writer){
         this.writer = writer;
     }
+    public void addEnergyWriter(Writer writer){
+        this.energyWriter = writer;
+    }
+
     public void addParam(RunParameter param){
         this.param = param;
     }
@@ -103,7 +108,19 @@ public class SimulationManager{
 
     public void writeEnergyToScreen(){
         if ( param.runtype == RunParameter.SimulationType.NONLINEAR ){
-            writer.writeMessageToScreen(String.valueOf(system.getEnergy()));
+            double t = system.getTime();
+            double energy = system.getEnergy();
+            String message = String.format("%f     %e\n", t, energy);
+            writer.writeMessageToScreen(message);
+        }
+    }
+
+    public void writeEnergyToFile(){
+        if ( param.runtype == RunParameter.SimulationType.NONLINEAR ){
+            double t = system.getTime();
+            double energy = system.getEnergy();
+            String message = String.format("%f     %e\n", t, energy);
+            energyWriter.writeMessageToFile(message);
         }
     }
 
@@ -133,6 +150,7 @@ public class SimulationManager{
             if ( param.nstout != 0 && t%param.nstout == 0 ){
                 writeToFile();
             }
+            if ( param.nstenergy != 0 && t%param.nstenergy == 0 ) writeEnergyToFile();
             updateForce();
             forward();
         }
