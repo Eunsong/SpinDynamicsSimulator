@@ -30,3 +30,5 @@ J1_AFM      1.0     0.0     0.0     0.0     1.0     0.0     0.0     0.0     1.0
 #a           b       HamiltonianType
  0      <i+1>0       J1_FM
  0      <j+1>0       J1_FM
+ 0      <i-1>0       J1_FM
+ 0      <j-1>0       J1_FM

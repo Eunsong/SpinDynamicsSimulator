@@ -1,2 +1,2 @@
-java MultiThreadedRun -t topol.top -s sdrun.sdp -o out
+java Run -t topol.top -s sdrun.sdp -o out
 java ComputeSpinWave -t topol.top -i out -nk 50 -kx 1 -ky 0 -kz 0 -dw 0.05 -nw 100 -o spinwave_squareFM
