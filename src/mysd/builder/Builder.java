@@ -150,11 +150,6 @@ public class Builder{
                                     new Neighbor<FullSpinSite>
                                         (sitesArray[i_nb][j_nb][k_nb][bond.j], h);
                                 sitesArray[i][j][k][l].addNeighbor(nj);
-                                // add current site as nb's Neighbor as well
-                                Neighbor<FullSpinSite> ni = 
-                                    new Neighbor<FullSpinSite>
-                                        (sitesArray[i][j][k][l], h);
-                                sitesArray[i_nb][j_nb][k_nb][bond.j].addNeighbor(ni);
                             }
                         }
                     }
