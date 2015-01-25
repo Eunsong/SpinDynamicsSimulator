@@ -145,7 +145,7 @@ Now, we need to define a Hamiltonian. We first give a name to the Hamiltonian. I
     J1_FM      -1.0     0.0     0.0     0.0    -1.0     0.0     0.0     0.0    -1.0
 
 
-Finally, we need to sepcify all the i-j bond pairs in the system. Note that i-j bond and j-i bond must both be explicitly defined in this section (this will not results in double counting.) This allows us more flexibility in defining pair-wise interactions. For inter-unitcell interactions, i.e. bonds that cross unit cell border, you can specify relative position of corresponding unitcell in anglular brackets. For instance, "0    <i+1>1" indicates a bond between sub-lattice 0 at i, j, k-th unit cell and sub-lattice 1 at i+1, j, k-th unit cell. 
+Finally, we need to sepcify all the i-j bond pairs in the system. Note that i-j bond and j-i bond must both be explicitly defined in this section (this will not results in double counting.) This allows us more flexibility in defining pair-wise interactions. For inter-unitcell interactions, i.e. bonds that cross unit cell border, you can specify relative position of corresponding unitcell in anglular brackets. For instance, "0    < i+1 >1" indicates a bond between sub-lattice 0 at i, j, k-th unit cell and sub-lattice 1 at i+1, j, k-th unit cell. 
 
 
 (to be updated...)
