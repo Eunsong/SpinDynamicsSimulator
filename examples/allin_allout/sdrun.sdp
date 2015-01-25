@@ -10,7 +10,7 @@ alpha                   = 0.02  #Gilbert damping constant
 
 nstout                  = 5    #save outputs every nstout steps(0 to write only the final config)
 nstbuff                 = 100  #output buffer size(can enable this option using BufferedBasicWriter)
-nstenergy               = 0    #output total energy every nstenergy steps(only for nonlinear simulations)
+nstenergy               = 0    #save total energy every nstenergy steps(only for nonlinear simulations)
 
 perturb_site            = true #true to perturb a site at start
 perturbing_site_index   = 0    #index of a site to be perturbed
