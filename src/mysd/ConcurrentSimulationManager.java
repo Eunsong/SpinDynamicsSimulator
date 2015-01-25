@@ -90,10 +90,6 @@ public class ConcurrentSimulationManager extends SimulationManager{
         }
     }
 
-    @Override 
-    public void close(){
-        this.writer.close();
-    }
 
 
 }

@@ -160,6 +160,7 @@ public class SimulationManager{
 
     public void close(){
         this.writer.close();
+        if ( this.energyWriter != null ) this.energyWriter.close();
     } 
 
 
