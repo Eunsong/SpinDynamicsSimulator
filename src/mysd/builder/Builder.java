@@ -315,7 +315,7 @@ public class Builder{
                 if ( !line.trim().matches("[^\\s]+.*")){
                     // empty line
                 }
-                else if (line.matches("\\s*\\d+\\.?\\d*\\s+\\d+\\.?\\d*\\s+\\d+\\.?\\d*")){
+                else if (line.matches("\\s*-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*")){
                     double x = Double.parseDouble(tokens[0]);
                     double y = Double.parseDouble(tokens[1]);
                     double z = Double.parseDouble(tokens[2]);
