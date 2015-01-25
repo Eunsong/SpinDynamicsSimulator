@@ -115,7 +115,7 @@ Ths code supports both linear and non-linear simulation. Just specify either lin
 
 ## Tutorials
 
-Below are quick tutorials on how to use mySD package. All input files used in the tutorials can be found in /examples folder. 
+Below are quick tutorials on how to use mySD package. All input files used in the tutorials can be found in */examples* folder. 
 
 
 ###1. Square Lattice Ferromagnet
@@ -138,14 +138,14 @@ Then, we define Lattice vectors: ax, ay, and az. Here, we will simply put lattic
     0.0     0.0     1.0
 
 
-The actual system consists of repeated basis along the lattice vectors. In the [ unit_cells ] section, we specify number of repeated units along each lattice vectors. Let's say later we will compute spin-wave spectrum along bx(reciprocal lattice vector of ax). In order to achieve good resolution of spin-wave along the desired direction, we need to place more repeated unit cells along this direction. I decided to put 50 along ax, and 5 for the other directions. 
+The actual system consists of repeated basis along the lattice vectors. In the *[ unit_cells ]* section, we specify number of repeated units along each lattice vectors. Let's say later we will compute spin-wave spectrum along bx(reciprocal lattice vector of ax). In order to achieve good resolution of spin-wave along the desired direction, we need to place more repeated unit cells along this direction. I decided to put 50 along ax, and 5 for the other directions. 
 
     [ unit_cells ]
     #nx     ny      nz
     50      5      5
 
 
-Now, we need to define a Hamiltonian. We first give a name to the Hamiltonian. In this case, we name it J1_FM meaning Ferro Magnetic interaction between nearest neighbors(though name is only used to look up matching interactions in the bonds section). Ferromagnetic Heigenberg interaction consists of negative diagonal components and zero off-diagonal components.
+Now, we need to define a Hamiltonian. We first give a name to the Hamiltonian. In this case, we name it *J1_FM* meaning Ferro Magnetic interaction between nearest neighbors(though name is only used to look up matching interactions in the bonds section). Ferromagnetic Heigenberg interaction consists of negative diagonal components and zero off-diagonal components.
 
 
     [ Hamiltonian ]
@@ -162,7 +162,7 @@ Finally, we need to sepcify all the i-j bond pairs in the system. Note that i-j 
      0      <i-1>0       J1_FM
      0      <j-1>0       J1_FM
 
-This completes our topology file for simulating Ferromagnetic Square lattice. Put all the above in a file topol.top. 
+This completes our topology file for simulating Ferromagnetic Square lattice. Put all the above in a file *topol.top*. 
 
 
 
@@ -181,14 +181,14 @@ Next, we need to define size of each time step, number of time steps, and Gilber
     alpha                   = 0.02  #Gilbert damping constant
 
 
-We now define how often we will output trajectories and energies. Trajectory will be saved in .trj file evey nstout steps. If nstout is set to 0, then trajectory won't be saved, but you will still get a final configuration in .cnf file. Since writing trajectory to a file is one most slow part in the entire simulation keeping this value as large as possible is a good way to optimize performace. In particular, if dt is small enough, saving trajectory each time step is probably unnecessary unless there is a very high-frequency mode. Here, I decided to save trajectory every 5 time steps meaning trajectory will be saved every 0.1 time. nstenergy defined how often system energy will be saved in .eng file. This has nothing to do with linear simulations so you can just leave whatever value you like(I put 0 to explicitly show that we won't compute energies). nstbuff can be ignored for current version. 
+We now define how often we will output trajectories and energies. Trajectory will be saved in .trj file evey *nstout* steps. If *nstout* is set to 0, then trajectory won't be saved, but you will still get a final configuration in .cnf file. Since writing trajectory to a file is one most slow part in the entire simulation keeping this value as large as possible is a good way to optimize performace. In particular, if *dt* is small enough, saving trajectory each time step is probably unnecessary unless there is a very high-frequency mode. Here, I decided to save trajectory every 5 time steps meaning trajectory will be saved every 0.1 time. *nstenergy* define how often system energy will be saved in .eng file. This has nothing to do with linear simulations so you can just leave whatever value you like(I put 0 to explicitly show that we won't compute energies). *nstbuff* can be ignored for current version. 
 
     nstout                  = 5    #save outputs every nstout steps(0 to write only the final config)
     nstbuff                 = 100  #output buffer size(can enable this option using BufferedBasicWriter)
     nstenergy               = 0    #save total energy every nstenergy steps(only for nonlinear simulations) 
 
 
-Finally, since we start from a ground state configuration, in order to generate fluctuations, we must perturb a site. Set perturb_site = true will enable initlal perturbation. Location of the perturbation can be specified in perturbing_site_index, but generally you will never have to change this index. Amount of perturbation can be specified in perturbation_size. For linear simulations, this value simply determines initial spin deviation size. For nonlinear simulations, this value is a rotation degree(in angles) of a specified site from the initial configuration. 
+Finally, since we start from a ground state configuration, in order to generate fluctuations, we must perturb a site. Set *perturb_site = true* will enable initlal perturbation. Location of the perturbation can be specified in perturbing_site_index, but generally you will never have to change this index. Amount of perturbation can be specified in *perturbation_size*. For linear simulations, this value simply determines initial spin deviation size. For nonlinear simulations, this value is a rotation degree(in angles) of a specified site from the initial configuration. 
 
     perturb_site            = true #true to perturb a site at start
     perturbing_site_index   = 0    #index of a site to be perturbed
@@ -196,7 +196,7 @@ Finally, since we start from a ground state configuration, in order to generate 
                                    #nonlinear case, this is a roatation angle(degree)
 
 
-We are done with the run parameters as well. Let's put them together in sdrun.sdp file. Or you can simply use example files in the /examples/squareFM folder.  
+We are done with the run parameters as well. Let's put them together in sdrun.sdp file. Or you can simply use example files in the */examples/squareFM* folder.  
 
 
 Let's first check what inputs must be given to run a simulation. Type the following in the command line to display instruction of Run code :
