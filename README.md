@@ -33,7 +33,7 @@ Once simulation is done, spin-wave spectrum can be computed from output trajecto
 
 To run a simulation, you need a topology file (.top) and a run parameter file (.sdp). Topology file contains information that completely defines a sytem to be simulated. Run-parameter file, on the other hand, defines a simulation specific parameters such as simulation length, simualtion type, output size, and etc. Optionally, a configuration file (.cnf) can be provided to overrides initial spin configurations. If .cnf file is not given, spin configurations defined in the .top file will be used. 
 
-Below are examples of .top file and .sdp file. File formats are self-explanatory. Note that texts following # symbol are comments and not processed in the simulator code :
+Below are examples of .top file and .sdp file. File formats are mostly self-explanatory, but will be explained in the tutorials section. Note that texts following # symbol are comments and not processed in the simulator code :
 
 
 #### squareFM.top
@@ -111,5 +111,35 @@ Below are quick tutorials on how to use mySD package. All input files used in th
 
 
 ###1. Square Lattice Ferromagnet
+
+We fisrt need to write a topology file for this system. In this case, we only need one sub-lattice. Let's say each sub-lattice is placed at 0.0, 0.0, 0.0 and all spins are initially aligned along z-axis. This can be expressed as :
+    
+    [ basis ]
+    #number      x       y      z       (optional)Sx    Sy      Sz
+         0     0.0     0.0    0.0                0.0   0.0     1.0 
+    
+
+Then, we define Lattice vectors: ax, ay, and az. Here, we will simply put lattice vectors along with lab coordinates :
+    
+    [ lattice_vector ]
+    #ax
+    1.0     0.0     0.0
+    #ay
+    0.0     1.0     0.0
+    #az
+    0.0     0.0     1.0
+
+
+The actual system consists of repeated basis along the lattice vectors. In the [ unit_cells ] section, we specify number of repeated units along each lattice vectors. Let's say later we will compute spin-wave spectrum along bx(reciprocal lattice vector of ax). In order to achieve good resolution of spin-wave along the desired direction, we need to place more repeated unit cells along this direction. I decided to put 50 along ax, and 5 for the other directions. 
+
+    [ unit_cells ]
+    #nx     ny      nz
+    50      5      5
+
+
+Now, we need to define a Hamiltonian. 
+
+
+
 (to be updated...)
 
