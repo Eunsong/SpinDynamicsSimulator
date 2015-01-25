@@ -87,7 +87,7 @@ Below are examples of .top file and .sdp file. File formats are mostly self-expl
 
     nstout                  = 5    #save outputs every nstout steps(0 to write only the final config)
     nstbuff                 = 100  #output buffer size(can enable this option using BufferedBasicWriter)
-    nstenergy               = 0    #output total energy every nstenergy steps(only for nonlinear simulations) 
+    nstenergy               = 0    #save total energy every nstenergy steps(only for nonlinear simulations) 
 
     perturb_site            = true #true to perturb a site at start
     perturbing_site_index   = 0    #index of a site to be perturbed
@@ -137,8 +137,15 @@ The actual system consists of repeated basis along the lattice vectors. In the [
     50      5      5
 
 
-Now, we need to define a Hamiltonian. 
+Now, we need to define a Hamiltonian. We first give a name to the Hamiltonian. In this case, we name it J1_FM meaning Ferro Magnetic interaction between nearest neighbors(though name is only used to look up matching interactions in the bonds section). Ferromagnetic Heigenberg interaction consists of negative diagonal components and zero off-diagonal components.
 
+
+    [ Hamiltonian ]
+    #type       a11     a12     a13     a21     a22     a23     a31     a32     a33
+    J1_FM      -1.0     0.0     0.0     0.0    -1.0     0.0     0.0     0.0    -1.0
+
+
+Finally, we need to sepcify all the i-j bond pairs in the system. Note that i-j bond and j-i bond must both be explicitly defined in this section (this will not results in double counting.) This allows us more flexibility in defining pair-wise interactions. For inter-unitcell interactions, i.e. bonds that cross unit cell border, you can specify relative position of corresponding unitcell in anglular brackets. For instance, "0    <i+1>1" indicates a bond between sub-lattice 0 at i, j, k-th unit cell and sub-lattice 1 at i+1, j, k-th unit cell. 
 
 
 (to be updated...)
