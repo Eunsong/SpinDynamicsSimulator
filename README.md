@@ -36,7 +36,7 @@ To run a simulation, you need a topology file (.top) and a run parameter file (.
 Below is an example of .top file :
 
 
-#### squareFM.top
+#### <span style="color:blue">squareFM.top</spin>
     
     [ basis ]
     #number      x       y      z       (optional)Sx    Sy      Sz
@@ -74,7 +74,7 @@ Below is an example of .top file :
 
 Below is an example of .sdp file :
 
-#### sdrun.sdp
+#### <span style="color:blue">sdrun.sdp</span>
     
     # Spin Dynamics Simulation run parameters 
 
