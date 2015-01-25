@@ -23,6 +23,15 @@ Example of topology file(.top), run parameter file(.sdp), and spin configuration
 
 
 
+Once simulation is done, spin-wave spectrum can be computed from output trajectory data(.trj file) using ComputeSpinWave.java code. To do this, one can type in the following commands :
+
+    java ComputeSpinWave -i [input name(need .info and .trj)] -t [topology file] -nk [number of k-space grids] -kx [bx direction component] -ky [by component] -kz [bz component] -nw [number of frequency space grids] -dw [size of each frequency grid] -o [output name]
+
+
+
+
+
+
 ### Linear vs Nonlinear 
 
 Ths code supports both linear and non-linear simulation. Just specify either linear of nonlinear in the sdp file. Typically, nonlinear simulation can be used to find ground state spin configurations with the aid of large damping constant alpha, and linear simulation can be used to obtain clean spin fluctuations in the vicinity of ground state. 
