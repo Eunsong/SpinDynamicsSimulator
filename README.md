@@ -33,10 +33,10 @@ Once simulation is done, spin-wave spectrum can be computed from output trajecto
 
 To run a simulation, you need a topology file (.top) and a run parameter file (.sdp). Topology file contains information that completely defines a sytem to be simulated. Run-parameter file, on the other hand, defines a simulation specific parameters such as simulation length, simualtion type, output size, and etc. Optionally, a configuration file (.cnf) can be provided to overrides initial spin configurations. If .cnf file is not given, spin configurations defined in the .top file will be used. 
 
-Below is an example of .top file :
+Below are examples of .top file and .sdp file. File formats are self-explanatory. Note that texts following # symbol are comments and not processed in the simulator code :
 
 
-#### <span style="color:blue">squareFM.top</spin>
+#### squareFM.top
     
     [ basis ]
     #number      x       y      z       (optional)Sx    Sy      Sz
@@ -72,9 +72,8 @@ Below is an example of .top file :
     
 
 
-Below is an example of .sdp file :
 
-#### <span style="color:blue">sdrun.sdp</span>
+#### sdrun.sdp
     
     # Spin Dynamics Simulation run parameters 
 
