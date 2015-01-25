@@ -39,7 +39,7 @@ Similarly, usage example can be displayed with --help (or -h) flag :
 
 ### Before running the simulation 
 
-To run a simulation, you need a topology file (.top) and a run parameter file (.sdp). Topology file contains information that completely defines a sytem to be simulated. Run-parameter file, on the other hand, defines a simulation specific parameters such as simulation length, simualtion type, output size, and etc. Optionally, a configuration file (.cnf) can be provided to overrides initial spin configurations. If .cnf file is not given, spin configurations defined in the .top file will be used. 
+To run a simulation, you need a topology file (.top) and a run parameter file (.sdp). Topology file contains information that completely defines a sytem to be simulated. Run-parameter file, on the other hand, defines simulation specific parameters such as simulation length, simualtion type, output size, and etc. Optionally, a configuration file (.cnf) can be provided to overrides initial spin configurations. If .cnf file is not given, spin configurations defined in the .top file will be used. 
 
 Below are examples of .top file and .sdp file. File formats are mostly self-explanatory, but will be explained in the tutorials section. Note that texts following # symbol are comments and not processed in the simulator code :
 
@@ -127,7 +127,7 @@ We fisrt need to write a topology file for this system. In this case, we only ne
          0     0.0     0.0    0.0                0.0   0.0     1.0 
     
 
-Then, we define Lattice vectors: ax, ay, and az. Here, we will simply put lattice vectors along with lab coordinates :
+Then, we define Lattice vectors: ax, ay, and az. Here, we will simply put lattice vectors along the lab coordinates :
     
     [ lattice_vector ]
     #ax
@@ -166,19 +166,88 @@ This completes our topology file for simulating Ferromagnetic Square lattice. Pu
 
 
 
-We now need to define simulation specific parameters. First, let's name our simulation. The name of the simulation will be printed in .into file when simulation is done. And most importantly, we need to decide what type of simulation will be carried out. Since constructing a ground state configuration for Ferromagnetic state is straight forward(and is properly configured in our topology file constructed above), we will skip the nonlinear simulation and do linear simulation right away. 
+We now need to define simulation specific parameters. First, let's name our simulation. The name of the simulation will be printed in .info file when simulation is done. And most importantly, we need to decide what type of simulation will be carried out. Since constructing a ground state configuration for Ferromagnetic state is straight forward(and is properly configured in our topology file constructed above), we will skip the nonlinear simulation and do linear simulation right away. 
 
 
     title                   = SquareLattice_FerroMagnet
     runtype                 = linear  #linear of nonlinear
 
 
-Next, we need to define size of each time step, number of time steps, and Gilbert damping constant. There is no unique optimum value for these parameters. They depend on your system size, and interactions. Generally, I would suggest to start with time step size of 0.02 to 0.1, and ten to hundereds of thousands of time steps. For damping constant, something around 0.01 would work find for linear simulation to obtain spin-wave, and around 0.4-0.5 for nonlinear simulation for obtaining ground state configuration. 
+Next, we need to define size of each time step, number of time steps, and Gilbert damping constant. There is no unique optimum value for these parameters. They depend on your system size and interactions. Generally, I would suggest to start with time step size of 0.02 to 0.1, and ten to hundereds of thousands of time steps. For damping constant, something around 0.01 would work find for linear simulation to obtain spin-wave, and around 0.4-0.5 for nonlinear simulation for obtaining ground state configuration. 
 
 
     dt                      = 0.02  #time step size
     ntstep                  = 50000 #number of time steps
     alpha                   = 0.02  #Gilbert damping constant
+
+
+We now define how often we will output trajectories and energies. Trajectory will be saved in .trj file evey nstout steps. If nstout is set to 0, then trajectory won't be saved, but you will still get a final configuration in .cnf file. Since writing trajectory to a file is one most slow part in the entire simulation keeping this value as large as possible is a good way to optimize performace. In particular, if dt is small enough, saving trajectory each time step is probably unnecessary unless there is a very high-frequency mode. Here, I decided to save trajectory every 5 time steps meaning trajectory will be saved every 0.1 time. nstenergy defined how often system energy will be saved in .eng file. This has nothing to do with linear simulations so you can just leave whatever value you like(I put 0 to explicitly show that we won't compute energies). nstbuff can be ignored for current version. 
+
+    nstout                  = 5    #save outputs every nstout steps(0 to write only the final config)
+    nstbuff                 = 100  #output buffer size(can enable this option using BufferedBasicWriter)
+    nstenergy               = 0    #save total energy every nstenergy steps(only for nonlinear simulations) 
+
+
+Finally, since we start from a ground state configuration, in order to generate fluctuations, we must perturb a site. Set perturb_site = true will enable initlal perturbation. Location of the perturbation can be specified in perturbing_site_index, but generally you will never have to change this index. Amount of perturbation can be specified in perturbation_size. For linear simulations, this value simply determines initial spin deviation size. For nonlinear simulations, this value is a rotation degree(in angles) of a specified site from the initial configuration. 
+
+    perturb_site            = true #true to perturb a site at start
+    perturbing_site_index   = 0    #index of a site to be perturbed
+    perturbation_size       = 1    #linear case, this determines initial size of sigma_x,
+                                   #nonlinear case, this is a roatation angle(degree)
+
+
+We are done with the run parameters as well. Let's put them together in sdrun.sdp file. Or you can simply use example files in the /examples/squareFM folder.  
+
+
+Let's first check what inputs must be given to run a simulation. Type the following in the command line to display instruction of Run code :
+
+    java Run --help
+
+This will display required and optional inputs and appropriate flags to properly feed them to the code as follows.
+
+
+    #####################################################################
+    #                                                                   #
+    #  Run.java is an executable back-bone code of mysd package         #
+    # simulating classical spin dynamics on a periodic latice system.   #
+    # checkout the following github repository for most recent updates: #
+    # https://github.com/Eunsong/SpinDynamicsSimulator.git              #
+    #                                                                   #
+    # The code requires following inputs to run :                       #
+    #          1. -t   .top file defining system topology               #
+    #          2. -s   .sdp file listing simulation specific parameters #
+    #          3. -c   (optional) .cnf file for overloading initial     #
+    #                  spin configurations.                             #
+    #          4. -o   desired common file name for outputs             #
+    #                  (e.g. -o out will create out.info, out.trj,      #
+    #                   and out.eng)                                    #
+    #          5. -nt  (optional) number of threads to be used for      #
+    #                  the simulation. If not specified, number of      #
+    #                  currently available processors will be used.     #
+    #                                                                   #
+    # Usage example : java Run -t topology.top -s sdrun.sdp -c conf.cnf #
+    #                -nt 8 -o out                                       #
+    #                                                                   #
+    #####################################################################
+
+
+For our system, we can type something like this (assuming you have already compiled the entire package),
+
+    java Run -t topol.top -s sdrun.sdp -o out
+
+This will take roughly a minute or so depending on your computer and number of threads you use. In my computer, it took about 1m 10sec. Now, you will see three files are created in the same folder:
+
+    out.info
+    out.trj
+    out.cnf
+
+
+System information file, out.info, contains the simulation parameters and lattice sites that have been used in the simulation. Trajectory file, out.trj, contains simply spin configurations at specified time steps. Configuration file, out.cnf, is a final configuration(spin deviations for linear simulation), but is not much of use for a linear simulation. So we can simply delete it. 
+
+
+     
+
+
 
 
 
