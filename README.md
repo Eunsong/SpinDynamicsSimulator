@@ -19,13 +19,21 @@ A simulation can be run by typing the following line in a Linux system:
 
 
 Number of threads need not be specified. Default vaule is the number of available processors in the system where the main program is executed.
-Example of topology file(.top), run parameter file(.sdp), and spin configuration file(.cnf) are in the example folder.
+Example of topology file(.top), run parameter file(.sdp), and spin configuration file(.cnf) are in the example folder. Usage example can also be displayed by executing the code with --help (or -h) flag :
 
 
+    java Run --help 
 
-Once simulation is done, spin-wave spectrum can be computed from output trajectory data(.trj file) using ComputeSpinWave.java code along with the .info file generated from the simulation. To do this, one can type in the following commands :
+
+Run code generates four different output files: simulation information file (.info), spin trajectory file (.trj), final spin configuration file (.cnf) and system energy file (.eng). Note that .eng file is not generated for linear type simulations. All these files use same common file name defined with -o flag. For instance, "-o out" will create: out.info, out.trj, out.cnf, and out.eng. Once simulation is done, spin-wave spectrum can be computed from output trajectory data(.trj file) using ComputeSpinWave.java code along with the .info file generated from the simulation. To do this, one can type in the following commands :
 
     java ComputeSpinWave -i [input name(need .info and .trj)] -t [topology file] -nk [number of k-space grids] -kx [bx direction component] -ky [by component] -kz [bz component] -nw [number of frequency space grids] -dw [size of each frequency grid] -o [output name]
+
+
+Similarly, usage example can be displayed with --help (or -h) flag :
+
+    java ComputeSpinWave --help
+
 
 
 
@@ -155,6 +163,22 @@ Finally, we need to sepcify all the i-j bond pairs in the system. Note that i-j 
      0      <j-1>0       J1_FM
 
 This completes our topology file for simulating Ferromagnetic Square lattice. Put all the above in a file topol.top. 
+
+
+
+We now need to define simulation specific parameters. First, let's name our simulation. The name of the simulation will be printed in .into file when simulation is done. And most importantly, we need to decide what type of simulation will be carried out. Since constructing a ground state configuration for Ferromagnetic state is straight forward(and is properly configured in our topology file constructed above), we will skip the nonlinear simulation and do linear simulation right away. 
+
+
+    title                   = SquareLattice_FerroMagnet
+    runtype                 = linear  #linear of nonlinear
+
+
+Next, we need to define size of each time step, number of time steps, and Gilbert damping constant. There is no unique optimum value for these parameters. They depend on your system size, and interactions. Generally, I would suggest to start with time step size of 0.02 to 0.1, and ten to hundereds of thousands of time steps. For damping constant, something around 0.01 would work find for linear simulation to obtain spin-wave, and around 0.4-0.5 for nonlinear simulation for obtaining ground state configuration. 
+
+
+    dt                      = 0.02  #time step size
+    ntstep                  = 50000 #number of time steps
+    alpha                   = 0.02  #Gilbert damping constant
 
 
 
