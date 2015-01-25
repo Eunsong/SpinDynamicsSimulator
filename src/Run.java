@@ -28,7 +28,7 @@ public class Run{
             "#                  spin configurations.                             #\n"+
             "#          4. -o   desired common file name for outputs             #\n"+
             "#                  (e.g. -o out will create out.info, out.trj,      #\n"+
-            "#                   and out.eng)                                    #\n"+ 
+            "#                   ,out.cnf, and out.eng)                          #\n"+ 
             "#          5. -nt  (optional) number of threads to be used for      #\n"+
             "#                  the simulation. If not specified, number of      #\n"+
             "#                  currently available processors will be used.     #\n"+
