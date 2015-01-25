@@ -2,7 +2,7 @@ import argparse
 import re
 
 
-def gen_neighbors(input_file, target_dist=None, rank=1):
+def gen_neighbors(input_file, target_dist, rank, tol, search):
     # build basis
     basis = []
     lattice_vectors = []
@@ -32,26 +32,26 @@ def gen_neighbors(input_file, target_dist=None, rank=1):
     az = lattice_vectors[2]
     for base in basis :
         neighbors = []
-        for i in xrange(-1,2):
-            for j in xrange(-1,2):
-                for k in xrange(-1,2):
+        for i in xrange(-search,1+search):
+            for j in xrange(-search,1+search):
+                for k in xrange(-search,1+search):
                     shift = i*ax + j*ay + k*az
                     for neighbor in basis:
                         if neighbor == base and i == 0 and j == 0 and k == 0:    
                             continue
                         offset = ''
                         if i > 0:
-                            offset += '<i+1>'
+                            offset += ('<i+'+str(i)+'>')
                         elif i < 0:
-                            offset += '<i-1>'
+                            offset += ('<i-'+str(-i)+'>')
                         if j > 0:
-                            offset += '<j+1>'
+                            offset += ('<j+'+str(j)+'>')
                         elif j < 0:
-                            offset += '<j-1>'
+                            offset += ('<j-'+str(-j)+'>')
                         if k > 0:
-                            offset += '<k+1>'
+                            offset += ('<k+'+str(k)+'>')
                         elif k < 0:
-                            offset += '<k-1>'
+                            offset += ('<k-'+str(-k)+'>')
                         loc = shift + neighbor.r
                         rij = loc - base.r
                         distance = Vector.dot( rij, rij)
@@ -59,7 +59,7 @@ def gen_neighbors(input_file, target_dist=None, rank=1):
         if target_dist:
             neighbors = filter(lambda x : x['distance'] == target_dist, neighbors) 
         else:
-            neighbors = get_nth_neighbors(neighbors, rank)
+            neighbors = get_nth_neighbors(neighbors, rank, tol)
         for neighbor in neighbors:
             #if _isvalid_ordering(base, neighbor, i, j, k):
             print('%4d  %15s%d'%(base.index,  neighbor['offset'], neighbor['index']))
@@ -80,10 +80,10 @@ def _isvalid_ordering(base, neighbor, i, j, k):
 
 
 
-def get_nth_neighbors(neighbors, rank):
+def get_nth_neighbors(neighbors, rank, tol):
     def _helper(neighbors, rank):
         dist = neighbors[0]['distance']
-        newlst = filter(lambda x: x['distance'] == dist, neighbors)
+        newlst = filter(lambda x: abs(x['distance'] - dist) < tol, neighbors)
         if rank == 1:
             return newlst
         else:
@@ -122,5 +122,7 @@ if __name__ == '__main__':
     parser.add_argument('topology', help = 'input topology file')
     parser.add_argument('--rank', '-r', default=1, type=int, help='n-th nearest neighbors')
     parser.add_argument('--distance', '-d', default=None, type=float, help='distance(squared) of bonds')
+    parser.add_argument('--tolerance', '-t', default=0.000001, type=float, help='tolerance in distance comparison(to handle numerical errors involving square roots)')
+    parser.add_argument('--search', '-s', default=1, type=int, help='look-up distance in unit cells along each direction for finding neighbors')
     arg = parser.parse_args()
-    gen_neighbors(arg.topology, rank=arg.rank, target_dist=arg.distance)
+    gen_neighbors(arg.topology, rank=arg.rank, target_dist=arg.distance, tol=arg.tolerance, search=arg.search)
