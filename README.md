@@ -31,7 +31,7 @@ Once simulation is done, spin-wave spectrum can be computed from output trajecto
 
 ### Before running the simulation 
 
-To run a simulation, you need topology file (.top) and run parameter file (.sdp). Topology file contains information that completely defines a sytem to be simulated. Run-parameter file, on the other hand, defines a simulation specific parameters such as simulation length, simualtion type, output size, and etc. Optionally, a configuration file (.cnf) can be provided to overrides initial spin configurations. If .cnf file is not given, spin configurations defined in the .top file will be used. 
+To run a simulation, you need a topology file (.top) and a run parameter file (.sdp). Topology file contains information that completely defines a sytem to be simulated. Run-parameter file, on the other hand, defines a simulation specific parameters such as simulation length, simualtion type, output size, and etc. Optionally, a configuration file (.cnf) can be provided to overrides initial spin configurations. If .cnf file is not given, spin configurations defined in the .top file will be used. 
 
 Below is an example of .top file :
 
@@ -74,7 +74,7 @@ Below is an example of .top file :
 
 Below is an example of .sdp file :
 
-### sdrun.sdp
+#### sdrun.sdp
     
     # Spin Dynamics Simulation run parameters 
 
@@ -99,6 +99,7 @@ Below is an example of .sdp file :
 
 
 
+
 ### Linear vs Nonlinear 
 
 Ths code supports both linear and non-linear simulation. Just specify either linear of nonlinear in the sdp file. Typically, nonlinear simulation can be used to find ground state spin configurations with the aid of large damping constant alpha, and linear simulation can be used to obtain clean spin fluctuations in the vicinity of ground state.
@@ -108,6 +109,7 @@ Ths code supports both linear and non-linear simulation. Just specify either lin
 ## Tutorials
 
 Below are quick tutorials on how to use mySD package. All input files used in the tutorials can be found in /examples folder. 
+
 
 ###1. Square Lattice Ferromagnet
 (to be updated...)
