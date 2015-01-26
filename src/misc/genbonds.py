@@ -121,8 +121,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('topology', help = 'input topology file')
     parser.add_argument('--rank', '-r', default=1, type=int, help='n-th nearest neighbors')
-    parser.add_argument('--distance', '-d', default=None, type=float, help='distance(squared) of bonds')
-    parser.add_argument('--tolerance', '-t', default=0.000001, type=float, help='tolerance in distance comparison(to handle numerical errors involving square roots)')
-    parser.add_argument('--search', '-s', default=1, type=int, help='look-up distance in unit cells along each direction for finding neighbors')
+    parser.add_argument('--distance', '-d', default=None, type=float,\
+                        help='distance(squared) of bonds')
+    parser.add_argument('--tolerance', '-t', default=0.000001, type=float,\
+                        help='tolerance in distance comparison(to handle numerical \
+                              errors involving square roots)')
+    parser.add_argument('--search', '-s', default=1, type=int, help='look-up distance \
+                        in unit cells along each direction for finding neighbors')
     arg = parser.parse_args()
     gen_neighbors(arg.topology, rank=arg.rank, target_dist=arg.distance, tol=arg.tolerance, search=arg.search)
