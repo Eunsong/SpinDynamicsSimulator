@@ -44,7 +44,7 @@ To run a simulation, you need a topology file (.top) and a run parameter file (.
 Below are examples of .top file and .sdp file. File formats are mostly self-explanatory, but will be explained in the tutorials section. Note that texts following # symbol are comments and not processed in the simulator code :
 
 
-#### squareFM.top
+#### topol.top
     
     [ basis ]
     #number      x       y      z       (optional)Sx    Sy      Sz
@@ -188,7 +188,7 @@ We now define how often we will output trajectories and energies. Trajectory wil
     nstenergy               = 0    #save total energy every nstenergy steps(only for nonlinear simulations) 
 
 
-Finally, since we start from a ground state configuration, in order to generate fluctuations, we must perturb a site. Set *perturb_site = true* will enable initlal perturbation. Location of the perturbation can be specified in perturbing_site_index, but generally you will never have to change this index. Amount of perturbation can be specified in *perturbation_size*. For linear simulations, this value simply determines initial spin deviation size. For nonlinear simulations, this value is a rotation degree(in angles) of a specified site from the initial configuration. 
+Finally, since we start from a ground state configuration, in order to generate fluctuations, we must perturb a site. Set *perturb_site = true* will enable initlal perturbation. Location of the perturbation can be specified in *perturbing_site_index*, but generally you will never have to change this index. Amount of perturbation can be specified in *perturbation_size*. For linear simulations, this value simply determines initial spin deviation size. For nonlinear simulations, this value is a rotation degree(in angles) of a specified site from the initial configuration. 
 
     perturb_site            = true #true to perturb a site at start
     perturbing_site_index   = 0    #index of a site to be perturbed
@@ -242,7 +242,7 @@ This will take roughly a minute or so depending on your computer and number of t
     out.cnf
 
 
-System information file, out.info, contains the simulation parameters and lattice sites that have been used in the simulation. Trajectory file, out.trj, contains simply spin configurations at specified time steps. Configuration file, out.cnf, is a final configuration(spin deviations for linear simulation), but is not much of use for a linear simulation. So we can simply delete it. 
+The system information file, out.info, contains the simulation parameters and lattice sites that have been used in the simulation. The trajectory file, out.trj, contains simply spin configurations at specified time steps. The configuration file, out.cnf, is a final configuration(spin deviations for linear simulation), but is not much of use for a linear simulation. So we can simply delete it. 
 
 
      
