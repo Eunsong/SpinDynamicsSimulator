@@ -165,7 +165,7 @@ Now, we need to define a Hamiltonian. We first give a name to the Hamiltonian. I
 
 Note that an interaction matrix is defined as follows:
 
-![alt tag](ttps://raw.githubusercontent.com/Eunsong/SpinDynamicsSimulator/master/examples/figures/AMatrix.png)
+![alt tag](https://raw.githubusercontent.com/Eunsong/SpinDynamicsSimulator/master/examples/figures/AMatrix.png)
 
 which then defines the Hamiltonian of the system:
 
