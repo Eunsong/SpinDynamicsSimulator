@@ -1,7 +1,7 @@
 # mySD - Spin Dynamics Simulator
 
 
-![alt tag](ttps://raw.githubusercontent.com/Eunsong/SpinDynamicsSimulator/master/examples/figures/mySD_sample.jpg)
+![alt tag](https://raw.githubusercontent.com/Eunsong/SpinDynamicsSimulator/master/examples/figures/mySD_sample.jpg)
 
 
 
