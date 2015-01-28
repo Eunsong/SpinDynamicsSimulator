@@ -28,13 +28,13 @@ A simulation can be run by typing the following line in a Linux system:
 
 
 Number of threads need not be specified. Default vaule is the number of available processors in the system where the main program is executed.
-Example of topology file(*.top*), run parameter file(*.sdp*), and spin configuration file(*.cnf*) are in the example folder. Usage example can also be displayed by executing the code with *--help* (or *-h*) flag :
+Example of topology file(.top), run parameter file(.sdp), and spin configuration file(.cnf) are in the example folder. Usage example can also be displayed by executing the code with *--help* (or *-h*) flag :
 
 
     java Run --help 
 
 
-Run code generates four different output files: simulation information file (.info), spin trajectory file (*.trj*), final spin configuration file (*.cnf*) and system energy file (*.eng*). Note that *.eng* file is not generated for linear type simulations. All these files use same common file name defined with -o flag. For instance, "*-o out*" will create: *out.info*, *out.trj*, *out.cnf*, and *out.eng*. Once simulation is done, spin-wave spectrum can be computed from output trajectory data(*.trj* file) using ComputeSpinWave.java code along with the .info file generated from the simulation. To do this, one can type in the following commands :
+Run code generates four different output files: simulation information file (.info), spin trajectory file (.trj), final spin configuration file (.cnf) and system energy file (.eng). Note that .eng file is not generated for linear type simulations. All these files use same common file name defined with -o flag. For instance, "*-o out*" will create: *out.info*, *out.trj*, *out.cnf*, and *out.eng*. Once simulation is done, spin-wave spectrum can be computed from output trajectory data(.trj file) using *ComputeSpinWave.java* code along with the .info file generated from the simulation. To do this, one can type in the following commands :
 
     java ComputeSpinWave -i [input name(need .info and .trj)] -t [topology file] -nk [number of k-space grids] -kx [bx direction component] -ky [by component] -kz [bz component] -nw [number of frequency space grids] -dw [size of each frequency grid] -o [output name]
 
