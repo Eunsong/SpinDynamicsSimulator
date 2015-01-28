@@ -306,8 +306,28 @@ Note that the flag *-i* followed by the file name *out* tells the code to look f
 ![alt tag](https://raw.githubusercontent.com/Eunsong/SpinDynamicsSimulator/master/examples/figures/kvector.png)
 
 
-where m runs from 0 to nk.     
+where m runs from 0 to nk. *-nk* and *-dw* determine the number of frequency space grids and the size of each grid respectively. Once computation is done, you can open the file *spinwave_squareFM.dat*. The file has three-column data which looks like this :
 
+    # spin-wave spectrum computed from ComputeSpinWave.java code
+    # computed at : 2015/01/22 16:07:56
+    # check out https://github.com/Eunsong/SpinDynamicsSimulator for most recent updates
+    #      k     omega  S[k][w]
+      0.0000    0.0000  9.997e+03
+      0.0000    0.0500  5.231e+01
+      0.0000    0.1000  5.057e+01
+         .         .        .
+         .         .        .
+
+
+where each column indicates k-value(*m/nk* precisely), frequency, and spin-deviation in k-w space. You can plot this file using your favorite plotting tool that supports either 3d plot or contour plot. Here I will plot it using gnuplot. If you go to */examples/squareFM/* folder, you can find a gnuplot script named *plotting_script*. You can simply execute this script to create a figure,
+
+    gnuplot plotting_script
+
+which will create a file named *spinwave_squareFM_k100.png* which looks like this.
+
+#### computed spin-wave spectrum of Ferro-magnetic square lattice
+
+<img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/squareFM/spinwave_squareFM_k100.jpg" alt="Drawing" stype="width:600px;"/>
 
 
 
