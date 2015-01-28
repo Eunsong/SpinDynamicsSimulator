@@ -28,13 +28,13 @@ A simulation can be run by typing the following line in a Linux system:
 
 
 Number of threads need not be specified. Default vaule is the number of available processors in the system where the main program is executed.
-Example of topology file(.top), run parameter file(.sdp), and spin configuration file(.cnf) are in the example folder. Usage example can also be displayed by executing the code with --help (or -h) flag :
+Example of topology file(*.top*), run parameter file(*.sdp*), and spin configuration file(*.cnf*) are in the example folder. Usage example can also be displayed by executing the code with *--help* (or *-h*) flag :
 
 
     java Run --help 
 
 
-Run code generates four different output files: simulation information file (.info), spin trajectory file (.trj), final spin configuration file (.cnf) and system energy file (.eng). Note that .eng file is not generated for linear type simulations. All these files use same common file name defined with -o flag. For instance, "-o out" will create: out.info, out.trj, out.cnf, and out.eng. Once simulation is done, spin-wave spectrum can be computed from output trajectory data(.trj file) using ComputeSpinWave.java code along with the .info file generated from the simulation. To do this, one can type in the following commands :
+Run code generates four different output files: simulation information file (.info), spin trajectory file (*.trj*), final spin configuration file (*.cnf*) and system energy file (*.eng*). Note that *.eng* file is not generated for linear type simulations. All these files use same common file name defined with -o flag. For instance, "*-o out*" will create: *out.info*, *out.trj*, *out.cnf*, and *out.eng*. Once simulation is done, spin-wave spectrum can be computed from output trajectory data(*.trj* file) using ComputeSpinWave.java code along with the .info file generated from the simulation. To do this, one can type in the following commands :
 
     java ComputeSpinWave -i [input name(need .info and .trj)] -t [topology file] -nk [number of k-space grids] -kx [bx direction component] -ky [by component] -kz [bz component] -nw [number of frequency space grids] -dw [size of each frequency grid] -o [output name]
 
@@ -50,7 +50,7 @@ Similarly, usage example can be displayed with --help (or -h) flag :
 
 To run a simulation, you need a topology file (.top) and a run parameter file (.sdp). Topology file contains information that completely defines a sytem to be simulated. Run-parameter file, on the other hand, defines simulation specific parameters such as simulation length, simualtion type, output size, and etc. Optionally, a configuration file (.cnf) can be provided to overrides initial spin configurations. If .cnf file is not given, spin configurations defined in the .top file will be used. 
 
-Below are examples of .top file and .sdp file. File formats are mostly self-explanatory, but will be explained in the tutorials section. Note that texts following # symbol are comments and not processed in the simulator code :
+Below are examples of .top file and .sdp file. File formats are mostly self-explanatory, but will be thoroughly explained in the tutorials section. Note that texts following # symbol are comments and not processed in the simulator code.
 
 
 #### topol.top
@@ -136,7 +136,7 @@ We fisrt need to write a topology file for this system. In this case, we only ne
          0     0.0     0.0    0.0                0.0   0.0     1.0 
     
 
-Then, we define Lattice vectors: ax, ay, and az. Here, we will simply put lattice vectors along the lab coordinates :
+Then, we define Lattice vectors: *ax*, *ay*, and *az*. Here, we will simply put lattice vectors along the lab coordinates :
     
     [ lattice_vector ]
     #ax
@@ -147,14 +147,14 @@ Then, we define Lattice vectors: ax, ay, and az. Here, we will simply put lattic
     0.0     0.0     1.0
 
 
-The actual system consists of repeated basis along the lattice vectors. In the *[ unit_cells ]* section, we specify number of repeated units along each lattice vectors. Let's say later we will compute spin-wave spectrum along bx(reciprocal lattice vector of ax). In order to achieve good resolution of spin-wave along the desired direction, we need to place more repeated unit cells along this direction. I decided to put 50 along ax, and 5 for the other directions. 
+The actual system consists of repeated basis along the lattice vectors. In the *[ unit_cells ]* section, we specify number of repeated units along each lattice vectors. Let's say later we will compute spin-wave spectrum along *bx*(reciprocal lattice vector of *ax*). In order to achieve good resolution of spin-wave along the desired direction, we need to place more repeated unit cells along this direction. I decided to put 50 along *ax*, and 5 for the other directions. 
 
     [ unit_cells ]
     #nx     ny      nz
     50      5      5
 
 
-Now, we need to define a Hamiltonian. We first give a name to the Hamiltonian. In this case, we name it *J1_FM* meaning Ferro Magnetic interaction between nearest neighbors(though name is only used to look up matching interactions in the bonds section). Ferromagnetic Heigenberg interaction consists of negative diagonal components and zero off-diagonal components. So we can write it write it like this:
+Now, we need to define a Hamiltonian. We first give a name to the Hamiltonian. In this case, we name it *J1_FM* meaning Ferro Magnetic interaction between nearest neighbors(though name is only used to look up matching interactions in the bonds section). Ferromagnetic Heigenberg interaction consists of negative diagonal components and zero off-diagonal components. So we can write it like this:
 
 
     [ Hamiltonian ]
@@ -172,7 +172,7 @@ which then determines the Hamiltonian of the system:
 ![alt tag](https://raw.githubusercontent.com/Eunsong/SpinDynamicsSimulator/master/examples/figures/HamiltonianExpression.png)
 
 
-Finally, we need to sepcify all the i-j bond pairs in the system. Note that i-j bond and j-i bond must both be explicitly defined in this section (this will not results in double counting.) This allows us more flexibility in defining pair-wise interactions. For inter-unitcell interactions, i.e. bonds that cross unit cell border, you can specify relative position of corresponding unitcell in anglular brackets. For instance, "0    < i+1 >1" indicates a bond between sub-lattice 0 at i, j, k-th unit cell and sub-lattice 1 at i+1, j, k-th unit cell. For square lattice, entire bonds can be defined as follows :
+Finally, we need to sepcify all the i-j bond pairs in the system. Note that i-j bond and j-i bond must both be explicitly defined in this section (this will not results in double counting.) This allows us more flexibility in defining pair-wise interactions. For inter-unitcell interactions, *i.e.* bonds that cross unit cell border, you can specify relative position of corresponding unitcell in anglular brackets. For instance, *"0    < i+1 >1"* indicates a bond between sub-lattice 0 at i, j, k-th unit cell and sub-lattice 1 at i+1, j, k-th unit cell. For square lattice, entire bonds can be defined as follows :
 
     [ bonds ]
     #a           b       HamiltonianType
@@ -215,10 +215,10 @@ Finally, since we start from a ground state configuration, in order to generate 
                                    #nonlinear case, this is a roatation angle(degree)
 
 
-We are done with the run parameters as well. Let's put them together in sdrun.sdp file. Or you can simply use example files in the */examples/squareFM* folder.  
+We are done with the run parameters as well. Let's put them together in *sdrun.sdp* file. Or you can simply use example files in the */examples/squareFM* folder.  
 
 
-Let's first check what inputs must be given to run a simulation. Type the following in the command line to display instruction of Run code :
+Let's first check what inputs must be given to run a simulation. Type the following in the command line to display instruction of *Run* code :
 
     java Run --help
 
@@ -295,7 +295,7 @@ This will display the following :
     ##################################################################### 
 
 
-For our system, we can type in the following line to execute ComputeSpinWave code using output trajectory we have generated :
+For our system, we can type in the following line to execute *ComputeSpinWave* code using output trajectory we have generated :
 
     java ComputeSpinWave -i out -t topol.top -nk 50 -kx 1 -ky 0 -kz 0 -nw 100 -dw 0.05 -o spinwave_squareFM.dat
 
@@ -319,7 +319,7 @@ where m runs from 0 to nk. *-nk* and *-dw* determine the number of frequency spa
          .         .        .
 
 
-where each column indicates k-value(*m/nk* precisely), frequency, and spin-deviation in k-w space. You can plot this file using your favorite plotting tool that supports either 3d plot or contour plot. Here I will plot it using gnuplot. If you go to */examples/squareFM/* folder, you can find a gnuplot script named *plotting_script*. You can simply execute this script to create a figure,
+where each column indicates k-value(*m/nk* precisely), frequency, and spin-deviation in k-w space. You can plot this file using your favorite plotting tool that supports either 3d plot or contour plot. Here I will plot it using *gnuplot*. If you go to */examples/squareFM/* folder, you can find a gnuplot script named *plotting_script*. You can simply execute this script to create a figure,
 
     gnuplot plotting_script
 
