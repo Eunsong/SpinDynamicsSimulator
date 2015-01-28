@@ -325,9 +325,7 @@ where each column indicates k-value(*m/nk* precisely), frequency, and spin-devia
 
 which will create a file named *spinwave_squareFM_k100.png* which looks like this.
 
-#### computed spin-wave spectrum of Ferro-magnetic square lattice
-
-<img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/squareFM/spinwave_squareFM_k100.jpg" alt="Drawing" stype="width:600px;"/>
+<img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/squareFM/spinwave_squareFM_k100.jpg" alt="Drawing" stype="width:400px;"/>
 
 
 
