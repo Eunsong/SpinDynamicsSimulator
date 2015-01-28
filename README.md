@@ -9,7 +9,11 @@
 Classical spin dynamics simulator code written in Java.
 
 The project aims to provide a generic platform to run linear and nonlinear
-classical spin dynamics simulaton of any system by solving Landau-Lifshitz-Gilbert equation.
+classical spin dynamics simulaton of any system by solving Landau-Lifshitz-Gilbert equation:
+
+
+![alt tag](https://raw.githubusercontent.com/Eunsong/SpinDynamicsSimulator/master/examples/figures/LLGequation.png)
+
 
 (please refer to the following reference for more details : Eunsong Choi, Gia-Wei Chern, Natalia Perkins, Chiral magnetism and helimagnons in a pyrochlore antiferromagnet, Phys. Rev. B 87, 054418 (2013),
 or http://arxiv.org/pdf/1301.5958v1.pdf )
@@ -150,12 +154,22 @@ The actual system consists of repeated basis along the lattice vectors. In the *
     50      5      5
 
 
-Now, we need to define a Hamiltonian. We first give a name to the Hamiltonian. In this case, we name it *J1_FM* meaning Ferro Magnetic interaction between nearest neighbors(though name is only used to look up matching interactions in the bonds section). Ferromagnetic Heigenberg interaction consists of negative diagonal components and zero off-diagonal components.
+Now, we need to define a Hamiltonian. We first give a name to the Hamiltonian. In this case, we name it *J1_FM* meaning Ferro Magnetic interaction between nearest neighbors(though name is only used to look up matching interactions in the bonds section). Ferromagnetic Heigenberg interaction consists of negative diagonal components and zero off-diagonal components. So we can write it write it like this:
 
 
     [ Hamiltonian ]
     #type       a11     a12     a13     a21     a22     a23     a31     a32     a33
     J1_FM      -1.0     0.0     0.0     0.0    -1.0     0.0     0.0     0.0    -1.0
+
+
+
+Note that an interaction matrix is defined as follows:
+
+![alt tag](ttps://raw.githubusercontent.com/Eunsong/SpinDynamicsSimulator/master/examples/figures/AMatrix.png)
+
+which then defines the Hamiltonian of the system:
+
+![alt tag](https://raw.githubusercontent.com/Eunsong/SpinDynamicsSimulator/master/examples/figures/HamiltonianExpression.png)
 
 
 Finally, we need to sepcify all the i-j bond pairs in the system. Note that i-j bond and j-i bond must both be explicitly defined in this section (this will not results in double counting.) This allows us more flexibility in defining pair-wise interactions. For inter-unitcell interactions, i.e. bonds that cross unit cell border, you can specify relative position of corresponding unitcell in anglular brackets. For instance, "0    < i+1 >1" indicates a bond between sub-lattice 0 at i, j, k-th unit cell and sub-lattice 1 at i+1, j, k-th unit cell. For square lattice, entire bonds can be defined as follows :
@@ -286,9 +300,11 @@ For our system, we can type in the following line to execute ComputeSpinWave cod
     java ComputeSpinWave -i out -t topol.top -nk 50 -kx 1 -ky 0 -kz 0 -nw 100 -dw 0.05 -o spinwave_squareFM.dat
 
 
-Note that the flag *-i* followed by the file name *out* tells the code to look for *out.info* and *out.trj* files to re-build the lattice system and import the trajectory. *-nk* flag defines the number of k-space points to be computed along the direction specified by -kx, -ky, and -kz flags. 
+Note that the flag *-i* followed by the file name *out* tells the code to look for *out.info* and *out.trj* files to re-build the lattice system and import the trajectory. *-nk* flag defines the number of k-space points to be computed along the direction specified by -kx, -ky, and -kz flags. The equation below shows how how actual k-vectors are related to these parameters:
 
+![alt tag](https://raw.githubusercontent.com/Eunsong/SpinDynamicsSimulator/master/examples/figures/kvector.png)
 
+where m runs from 0 to nk. 
      
 
 
