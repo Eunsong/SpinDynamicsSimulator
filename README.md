@@ -300,12 +300,13 @@ For our system, we can type in the following line to execute ComputeSpinWave cod
     java ComputeSpinWave -i out -t topol.top -nk 50 -kx 1 -ky 0 -kz 0 -nw 100 -dw 0.05 -o spinwave_squareFM.dat
 
 
-Note that the flag *-i* followed by the file name *out* tells the code to look for *out.info* and *out.trj* files to re-build the lattice system and import the trajectory. *-nk* flag defines the number of k-space points to be computed along the direction specified by -kx, -ky, and -kz flags. The equation below shows how how actual k-vectors are related to these parameters:
+Note that the flag *-i* followed by the file name *out* tells the code to look for *out.info* and *out.trj* files to re-build the lattice system and import the trajectory. *-nk* flag defines the number of k-space points to be computed along the direction specified by *-kx*, *-ky*, and *-kz* flags. The equation below shows how computed k-vectors are determined:
+
 
 ![alt tag](https://raw.githubusercontent.com/Eunsong/SpinDynamicsSimulator/master/examples/figures/kvector.png)
 
-where m runs from 0 to nk. 
-     
+
+where m runs from 0 to nk.     
 
 
 
