@@ -20,4 +20,8 @@ public class LatticeSite{
     public Vector3D getBasePosition(){
         return this.basePosition;
     }
+
+    public int getBaseIndex(){
+        return this.baseIndex;
+    }
 }

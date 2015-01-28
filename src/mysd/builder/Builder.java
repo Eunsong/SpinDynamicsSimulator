@@ -199,6 +199,10 @@ public class Builder{
                                        "Will ignore this.");
                 }
             }
+            if ( cnt == 0 ){
+                System.err.println("number of unit cells is not defined!");           
+                System.exit(99);
+            }
         }
         catch ( RuntimeException ex){
             System.err.println("a line in [ unit_cells ] cannot be properly read. "+
@@ -373,6 +377,7 @@ public class Builder{
     private static List<LatticeSite> getBasis(HashMap<String, List<String>> inputs){
 
         List<LatticeSite> basis = new LinkedList<LatticeSite>();
+        int cnt = 0;
         try {
             for ( String line : inputs.get("basis") ){
                 String[] tokens = line.trim().split("\\s+");
@@ -382,11 +387,18 @@ public class Builder{
                 else if ( line.trim().matches(
                           "\\d+\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*.*")){
                     int index = Integer.parseInt(tokens[0]);
+                    if (index != cnt ){ 
+                        System.err.println("Error! basis numbers should be "+
+                                           "defined in order from 0 without "+
+                                           "missing numbers");
+                        System.exit(99); 
+                    }
                     double x = Double.parseDouble(tokens[1]);
                     double y = Double.parseDouble(tokens[2]);
                     double z = Double.parseDouble(tokens[3]);
                     LatticeSite site = new LatticeSite(index, new Vector3D(x,y,z));
                     basis.add(site);
+                    cnt++;
                 }
                 else{
                     System.err.println("Unrecognizable line found in [ basis ]. "+
