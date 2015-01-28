@@ -3,7 +3,7 @@
 ### Introduction
 Classical spin dynamics simulator code written in Java.
 
-The project aims to provide generic platform to run linear and nonlinear
+The project aims to provide a generic platform to run linear and nonlinear
 classical spin dynamics simulaton of any system by solving Landau-Lifshitz-Gilbert equation.
 
 (please refer to the following reference for more details : Eunsong Choi, Gia-Wei Chern, Natalia Perkins, Chiral magnetism and helimagnons in a pyrochlore antiferromagnet, Phys. Rev. B 87, 054418 (2013),
@@ -242,7 +242,46 @@ This will take roughly a minute or so depending on your computer and number of t
     out.cnf
 
 
-The system information file, out.info, contains the simulation parameters and lattice sites that have been used in the simulation. The trajectory file, out.trj, contains simply spin configurations at specified time steps. The configuration file, out.cnf, is a final configuration(spin deviations for linear simulation), but is not much of use for a linear simulation. So we can simply delete it. 
+The system information file, *out.info*, contains the simulation parameters and lattice sites that have been used in the simulation. The trajectory file, *out.trj*, contains simply spin configurations recorded at specified intervals. The configuration file, *out.cnf*, is a final configuration(spin deviations for linear simulation), but is not much of use for a linear simulation. So we can simply delete it. 
+
+
+Before computing spin-wave spectrum, let's check out what inputs are needed and how to feed them to the code by displaying usage instruction :
+
+    java ComputeSpinWave --help
+
+This will display the following :
+
+
+    #####################################################################
+    # ComputeSpinWave code computes spin-wave spectrum from trajectories#
+    # of spins generated from mysd simulator. Check out the following   #
+    # github repository for most recent version :                       #
+    # https://github.com/Eunsong/SpinDynamicsSimulator.git              #
+    #                                                                   #
+    # The code requires following inputs to run :                       #
+    #          1. -i   commond name of .info and .trj files             #
+    #          2. -t   *.top  file                                      #
+    #          3. -nk  number of desired k-space points(this must be    #
+    #                  divisible of number of unit cells along desired  #
+    #                  direction.)                                      #
+    #          4. -kx, -ky, -kz  desired k-space direction              #
+    #          5. -nw  number of desired w-space points                 #
+    #          6. -dw  size of w-space grid                             #
+    #          7. -o   output file name                                 #
+    #                                                                   #
+    # Usage example : java ComputeSpinWave -i inputs -t topology.top    #
+    #                -nk 50 -kx 1 -ky 0 -kz 0 -nw 100 -dw 0.05          #
+    #                -o spinwaves_cubicFM.dat                           #
+    #                                                                   #
+    ##################################################################### 
+
+
+For our system, we can type in the following line to execute ComputeSpinWave code using output trajectory we have generated :
+
+    java ComputeSpinWave -i out -t topol.top -nk 50 -kx 1 -ky 0 -kz 0 -nw 100 -dw 0.05 -o spinwave_squareFM.dat
+
+
+Note that the flag *-i* followed by the file name *out* tells the code to look for *out.info* and *out.trj* files to re-build the lattice system and import the trajectory. *-nk* flag defines the number of k-space points to be computed along the direction specified by -kx, -ky, and -kz flags. 
 
 
      
