@@ -27,7 +27,8 @@ public class Run{
             "#          3. -c   (optional) .cnf file for overloading initial     #\n"+
             "#                  spin configurations.                             #\n"+
             "#          4. -o   desired common file name for outputs             #\n"+
-            "#                  (e.g. -o out will create out.info and out.trj    #\n"+   
+            "#                  (e.g. -o out will create out.info, out.trj,      #\n"+
+            "#                   out.cnf, and out.eng)                           #\n"+ 
             "#          5. -nt  (optional) number of threads to be used for      #\n"+
             "#                  the simulation. If not specified, number of      #\n"+
             "#                  currently available processors will be used.     #\n"+
@@ -53,6 +54,7 @@ public class Run{
         String outTraj = outFile + ".trj";
         String outInfo = outFile + ".info";
         String outConf = outFile + ".cnf";
+        String outEner = outFile + ".eng";
         if ( messages.get("nt") != null){
             nthreads = Integer.parseInt(messages.get("nt"));
         }
@@ -83,8 +85,11 @@ public class Run{
 
                 mysd.writer.Writer writer = 
                     new BasicWriter<FullSpinSite>(system, outTraj);
+                mysd.writer.Writer energyWriter =
+                    new BasicWriter<FullSpinSite>(system, outEner);
                 manager.addSystem(system);
                 manager.addWriter(writer);
+                manager.addEnergyWriter(energyWriter);
             }
                 break;
 

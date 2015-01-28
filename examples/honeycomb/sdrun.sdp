@@ -2,15 +2,15 @@
 
 title                   = SquareLattice_AntiFerroMagnet
 
-runtype                 = linear  #linear of nonlinear.
+runtype                 = nonlinear  #linear of nonlinear.
 
-dt                      = 0.02  #time step size
+dt                      = 0.1  #time step size
 ntstep                  = 50000 #number of time steps
-alpha                   = 0.02  #Gilbert damping constant
+alpha                   = 0.5  #Gilbert damping constant
 
-nstout                  = 5    #save outputs every nstout steps(0 to write only the final config)
+nstout                  = 0    #save outputs every nstout steps(0 to write only the final config)
 nstbuff                 = 100  #output buffer size(can enable this option using BufferedBasicWriter)
-nstenergy               = 0    #save total energy every nstenergy steps(only for nonlinear simulations)
+nstenergy               = 5    #save total energy every nstenergy steps(only for nonlinear simulations)
 
 perturb_site            = true #true to perturb a site at start
 perturbing_site_index   = 0    #index of a site to be perturbed

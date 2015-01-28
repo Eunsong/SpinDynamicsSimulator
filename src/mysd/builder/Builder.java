@@ -63,6 +63,7 @@ public class Builder{
         double alpha = Double.parseDouble(buffer.get("alpha"));
         int nstout = Integer.parseInt(buffer.get("nstout"));
         int nstbuff = Integer.parseInt(buffer.get("nstbuff"));
+        int nstenergy = Integer.parseInt(buffer.get("nstenergy"));
         boolean pt_site = new Boolean(buffer.get("perturb_site"));
         int pt_site_index = -1;
         double pt_size = 0.0;
@@ -81,8 +82,9 @@ public class Builder{
                                    (buffer.get("perturbation_size"));
         }
         builder.title( buffer.get("title")).runtype(runtype).dt(dt).ntstep(ntstep)
-               .alpha(alpha).nstout(nstout).nstbuff(nstbuff).perturb_site(pt_site)
-               .perturbing_site_index(pt_site_index).perturbation_size(pt_size);
+               .alpha(alpha).nstout(nstout).nstbuff(nstbuff).nstenergy(nstenergy)
+               .perturb_site(pt_site).perturbing_site_index(pt_site_index)
+               .perturbation_size(pt_size);
         return builder.build();
     }
 
@@ -313,7 +315,7 @@ public class Builder{
                 if ( !line.trim().matches("[^\\s]+.*")){
                     // empty line
                 }
-                else if (line.matches("\\s*\\d+\\.?\\d*\\s+\\d+\\.?\\d*\\s+\\d+\\.?\\d*")){
+                else if (line.matches("\\s*-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*")){
                     double x = Double.parseDouble(tokens[0]);
                     double y = Double.parseDouble(tokens[1]);
                     double z = Double.parseDouble(tokens[2]);

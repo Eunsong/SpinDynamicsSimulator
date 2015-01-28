@@ -11,6 +11,7 @@ public class RunParameter{
     public final double alpha;
     public final int nstout;
     public final int nstbuff;
+    public final int nstenergy;
     public final boolean perturb_site;
     public final int perturbing_site_index;
     public final double perturbation_size;
@@ -28,6 +29,7 @@ public class RunParameter{
         this.alpha = builder.alpha;
         this.nstout = builder.nstout;
         this.nstbuff = builder.nstbuff;
+        this.nstenergy = builder.nstenergy;
         this.perturb_site = builder.perturb_site;
         this.perturbing_site_index = builder.perturbing_site_index;
         this.perturbation_size = builder.perturbation_size;
@@ -41,6 +43,7 @@ public class RunParameter{
         private double alpha;
         private int nstout;
         private int nstbuff;
+        private int nstenergy;
         private boolean perturb_site;
         private int perturbing_site_index;
         private double perturbation_size;
@@ -83,6 +86,10 @@ public class RunParameter{
             this.nstbuff = nstbuff;
             return this;
         }
+        public Builder nstenergy(int nstenergy){
+            this.nstenergy = nstenergy;
+            return this;
+        }   
         public Builder perturb_site(boolean perturb_site){
             this.perturb_site = perturb_site;
             return this;

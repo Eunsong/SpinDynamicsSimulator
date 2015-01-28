@@ -26,7 +26,7 @@ public class Hamiltonian extends Interaction<FullSpinSite>{
     public double getEnergy(FullSpinSite si, FullSpinSite sj){
         Vector3D spini = si.getSpinVector();
         Vector3D spinj = sj.getSpinVector();
-        return Vector3D.dot(product(spini), spinj); 
+        return Vector3D.dot(product(spinj), spini); 
     }
 
     private Vector3D product(Vector3D v){

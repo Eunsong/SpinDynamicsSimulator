@@ -1,0 +1,11 @@
+#! /usr/bin/gnuplot
+
+set term png enhanced
+set output "./spinwave_squareFM_k100.png"
+set title "Square Lattice FM, k = 100"
+set xlabel "k"
+set ylabel "{/Symbol w}"
+set pm3d map
+set zrange [0:150]
+set pm3d interpolate 4,4
+splot "./spinwave_squareFM.dat" u 1:2:3 w pm3d
