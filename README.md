@@ -328,7 +328,7 @@ which will create a file named *spinwave_squareFM_k100.png* that looks like this
 <img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/squareFM/spinwave_squareFM_k100.jpg" alt="Drawing" stype="width:400px;"/>
 
 
-This completely the first tutorial. In the next tutorial, we will try slightly more complicated system and also see how non-linear simulation can be used.
+This completes the first tutorial. In the next tutorial, we will try slightly more complicated system and also see how non-linear simulation can be used.
 
 
 
