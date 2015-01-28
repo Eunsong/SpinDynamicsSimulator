@@ -167,7 +167,7 @@ Note that an interaction matrix is defined as follows:
 
 ![alt tag](https://raw.githubusercontent.com/Eunsong/SpinDynamicsSimulator/master/examples/figures/AMatrix.png)
 
-which then defines the Hamiltonian of the system:
+which then determines the Hamiltonian of the system:
 
 ![alt tag](https://raw.githubusercontent.com/Eunsong/SpinDynamicsSimulator/master/examples/figures/HamiltonianExpression.png)
 
@@ -323,9 +323,12 @@ where each column indicates k-value(*m/nk* precisely), frequency, and spin-devia
 
     gnuplot plotting_script
 
-which will create a file named *spinwave_squareFM_k100.png* which looks like this.
+which will create a file named *spinwave_squareFM_k100.png* that looks like this,
 
 <img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/squareFM/spinwave_squareFM_k100.jpg" alt="Drawing" stype="width:400px;"/>
+
+
+This completely the first tutorial. In the next tutorial, we will try slightly more complicated system and also see how non-linear simulation can be used.
 
 
 
