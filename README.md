@@ -1,5 +1,10 @@
 # mySD - Spin Dynamics Simulator
 
+
+![alt tag](https://raw.githubusercontent.com/Eunsong/SpinDynamicsSimulator/master/examples/figures/mySD_sample.jpg)
+
+
+
 ### Introduction
 Classical spin dynamics simulator code written in Java.
 
