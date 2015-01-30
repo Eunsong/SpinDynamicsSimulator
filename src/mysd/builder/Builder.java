@@ -144,9 +144,9 @@ public class Builder{
                                 String type = bond.type;
                                 Hamiltonian h = hamiltonians.get(type);
                                 if ( h == null ){
-                                    System.err.println("Error! undefined "+
-                                                       "Hamiltonian type : "+ type);
-                                    System.exit(99);
+                                    throw new InvalidTopFileException(
+                                                     "Error! undefined "+
+                                                     "Hamiltonian type : "+ type);
                                 } 
                                 Neighbor<FullSpinSite> nj = 
                                     new Neighbor<FullSpinSite>
@@ -173,7 +173,8 @@ public class Builder{
     }
 
 
-    private static int[] getNumberOfUnitCells(HashMap<String, List<String>> inputs){
+    private static int[] getNumberOfUnitCells(HashMap<String, List<String>> inputs)
+                                                      throws InvalidTopFileException{
         int[] numbers = new int[3];
         int cnt = 0;
         try {
@@ -200,20 +201,20 @@ public class Builder{
                 }
             }
             if ( cnt == 0 ){
-                System.err.println("number of unit cells is not defined!");           
-                System.exit(99);
+                throw new InvalidTopFileException("number of unit cells is not defined!");
             }
         }
         catch ( RuntimeException ex){
-            System.err.println("a line in [ unit_cells ] cannot be properly read. "+
-                               "Check the format!"); 
-            System.exit(99);
+            throw new InvalidTopFileException(
+                                    "a line in [ unit_cells ] cannot be properly read. "+
+                                    "Check the format!"); 
         }
         return numbers;
     }
 
 
-    private static List<Bond> getBonds(HashMap<String, List<String>> inputs){
+    private static List<Bond> getBonds(HashMap<String, List<String>> inputs)
+                                                    throws InvalidTopFileException{
 
         List<Bond> bonds = new LinkedList<Bond>();        
         try {
@@ -261,16 +262,16 @@ public class Builder{
             }
         }
         catch ( RuntimeException ex){
-            System.err.println("a line in [ bonds ] cannot be properly read. "+
-                               "Check the format!"); 
-            System.exit(99);
+            throw new InvalidTopFileException(
+                                        "a line in [ bonds ] cannot be properly read. "+
+                                        "Check the format!"); 
         }
         return bonds;
     }
 
 
     private static HashMap<String, Hamiltonian> getHamiltonians
-                                                (HashMap<String, List<String>> inputs){
+                   (HashMap<String, List<String>> inputs) throws InvalidTopFileException{
         HashMap<String, Hamiltonian> hamiltonians = 
                                         new HashMap<String, Hamiltonian>();
 
@@ -299,9 +300,9 @@ public class Builder{
             }
         }
         catch ( RuntimeException ex){
-            System.err.println("a line in [ Hamiltonian ] cannot be properly read. "+
-                               "Check the format!"); 
-            System.exit(99);
+            throw new InvalidTopFileException(
+                                 "a line in [ Hamiltonian ] cannot be properly read. "+
+                                 "Check the format!"); 
         }
         return hamiltonians;
     }
@@ -309,7 +310,8 @@ public class Builder{
 
 
 
-    private static Vector3D[] getLatticeVectors(HashMap<String, List<String>> inputs){
+    private static Vector3D[] getLatticeVectors(HashMap<String, List<String>> inputs)
+                                                            throws InvalidTopFileException{
   
         int cnt = 0;
         Vector3D[] a = new Vector3D[3]; 
@@ -319,7 +321,8 @@ public class Builder{
                 if ( !line.trim().matches("[^\\s]+.*")){
                     // empty line
                 }
-                else if (line.matches("\\s*-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*")){
+                else if (line.matches(
+                            "\\s*-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*")){
                     double x = Double.parseDouble(tokens[0]);
                     double y = Double.parseDouble(tokens[1]);
                     double z = Double.parseDouble(tokens[2]);
@@ -333,9 +336,9 @@ public class Builder{
             }
         }
         catch ( RuntimeException ex){
-            System.err.println("a line in [ lattice_vector ] cannot be properly read. "+
-                               "Check the format!"); 
-            System.exit(99);
+            throw new InvalidTopFileException(
+                                   "a line in [ lattice_vector ] cannot be properly read. "+
+                                   "Check the format!"); 
         }
         return a;
     } 
@@ -343,7 +346,7 @@ public class Builder{
 
     private static HashMap<Integer, Vector3D>
                             getSpins(HashMap<String, List<String>> inputs)
-                                                  throws new InvalidTopFileException{
+                                                           throws InvalidTopFileException{
         HashMap<Integer, Vector3D> spins = new HashMap<Integer, Vector3D>();
         try {
             for ( String line : inputs.get("basis") ){

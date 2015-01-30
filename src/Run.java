@@ -9,6 +9,7 @@ import mysd.writer.*;
 import mysd.builder.Builder;
 import mysd.builder.SpinBuilder;
 import mysd.RunParameter.SimulationType;
+import mysd.exceptions.*;
 
 public class Run{
     public static void main(String[] args){
@@ -62,12 +63,27 @@ public class Run{
         File top = new File(topFile);
         File sdp = new File(sdpFile);
         File cnf = null;
-        List<FullSpinSite> sites = Builder.buildSites(top);
+        List<FullSpinSite> sites = null;
+        try{
+            sites = Builder.buildSites(top);
+        }
+        catch( InvalidTopFileException ex){
+            System.err.println(ex.getMessage());
+            System.exit(99);
+        }
         if (cnfFile != null){
             cnf = new File(cnfFile);
             SpinBuilder.overloadSpins(sites, cnf, false);
         }
-        RunParameter param = Builder.importRunParam(sdp);
+        RunParameter param = null;
+        try{
+            param = Builder.importRunParam(sdp);
+        }
+        catch( InvalidSdpFileException ex){
+            System.err.println(ex.getMessage());
+            System.exit(99);
+        }
+
         ConcurrentSimulationManager manager = 
             new ConcurrentSimulationManager(nthreads);
         manager.addParam(param);
