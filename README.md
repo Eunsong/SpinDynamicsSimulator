@@ -465,7 +465,7 @@ These are next-nearest-neighbors, so add *J2* in each line above. Now add all th
 
 
 
-Now, we have a complete .top file. Note that as I have mentioned earlier, we are starting with ferromagnetic ordering. You can see this in your *topol.top* file in the *[ basis ]* section; all spins are aligned along *+z* direction. If you run a linear simulation using this topology file, the output trajectory will blow-up; Linear simulation works only on a ground sate structure.  
+Now, we have a complete .top file. Note that as I have mentioned earlier, we are starting with ferromagnetic ordering. You can see this in your *topol.top* file in the *[ basis ]* section; all spins are aligned along *+z* direction. If you run a linear simulation using this topology file, the output trajectory will blow-up; **Linear simulation works only on a ground sate structure**. So if you happend to see extremely large numbers in your output trajectory file, it most likely means that you are not using proper ground state configuration.  
 
 
 (to be updated...)
