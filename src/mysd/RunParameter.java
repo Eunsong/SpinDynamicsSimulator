@@ -1,6 +1,7 @@
 package mysd;
 
 import java.lang.RuntimeException;
+import mysd.exceptions.*;
 
 public class RunParameter{
 
@@ -53,7 +54,7 @@ public class RunParameter{
             this.title = title;
             return this;
         }
-        public Builder runtype(String runtype){
+        public Builder runtype(String runtype) throws InvalidSdpFileException{
             if ( runtype.toLowerCase().equals("linear") ){
                 this.runtype = SimulationType.LINEAR;
             }
@@ -61,8 +62,8 @@ public class RunParameter{
                 this.runtype = SimulationType.NONLINEAR;
             }
             else {
-                throw new RuntimeException("unknown runtype given. "+
-                                           "Should be either linear or nonlinear");
+                throw new InvalidSdpFileException("unknown runtype given. "+
+                                       "Should be either linear or nonlinear");
             }
             return this;
         }
