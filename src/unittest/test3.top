@@ -1,0 +1,41 @@
+# test top file for unittest
+# this top file should produce error
+
+[ basis ]
+#number      x       y      z       (optional)Sx    Sy      Sz
+     # basis number not starting from 0(should throw an Exception)
+     1     0.0     0.0    0.0                0.0   0.0     1.0 
+     2     1.0     0.0    0.0                0.0   -0.0    1.0  
+     3     0.0    -1.0    0.0                0.0001   0.0    -1.0  
+
+
+
+[ lattice_vector ]
+#ax
+2.0     0.0     0.0
+#ay
+0.0     1.0    -1.0
+#az
+0.0     0.0     1.0
+
+
+
+[ unit_cells ]
+#nx     ny      nz
+10      10       1
+
+
+[ Hamiltonian ]
+#type       a11     a12     a13     a21     a22     a23     a31     a32     a33
+FM        -1.0     0.0     0.0     0.0    -1.0     0.0     0.0     0.0    -1.0
+TEST+!     2.0     1.52    0.92   -1       2.4     20      0.0     1.0     5.3212
+
+
+[ bonds ]
+#a           b       HamiltonianType
+ 0           2       TEST+! # symbols can also be used for Hamiltonian type name
+ 0  <k+3><i-1>2      TEST+!
+ 2      <i+2>0       TEST+!
+ 2      <j-2>3       TEST+!
+ 3           1       FM
+ 3   <i+1><j-3><k+2>2  FM
