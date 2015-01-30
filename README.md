@@ -333,6 +333,141 @@ This completes the first tutorial. In the next tutorial, we will try slightly mo
 
 
 
+###2. Honeycomb Lattice, J1-J2 model
+
+In this tutorial, we will simulate the honeycomb lattice with antiferromagnetic nearest-neighbor interactions (*J1>0*) and ferromagnetic next-nearest-neighbor interactions(*J2<0*). The ground state structure of the system is antifoerromagnetic ordering, but let's suppose that we do not have this priori information. Instead, we will start from ferromagnetic ordering to see how we can construct a correct ground state configuration from a non-linear simulation. 
+
+First off, we should write a .top file for the honeycomb lattice.
+
+    [ basis ]
+    #number      x           y      z       (optional)Sx    Sy      Sz
+         0     0.0         0.0    0.0                0.0   0.0     1.0
+         1     0.0         1.0    0.0                0.0   0.0     1.0
+         2    -0.8660254   1.5    0.0                0.0   0.0     1.0
+         3     0.8660254  -0.5    0.0                0.0   0.0     1.0
+    
+    
+    [ lattice_vector ]
+    #ax
+    0.8660254   1.5   0.0
+    #ay
+    3.4641016   0.0   0.0
+    #az
+    0.0         0.0   99.0 # az lattice vector is never used here. Put something large if you are using genbonds.py to find nearest neighbors.
+
+    [ unit_cells ]
+    #nx     ny      nz
+    30      30      1
+    
+
+
+You should be comfortable with most of the fields above if you have gone through the first tutorial. The only thing that is worth mentioning here is, since we are again using 2-dimensional lattice, lattice vector *az* is of no use just like previous tuorial. However, put something large for *az* components as we are going to use a helper python script in the next step to find a list of nearest and next-nearest neighbors which will duplicate unit cells along all three directions and find relative position of each site. For an actual simulation, as long as *nz* is set to 1, the actual numbers you put for *az* does not matter at all. Now, we need two Hamiltonian matrices for nearest-neighbors, *J1*,  and for next-nearest-neighbors, *J2*. You can list as many matrices as you want in this section. 
+
+    
+    [ Hamiltonian ]
+    #type       a11     a12     a13     a21     a22     a23     a31     a32     a33
+    J1          1.0     0.0     0.0     0.0     1.0     0.0     0.0     0.0     1.0
+    J2         -0.2     0.0     0.0     0.0    -0.2     0.0     0.0     0.0    -0.2
+
+
+Now, the only remaining part is to list all interaction pairs, and depending on whether they are nearest-neighbors or next-nearest-neighbors, put appropriate Hamiltonian type for each of them. Finding neighbors is an error-prone part especially for complicates systems. So we are going to use a python script *getBonds.py* in */src/misc/* directory to construct a list of neighbors. First, save above fields to *topol.top* file. Copy *genbonds.py* file to the current directory and type in the following command:
+
+    python genbonds.py topol.top --rank 1 --search 2
+
+This will print out a list of nearest-neighbor(*i.e.* rank 1) pairs to your screen. Note that *--search* flag decides range of neighboring unit cells for searching nearest-neighbors. For instance, if the search range is set to *1*, this means that the code will look for all the sites only in the neighboring unit cells along each direction. Default search range is *1*. For this system, default search range will miss some of the nearest-neighbor pairs. So we should explicitly set it to *2*. Then you should see the following in your screen:
+
+       0            <i-1>1
+       0                 3
+       0                 1
+       1                 2
+       1            <i+1>0
+       1                 0
+       2                 1
+       2       <i+1><j-1>3
+       2       <i+2><j-1>3
+       3                 0
+       3       <i-1><j+1>2
+       3       <i-2><j+1>2
+
+These are the nearest-neighbor pairs. Just add *J1* in each line above. We then find next-nearest-neighbors as follows:
+
+    python genbonds.py topol.top --rank 2 --search 2
+
+which will print out this:
+
+
+       0            <i-1>2
+       0       <i-1><j+1>2
+       0       <i-2><j+1>2
+       0            <i-1>0
+       0                 2
+       0            <i+1>0
+       1            <i+1>3
+       1       <i+1><j-1>3
+       1            <i-1>1
+       1                 3
+       1            <i+1>1
+       1       <i+2><j-1>3
+       2            <i+1>0
+       2       <i+1><j-1>0
+       2            <i-1>2
+       2                 0
+       2            <i+1>2
+       2       <i+2><j-1>0
+       3            <i-1>1
+       3       <i-1><j+1>1
+       3       <i-2><j+1>1
+       3            <i-1>3
+       3                 1
+       3            <i+1>3
+
+
+These are next-nearest-neighbors, so add *J2* in each line above. Now add all these togther to your *topol.top* file. It should look somethign like this:
+
+    [ bonds ]
+    #a           b       HamiltonianType
+       0            <i-1>1  J1
+       0                 1  J1
+       0                 3  J1
+       1                 2  J1
+       1            <i+1>0  J1
+       1                 0  J1
+       2                 1  J1
+       2        <i+1><j-1>3 J1
+       2        <i+2><j-1>3 J1
+       3                 0  J1
+       3        <i-1><j+1>2 J1
+       3        <i-2><j+1>2 J1
+       0            <i-1>2  J2
+       0       <i-2><j+1>2  J2
+       0            <i-1>0  J2
+       0                 2  J2
+       0            <i+1>0  J2
+       0       <i-1><j+1>2  J2
+       1            <i+1>3  J2
+       1            <i-1>1  J2
+       1                 3  J2
+       1            <i+1>1  J2
+       1       <i+2><j-1>3  J2
+       1       <i+1><j-1>3  J2
+       2            <i+1>0  J2
+       2            <i-1>2  J2
+       2                 0  J2
+       2            <i+1>2  J2
+       2       <i+2><j-1>0  J2
+       2       <i+1><j-1>0  J2
+       3            <i-1>1  J2
+       3       <i-2><j+1>1  J2
+       3            <i-1>3  J2
+       3                 1  J2
+       3            <i+1>3  J2
+       3       <i-1><j+1>1  J2
+
+
+
+Now, we have complete .top file. 
+
+
 
 (to be updated...)
 
