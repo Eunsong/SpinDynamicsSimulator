@@ -370,11 +370,11 @@ You should be comfortable with most of the fields above if you have gone through
     J2         -0.2     0.0     0.0     0.0    -0.2     0.0     0.0     0.0    -0.2
 
 
-Now, the only remaining part is to list all interaction pairs, and depending on whether they are nearest-neighbors or next-nearest-neighbors, put appropriate Hamiltonian type for each of them. Finding neighbors is an error-prone part especially for complicates systems. So we are going to use a python script *getBonds.py* in */src/misc/* directory to construct a list of neighbors. First, save above fields to *topol.top* file. Copy *genbonds.py* file to the current directory and type in the following command:
+Now, the only remaining part is to list all interaction pairs, and depending on whether they are nearest-neighbors or next-nearest-neighbors, put appropriate Hamiltonian type for each of them. Finding neighbors is an error-prone part especially for complicates systems. So we are going to use a python script *genbonds.py* in */src/misc/* directory to construct a list of neighbors. First, save above fields to *topol.top* file. Copy *genbonds.py* file to the current directory and type in the following command:
 
     python genbonds.py topol.top --rank 1 --search 2
 
-This will print out a list of nearest-neighbor(*i.e.* rank 1) pairs to your screen. Note that *--search* flag decides range of neighboring unit cells for searching nearest-neighbors. For instance, if the search range is set to *1*, this means that the code will look for all the sites only in the neighboring unit cells along each direction. Default search range is *1*. For this system, default search range will miss some of the nearest-neighbor pairs. So we should explicitly set it to *2*. Then you should see the following in your screen:
+This will print out a list of nearest-neighbor(*i.e.* rank 1) pairs to your screen. Note that *--search* flag is used to determine the range of neighboring unit cells for searching nearest-neighbors. For instance, if the search range is set to *1*, this means that the code will look for all the sites only in the neighboring unit cells along each direction. Default search range is *1*. For this system, default search range will miss some of the nearest-neighbor pairs. So we should explicitly set it to *2*. Then you should see the following in your screen:
 
        0            <i-1>1
        0                 3
@@ -389,7 +389,7 @@ This will print out a list of nearest-neighbor(*i.e.* rank 1) pairs to your scre
        3       <i-1><j+1>2
        3       <i-2><j+1>2
 
-These are the nearest-neighbor pairs. Just add *J1* in each line above. We then find next-nearest-neighbors as follows:
+These are the nearest-neighbor pairs. Just add *J1* in each line above. Next, we then find next-nearest-neighbors as follows:
 
     python genbonds.py topol.top --rank 2 --search 2
 
@@ -465,8 +465,7 @@ These are next-nearest-neighbors, so add *J2* in each line above. Now add all th
 
 
 
-Now, we have complete .top file. 
-
+Now, we have a complete .top file. Note that as I have mentioned earlier, we are starting with ferromagnetic ordering. You can see this in your *topol.top* file in the *[ basis ]* section; all spins are aligned along *+z* direction. If you run a linear simulation using this topology file, the output trajectory will blow-up; Linear simulation works only on a ground sate structure.  
 
 
 (to be updated...)
