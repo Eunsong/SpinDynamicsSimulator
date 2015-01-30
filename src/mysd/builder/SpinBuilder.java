@@ -7,6 +7,7 @@ import java.lang.ArrayIndexOutOfBoundsException;
 
 import mysd.*;
 import mysd.vector.*;
+import mysd.exceptions.*;
 
 public class SpinBuilder{
 
@@ -18,7 +19,8 @@ public class SpinBuilder{
      * @param normalize boolean variable, true if each spinVector object needs to be 
      *                  normalized, false otherwise. 
      */ 
-    public static <T extends Site<?>> void overloadSpins(List<T> sites, File confFile, boolean normalize){
+    public static <T extends Site<?>> void overloadSpins
+          (List<T> sites, File confFile, boolean normalize) throws InvalidCnfFileException{
 
         if ( !confFile.exists() || !confFile.canRead() ){
             System.err.println("Error: Cannot access cnf file");
@@ -45,17 +47,14 @@ public class SpinBuilder{
                 }
             }
         }
-        catch (IOException ex1){
-            System.err.println("ERROR! Cannot access cnf file!");
-            System.exit(99);
+        catch (IOException ex){
+            throw new InvalidCnfFileException("ERROR! Cannot access cnf file!");
         }
-        catch (NumberFormatException ex2){
-            System.err.println("ERROR! invalid line found in cnf file!");
-            System.exit(99);
+        catch (NumberFormatException ex){
+            throw new InvalidCnfFileException("ERROR! invalid line found in cnf file!");
         } 
         catch (ArrayIndexOutOfBoundsException ex){
-            System.err.println("ERROR! invalid line found in cnf file!");
-            System.exit(99);
+            throw new InvalidCnfFileException("ERROR! invalid line found in cnf file!");
         }
                
     }

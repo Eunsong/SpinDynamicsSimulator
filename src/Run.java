@@ -45,8 +45,10 @@ public class Run{
             }
         }
 
+        /** get number of available processors **/
         int nthreads = Runtime.getRuntime().availableProcessors();
 
+        /** Parse arguments **/
         HashMap<String, String> messages = ArgumentParser.parse(args);
         String topFile = messages.get("t");
         String sdpFile = messages.get("s");
@@ -60,6 +62,7 @@ public class Run{
             nthreads = Integer.parseInt(messages.get("nt"));
         }
 
+        /** build sites from user specified file **/
         File top = new File(topFile);
         File sdp = new File(sdpFile);
         File cnf = null;
@@ -71,10 +74,18 @@ public class Run{
             System.err.println(ex.getMessage());
             System.exit(99);
         }
+        /** overload spins if cnf file is given **/
         if (cnfFile != null){
             cnf = new File(cnfFile);
-            SpinBuilder.overloadSpins(sites, cnf, false);
+            try{
+                SpinBuilder.overloadSpins(sites, cnf, false);
+            }
+            catch( InvalidCnfFileException ex){
+                System.err.println(ex.getMessage());
+                System.exit(99);
+            }
         }
+        /** load simulation run parameters from user specified file **/
         RunParameter param = null;
         try{
             param = Builder.importRunParam(sdp);
@@ -84,6 +95,7 @@ public class Run{
             System.exit(99);
         }
 
+        /** create and setup simulation manager object **/
         ConcurrentSimulationManager manager = 
             new ConcurrentSimulationManager(nthreads);
         manager.addParam(param);
@@ -122,6 +134,7 @@ public class Run{
             }
                 break;
         }
+        /** begin simulations **/
         manager.writeSystemInfo(outInfo);
         manager.setThreads();
         manager.perturbSite();
