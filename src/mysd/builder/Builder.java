@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import mysd.*;
 import mysd.lattice.*;
 import mysd.vector.*;
+import mysd.exceptions.*;
 import java.lang.RuntimeException;
 
 public class Builder{
@@ -21,11 +22,11 @@ public class Builder{
     private static final Pattern sdp = Pattern.compile(patternSdp);
 
 
-    public static RunParameter importRunParam(File sdpFile){
+    public static RunParameter importRunParam(File sdpFile) 
+                                                throws InvalidSdpFileException{
         
         if ( !sdpFile.exists() || !sdpFile.canRead() ){
-            System.err.println("Error: Cannot access sdp file");
-            System.exit(99);
+            throw new InvalidSdpFileException("Error: Cannot access sdp file");
         }
         HashMap<String, String> buffer = new HashMap<String, String>();
         try{
@@ -43,8 +44,7 @@ public class Builder{
             }
         }
         catch ( IOException ex){
-            System.err.println("Error: Cannot read sdp file");
-            System.exit(99);
+            throw new InvalidSdpFileException("Error: Cannot read sdp file");
         }
 
         RunParameter.Builder builder = new RunParameter.Builder();
@@ -52,9 +52,8 @@ public class Builder{
                            "perturb_site"};
         for ( String field : fields ){
             if ( !buffer.containsKey(field) ){
-                System.err.println("Error: missing essential field: " + field +
-                                    " , in sdp file.");
-                System.exit(99); 
+                throw new InvalidSdpFileException("Error: missing essential field: " + 
+                                                  field + " , in sdp file.");
             }
         }
         double dt = Double.parseDouble(buffer.get("dt"));
@@ -71,9 +70,9 @@ public class Builder{
             String[] pt_fields = {"perturbing_site_index", "perturbation_size"};
             for ( String field : pt_fields ){
                 if ( !buffer.containsKey(field) ){
-                    System.err.println("Error: perturbation option is turned on, "+
-                                       "but no " + field + " is defined in sdp file");
-                    System.exit(99);
+                    throw new InvalidSdpFileException(
+                              "Error: perturbation option is turned on, "+
+                              "but no " + field + " is defined in sdp file");
                 }
             }
             pt_site_index = Integer.parseInt
@@ -89,7 +88,8 @@ public class Builder{
     }
 
 
-    public static List<FullSpinSite> buildSites(File topfile){
+    public static List<FullSpinSite> buildSites(File topfile)
+                                        throws InvalidTopFileException{
 
         HashMap<String, List<String>> inputs = parse(topfile);      
         List<LatticeSite> basis = getBasis(inputs);
@@ -342,7 +342,8 @@ public class Builder{
 
 
     private static HashMap<Integer, Vector3D>
-                            getSpins(HashMap<String, List<String>> inputs){
+                            getSpins(HashMap<String, List<String>> inputs)
+                                                  throws new InvalidTopFileException{
         HashMap<Integer, Vector3D> spins = new HashMap<Integer, Vector3D>();
         try {
             for ( String line : inputs.get("basis") ){
@@ -365,16 +366,16 @@ public class Builder{
             }
         }
         catch ( RuntimeException ex){
-            System.err.println("a line in [ basis ] cannot be properly read. "+
-                               "Check the format!"); 
-            System.exit(99);
+            throw new InvalidTopFileException("a line in [ basis ] cannot be properly read. "+
+                                              "Check the format!"); 
         }
         return spins; 
     }
 
 
 
-    private static List<LatticeSite> getBasis(HashMap<String, List<String>> inputs){
+    private static List<LatticeSite> getBasis(HashMap<String, List<String>> inputs)
+                                                      throws InvalidTopFileException{
 
         List<LatticeSite> basis = new LinkedList<LatticeSite>();
         int cnt = 0;
@@ -387,11 +388,10 @@ public class Builder{
                 else if ( line.trim().matches(
                           "\\d+\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*.*")){
                     int index = Integer.parseInt(tokens[0]);
-                    if (index != cnt ){ 
-                        System.err.println("Error! basis numbers should be "+
-                                           "defined in order from 0 without "+
-                                           "missing numbers");
-                        System.exit(99); 
+                    if (index != cnt ){
+                        throw new InvalidTopFileException("Error! basis numbers should be "+
+                                                          "defined in order from 0 without "+
+                                                          "missing numbers");
                     }
                     double x = Double.parseDouble(tokens[1]);
                     double y = Double.parseDouble(tokens[2]);
@@ -407,20 +407,19 @@ public class Builder{
             }
         }
         catch ( RuntimeException ex){
-            System.err.println("a line in [ basis ] cannot be properly read. "+
-                               "Check the format!"); 
-            System.exit(99);
+            throw new InvalidTopFileException("a line in [ basis ] cannot be properly read. "+
+                                              "Check the format!"); 
         }
         return basis;
     }
 
-    private static HashMap<String, List<String>> parse(File topfile){
+    private static HashMap<String, List<String>> parse(File topfile)
+                                                    throws InvalidTopFileException{
 
         HashMap<String, List<String>> inputs = new HashMap<String, List<String>>();
 
         if ( !topfile.exists() || !topfile.canRead() ){
-            System.err.println("Error: Cannot access top file");
-            System.exit(99);
+            throw new InvalidTopFileException("Error: Cannot access top file");
         }
         try{
             Scanner sc = new Scanner(topfile);
@@ -442,8 +441,7 @@ public class Builder{
             }
         }
         catch (IOException ex){
-            System.err.println("Error: Cannot read top file");
-            System.exit(99);
+            throw new InvalidTopFileException("Error: Cannot read top file");
         }     
         return inputs; 
     }
