@@ -422,10 +422,10 @@ which will print out this:
        3            <i+1>3
 
 
-These are next-nearest-neighbors, so add *J2* in each line above. Now add all these togther to your *topol.top* file. It should look somethign like this:
+These are next-nearest-neighbors, so add *J2* in each line above. Now add all these togther under *[ bonds ]* section to your *topol.top* file. It should look somethign like this:
 
     [ bonds ]
-    #a           b       HamiltonianType
+      #a                b   HamiltonianType
        0            <i-1>1  J1
        0                 1  J1
        0                 3  J1
