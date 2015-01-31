@@ -261,7 +261,7 @@ This will take roughly a minute or so depending on your computer and number of t
     out.cnf
 
 
-The system information file, *out.info*, contains the simulation parameters and lattice sites that have been used in the simulation. The trajectory file, *out.trj*, contains simply spin configurations recorded at specified intervals. The configuration file, *out.cnf*, is a final configuration(spin deviations for linear simulation), but is not much of use for a linear simulation. So we can simply delete it. 
+The system information file, *out.info*, contains the simulation parameters and lattice sites that are used in the simulation. The trajectory file, *out.trj*, contains simply spin configurations recorded at specified intervals. The configuration file, *out.cnf*, is a final configuration(spin deviations for linear simulation), but is not much of use for a linear simulation. So we can simply delete it. 
 
 
 Before computing spin-wave spectrum, let's check out what inputs are needed and how to feed them to the code by displaying usage instruction :
@@ -520,7 +520,7 @@ You should always check output energies to ensure convergence. This step is part
 
 
 
-In order to run a linear simulation, we need to change our .sdp file. Create a new file named *sdrun_l.sdp*, where *_l* suffix denotes linear simulation. You should now be able to fill out the sdp file on your own. In my case, I put something like this(but you don't need to use the same settings. I would suggest to play with different settings a bit to get a better sense on how these numbers affect the simulation),
+In order to run a linear simulation, we need to change our .sdp file. Create a new file named *sdrun_l.sdp*, where *_l* suffix denotes linear simulation. You should now be able to fill out the sdp file on your own. In my case, I put something like this(but you don't need to use the same settings. I would suggest to play with different settings a bit to get a better sense of how these numbers affect the simulation),
 
 
     title                   = Honeycomb_J1-J2
