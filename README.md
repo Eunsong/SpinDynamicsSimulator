@@ -325,7 +325,7 @@ where each column indicates k-value(*m/nk* precisely), frequency, and spin-devia
 
 which will create a file named *spinwave_squareFM_k100.png* that looks like this,
 
-<p align="center"><img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/squareFM/spinwave_squareFM_k100.jpg" alt="Drawing" WIDTH="60%"></p>
+<p align="center"><img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/squareFM/spinwave_squareFM_k100.jpg" alt="Drawing" WIDTH="80%"></p>
 
 
 This completes the first tutorial. In the next tutorial, we will try slightly more complicated system and also see how non-linear simulation can be used.
@@ -553,7 +553,7 @@ Note that we added another optional flag *-c* which allows you to overload initi
 and the figure should look like this :
 
 
-<p align="center"><img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/honeycomb_J1J2/spinwave_honeycombJ1J2_k110.jpg" alt="Drawing" WIDTH="60%"></p>
+<p align="center"><img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/honeycomb_J1J2/spinwave_honeycombJ1J2_k110.jpg" alt="Drawing" WIDTH="80%"></p>
 
 
 
