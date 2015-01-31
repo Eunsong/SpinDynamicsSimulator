@@ -1,0 +1,18 @@
+# Spin Dynamics Simulation run parameters 
+
+title                   = Honeycomb_J1-J2
+
+runtype                 = linear  #linear of nonlinear.
+
+dt                      = 0.02  #time step size
+ntstep                  = 50000 #number of time steps
+alpha                   = 0.01  #Gilbert damping constant
+
+nstout                  = 5    #save outputs every nstout steps(0 to write only the final config)
+nstbuff                 = 100  #output buffer size(can enable this option using BufferedBasicWriter)
+nstenergy               = 0    #save total energy every nstenergy steps(only for nonlinear simulations)
+
+perturb_site            = true #true to perturb a site at start
+perturbing_site_index   = 0    #index of a site to be perturbed
+perturbation_size       = 1    #linear case, this determines initial size of sigma_x,
+                               #nonlinear case, this is a roatation angle(degree)

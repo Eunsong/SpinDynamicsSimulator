@@ -465,7 +465,58 @@ These are next-nearest-neighbors, so add *J2* in each line above. Now add all th
 
 
 
-Now, we have a complete .top file. Note that as I have mentioned earlier, we are starting with ferromagnetic ordering. You can see this in your *topol.top* file in the *[ basis ]* section; all spins are aligned along *+z* direction. If you run a linear simulation using this topology file, the output trajectory will blow-up; **Linear simulation works only on a ground sate structure**. So if you happend to see extremely large numbers in your output trajectory file, it most likely means that you are not using proper ground state configuration.  
+Now, we have a complete .top file. Note that as I have mentioned earlier, we are starting with ferromagnetic ordering. You can see this in your *topol.top* file in the *[ basis ]* section; all spins are aligned along *+z* direction. If you run a linear simulation using this topology file, the output trajectory will blow-up; **Linear simulation works only on a ground state structure**. So if you happen to see extremely large numbers in your output trajectory file, it most likely means that you are not using proper ground state configuration. 
+
+So we will carry out a nonlinear simulation with a large damping constant to relaxate the ferromagnetic structure to (hopefully) an antiferromagnetic structure. Write a .sdp file that looks something like below:
+
+
+    title                   = Honeycomb_J1-J2
+    
+    runtype                 = nonlinear  #linear of nonlinear.
+    
+    dt                      = 0.1  #time step size
+    ntstep                  = 50000 #number of time steps
+    alpha                   = 0.5  #Gilbert damping constant
+    
+    nstout                  = 0    #save outputs every nstout steps(0 to write only the final config)
+    nstbuff                 = 100  #output buffer size(can enable this option using BufferedBasicWriter)
+    nstenergy               = 5    #save total energy every nstenergy steps(only for nonlinear simulations)
+    
+    perturb_site            = true #true to perturb a site at start
+    perturbing_site_index   = 0    #index of a site to be perturbed
+    perturbation_size       = 1    #linear case, this determines initial size of sigma_x,
+                                   #nonlinear case, this is a roatation angle(degree)
+
+
+note that we have specified nonlinear simulation in the line  *runtype = nonlinear* and set a large damping constant *alpha = 0.5*. Also, since the purpose of this simulation is to obtain a ground state structure, we do not need to save trajectories. So set *nstout = 0*. (although linear simulations can produce much cleaner spin-wave spctra, nonlinaer simulation results can also be used to compute spin-waves. If that is what you need, set *nstout* accordingly.) Save above to a file named *sdrun_nl.sdp*. We will use *_nl* suffix to denote *nonlinear* simulation. Then type in the following line in the command line :
+
+    java Run -t topol.top -s sdrun_nl.sdp -o out_nl
+
+Once this is done, you will see four new files are created:
+
+    out_nl.cnf
+    out_nl.eng
+    out_nl.info
+    out_nl.trj
+
+Since we set *nstout* to *0*, *out_nl.trj* constains no information at all. So you can just delete this file. Now, let's look at the output configurational file, *out_nl.cnf*. If you open the file, it should looks something like this (note that the numbers you see may be different. Due to *U(1)* symmetry of the system, globally rotated spin structure are identical.):
+
+
+    # time =      5000.0000
+           0   -0.55269    0.83128    0.05930
+           1    0.55269   -0.83128   -0.05930
+           2   -0.55269    0.83128    0.05930
+           3    0.55269   -0.83128   -0.05930
+           .        .          .         .
+           .        .          .         .
+
+As you can see, neighboring spins are aligned anti-parallely. This is the correct ground state for our system. We are going to use this configuration file to run a linear simulation. But before moving on, let's check out the *out_nl.eng* file. This file contains total energy of the system as a function of time; We have specified in the *sdrun_nl.sdp* file to write energy every *5* time steps. If you plot *out_nl.eng*, you can see that the energy is converged very quickly.
+
+
+
+
+You should always check output energies to ensure convergence. This step is particularly important if you do not know the correct ground state of the system. In that case, you might want to start from different initial configurations and different perturbation amount, and see if they all converge to the same structure.   
+
 
 
 (to be updated...)

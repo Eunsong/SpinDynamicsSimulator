@@ -1,6 +1,6 @@
 # Spin Dynamics Simulation run parameters 
 
-title                   = SquareLattice_AntiFerroMagnet
+title                   = Honeycomb_J1-J2
 
 runtype                 = nonlinear  #linear of nonlinear.
 
