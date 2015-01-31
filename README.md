@@ -325,7 +325,7 @@ where each column indicates k-value(*m/nk* precisely), frequency, and spin-devia
 
 which will create a file named *spinwave_squareFM_k100.png* that looks like this,
 
-<img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/squareFM/spinwave_squareFM_k100.jpg" alt="Drawing" style="width:400px;"/>
+<img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/squareFM/spinwave_squareFM_k100.jpg" alt="Drawing" WIDTH="60%" align="middle">
 
 
 This completes the first tutorial. In the next tutorial, we will try slightly more complicated system and also see how non-linear simulation can be used.
@@ -510,16 +510,54 @@ Since we set *nstout* to *0*, *out_nl.trj* constains no information at all. So y
            .        .          .         .
            .        .          .         .
 
-As you can see, neighboring spins are aligned anti-parallely. This is the correct ground state for our system. We are going to use this configuration file to run a linear simulation. But before moving on, let's check out the *out_nl.eng* file. This file contains total energy of the system as a function of time; We have specified in the *sdrun_nl.sdp* file to write energy every *5* time steps. If you plot *out_nl.eng*, you can see that the energy is converged very quickly.
+As you can see, neighboring spins are aligned *anti-parallely*. This is the correct ground state for our system. We are going to use this configuration file to run a linear simulation. But before moving on to that, let's check out *out_nl.eng* file. This file contains total energy of the system as a function of time; We have specified in the *sdrun_nl.sdp* file to write energy every *5* time steps. If you plot *out_nl.eng*, you can see that the energy is converged very quickly.
 
 
-<img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/honeycomb_J1J2/energy_nl.png" alt="Drawing" WIDTH="60%">
+<img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/honeycomb_J1J2/energy_nl.png" alt="Drawing" WIDTH="60%" align="middle">
 
 
 You should always check output energies to ensure convergence. This step is particularly important if you do not know the correct ground state of the system. In that case, you might want to start from different initial configurations and different perturbation amount, and see if they all converge to the same structure.   
 
 
 
-(to be updated...)
+In order to run a linear simulation, we need to change our .sdp file. Create a new file named *sdrun_l.sdp*, where *_l* suffix denotes linear simulation. You should now be able to fill out the sdp file on your own. In my case, I put something like this(but you don't need to use the same settings. I would suggest to play with different settings a bit to get a better sense on how these numbers affect the simulation),
+
+
+    title                   = Honeycomb_J1-J2
+    
+    runtype                 = linear  #linear of nonlinear.
+    
+    dt                      = 0.02  #time step size
+    ntstep                  = 50000 #number of time steps
+    alpha                   = 0.01  #Gilbert damping constant
+    
+    nstout                  = 5    #save outputs every nstout steps(0 to write only the final config)
+    nstbuff                 = 100  #output buffer size(can enable this option using BufferedBasicWriter)
+    nstenergy               = 0    #save total energy every nstenergy steps(only for nonlinear simulations)
+    
+    perturb_site            = true #true to perturb a site at start
+    perturbing_site_index   = 0    #index of a site to be perturbed
+    perturbation_size       = 1    #linear case, this determines initial size of sigma_x,
+                                   #nonlinear case, this is a roatation angle(degree)
+
+
+Then, type in the following line to run the simulation :
+
+    java Run -t topol.top -s sdrun_l.sdp -c out_nl.cnf -o out_l
+
+
+Note that we added another optional flag *-c* which allows you to overload initial spin configurations with a specified .cnf file. Once the simulation is done, we can pretty much repeat what we have learned in the first tutorial to compute spin-wave spectra. Try to do it on your own with a help of usage instruction which you can display with *--help* flag. I decided to compute the spin-wave along 110 direction as follows :
+
+    java ComputeSpinWave -i out_l -t topol.top -nk 30 -kx 1 -ky 1 -kz 0 -nw 120 -dw 0.05 -o spinwave_honeycombJ1J2_k110.dat
+
+and the figure should look like this :
+
+
+<img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/honeycomb_J1J2/spinwave_honeycombJ1J2_k110.png" alt="Drawing" WIDTH="60%" align="middle">
+
+
+
+This is the end of the tutorials. You can now simulate any system of your interest. 
+
 
 
