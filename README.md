@@ -325,7 +325,7 @@ where each column indicates k-value(*m/nk* precisely), frequency, and spin-devia
 
 which will create a file named *spinwave_squareFM_k100.png* that looks like this,
 
-<img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/squareFM/spinwave_squareFM_k100.jpg" alt="Drawing" stype="width:400px;"/>
+<img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/squareFM/spinwave_squareFM_k100.jpg" alt="Drawing" style="width:400px;"/>
 
 
 This completes the first tutorial. In the next tutorial, we will try slightly more complicated system and also see how non-linear simulation can be used.
@@ -513,6 +513,7 @@ Since we set *nstout* to *0*, *out_nl.trj* constains no information at all. So y
 As you can see, neighboring spins are aligned anti-parallely. This is the correct ground state for our system. We are going to use this configuration file to run a linear simulation. But before moving on, let's check out the *out_nl.eng* file. This file contains total energy of the system as a function of time; We have specified in the *sdrun_nl.sdp* file to write energy every *5* time steps. If you plot *out_nl.eng*, you can see that the energy is converged very quickly.
 
 
+<img src="https://raw.githubusercontent.com/Eunsong/SpinDynamicsSimulator/master/examples/honeycomb_J1J2/energy_nl.png" alt="Drawing" style="width:400px;"/>
 
 
 You should always check output energies to ensure convergence. This step is particularly important if you do not know the correct ground state of the system. In that case, you might want to start from different initial configurations and different perturbation amount, and see if they all converge to the same structure.   
