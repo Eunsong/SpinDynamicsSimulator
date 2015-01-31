@@ -513,7 +513,7 @@ Since we set *nstout* to *0*, *out_nl.trj* constains no information at all. So y
 As you can see, neighboring spins are aligned anti-parallely. This is the correct ground state for our system. We are going to use this configuration file to run a linear simulation. But before moving on, let's check out the *out_nl.eng* file. This file contains total energy of the system as a function of time; We have specified in the *sdrun_nl.sdp* file to write energy every *5* time steps. If you plot *out_nl.eng*, you can see that the energy is converged very quickly.
 
 
-<img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/honeycomb_J1J2/energy_nl.png" alt="Drawing" style="width:400px"/>
+<img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/honeycomb_J1J2/energy_nl.png" alt="Drawing" WIDTH="60%">
 
 
 You should always check output energies to ensure convergence. This step is particularly important if you do not know the correct ground state of the system. In that case, you might want to start from different initial configurations and different perturbation amount, and see if they all converge to the same structure.   
