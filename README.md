@@ -514,16 +514,13 @@ The first column of .cnf file is spin index *n* which is uniquely defined for ea
 
     n = i*ny*nz*m + j*nz*m + k*m + l
 
-where *nx*, *ny*, and *nz* are number of unit cells along each lattice vectors and *m* is number of sub-lattices in each unit cell. Second, third, and fourth columns are spin components Sx, Sy, and Sz respectively. Note that for linear simulations, these are spin deviations(sigmax, sigmay, and sigmaz) instead. 
-
-
-Let's get back to our *out_nl.cnf* file. As you can see, neighboring spins are aligned *anti-parallely*. This is the correct ground state for our system. We are going to use this configuration file to run a linear simulation. But before moving on to that, let's check out *out_nl.eng* file. This file contains total energy of the system as a function of time; We have specified in the *sdrun_nl.sdp* file to write energy every *5* time steps. If you plot *out_nl.eng*, you can see that the energy is converged very quickly.
+where *nx*, *ny*, and *nz* are number of unit cells along each lattice vectors and *m* is number of sub-lattices in each unit cell. Second, third, and fourth columns are spin components Sx, Sy, and Sz respectively. Note that for linear simulations, these are spin deviations(sigmax, sigmay, and sigmaz) instead. Now, if you look at *out_nl.cnf* file, neighboring spins are aligned *anti-parallely*. This is the correct ground state for our system. We are going to use this configuration file to run a linear simulation. But before jumping into that, let's check out *out_nl.eng* file. This file contains total energy of the system as a function of time; We have specified in the *sdrun_nl.sdp* file to write energy every *5* time steps. If you plot *out_nl.eng*, you can see that the energy is converged very quickly.
 
 
 <p align="center"><img src="https://github.com/Eunsong/SpinDynamicsSimulator/blob/master/examples/honeycomb_J1J2/energy_nl.png" alt="Drawing" WIDTH="60%"></p>
 
 
-You should always check output energies to ensure convergence. This step is particularly important if you do not know the correct ground state of the system. In that case, you might want to start from different initial configurations and different perturbation amount, and see if they all converge to the same structure.   
+You should always check output energies to ensure convergence. This step is particularly important if you do not know the correct ground state of the system. In that case, you might want to start from different initial configurations and different perturbation amount, and see if they all converge to the same energy and structure.   
 
 
 
